@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+
+    <Button
+        android:id="@+id/cat1btn"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:text="    what's going on"
+        android:textSize="12sp"
+        android:textColor="#000000"
+        android:gravity="left|center_vertical"
+        android:background="#FFFFFF"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#f4f3f3">
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/cat2btn"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:text="    what will happen"
+        android:textSize="12sp"
+        android:textColor="#000000"
+        android:gravity="left|center_vertical"
+        android:background="#FFFFFF"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#f4f3f3">
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/cat3btn"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:text="    do me a favor"
+        android:textSize="12sp"
+        android:textColor="#000000"
+        android:gravity="left|center_vertical"
+        android:background="#FFFFFF"/>
+
+</LinearLayout>

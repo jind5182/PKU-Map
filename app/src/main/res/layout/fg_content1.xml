@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <Button
+        android:id="@+id/locbtn"
+        android:layout_height="30dp"
+        android:layout_width="70dp"
+        android:text="事件种类"
+        android:layout_margin="5dp"
+        android:background="#80129bea"/>
+
+    <com.baidu.mapapi.map.MapView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/bdmap"
+        android:clickable="true">
+    </com.baidu.mapapi.map.MapView>
+
+</RelativeLayout>
