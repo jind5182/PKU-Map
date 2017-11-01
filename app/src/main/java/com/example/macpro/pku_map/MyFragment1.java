@@ -15,14 +15,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.baidu.mapapi.SDKInitializer;
-import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.BitmapDescriptor;
-import com.baidu.mapapi.map.BitmapDescriptorFactory;
-import com.baidu.mapapi.map.MapPoi;
-import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.Marker;
-import com.baidu.mapapi.map.MarkerOptions;
-import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.map.*;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.model.LatLngBounds;
 
@@ -48,6 +41,17 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
         bdmap.setOnMapClickListener(new BaiduMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
+            }
+
+            @Override
+            public boolean onMapPoiClick(MapPoi mapPoi) {
+                Toast.makeText(mContext, "请到详情页选择地点！", Toast.LENGTH_LONG).show();
+                return false;
+            }
+        });
+        bdmap.setOnMapLongClickListener(new BaiduMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
                 Toast.makeText(mContext, latLng.toString(), Toast.LENGTH_LONG).show();
                 //定义Maker坐标点
                 LatLng point = latLng;
@@ -63,11 +67,6 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
                         .extraInfo(bundle);
                 //在地图上添加Marker，并显示
                 marker = (Marker) bdmap.addOverlay(option);
-            }
-
-            @Override
-            public boolean onMapPoiClick(MapPoi mapPoi) {
-                return false;
             }
         });
         bdmap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
@@ -120,9 +119,10 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
         bdmap.setOnMapLoadedCallback(new BaiduMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
-                LatLng northeast = new LatLng(40.005468, 116.321409);
-                LatLng southwest = new LatLng(39.992727, 116.311995);
-                bdmap.setMapStatusLimits(new LatLngBounds.Builder().include(northeast).include(southwest).build());
+                LatLng center = new LatLng(39.99907, 116.316289);
+                MapStatus mMapStatus = new MapStatus.Builder().target(center).zoom(17).build();
+                MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);
+                bdmap.setMapStatus(mMapStatusUpdate);
             }
         });
     }

@@ -1,8 +1,10 @@
 package com.example.macpro.pku_map;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -18,8 +20,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView txt_chat;
     private TextView txt_contract;
     private TextView txt_me;
-    private ViewPager vpager;
+    private CustomViewPager vpager;
     private Drawable drawable = null;
+    private Context mContext = null;
 
     private MyFragmentPagerAdapter mAdapter;
 
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_main);
+        mContext = MainActivity.this;
         mAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
         bindViews();
         txt_chat.performClick();
@@ -42,13 +46,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         txt_chat=(TextView)findViewById(R.id.txt_map);
         txt_contract=(TextView)findViewById(R.id.txt_event);
         txt_me=(TextView)findViewById(R.id.txt_me);
-        drawable = getResources().getDrawable(R.drawable.tab_menu_map, null);
+        drawable = ContextCompat.getDrawable(mContext, R.drawable.tab_menu_map);
         drawable.setBounds(0, 0, 100, 100);
         txt_chat.setCompoundDrawables(null, drawable, null, null);
-        drawable = getResources().getDrawable(R.drawable.tab_menu_event, null);
+        drawable = ContextCompat.getDrawable(mContext, R.drawable.tab_menu_event);
         drawable.setBounds(0, 0, 100, 100);
         txt_contract.setCompoundDrawables(null, drawable, null, null);
-        drawable = getResources().getDrawable(R.drawable.tab_menu_me, null);
+        drawable = ContextCompat.getDrawable(mContext, R.drawable.tab_menu_me);
         drawable.setBounds(0, 0, 100, 100);
         txt_me.setCompoundDrawables(null, drawable, null, null);
 
@@ -56,7 +60,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         txt_contract.setOnClickListener(this);
         txt_me.setOnClickListener(this);
 
-        vpager = (ViewPager) findViewById(R.id.vpager);
+        vpager = (CustomViewPager) findViewById(R.id.vpager);
+        vpager.setScanScroll(false);
         vpager.setAdapter(mAdapter);
         vpager.setCurrentItem(0);
         vpager.addOnPageChangeListener(this);

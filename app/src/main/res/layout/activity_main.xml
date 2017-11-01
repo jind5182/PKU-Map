@@ -54,11 +54,11 @@
 
     </LinearLayout>
 
-    <android.support.v4.view.ViewPager
+    <com.example.macpro.pku_map.CustomViewPager
         android:id="@+id/vpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/ly_tab_bar">
-    </android.support.v4.view.ViewPager>
+    </com.example.macpro.pku_map.CustomViewPager>
 
 </RelativeLayout>

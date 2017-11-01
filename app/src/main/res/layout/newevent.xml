@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#9de5f9">
+    android:background="#9de5f9"
+    tools:context=".NewEvent">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -98,7 +100,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="选择事件类型:"
+                android:text="     选择事件类型:"
                 android:textColor="#000000"
                 android:textSize="20dp" />
 
@@ -146,14 +148,13 @@
                 android:layout_height="1dp"
                 android:background="#b6b3b3" />
 
-            <TextView
+            <com.example.macpro.pku_map.CustomExpandableListView
+                android:id="@+id/exlist_lol"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="选择事件地点:"
-                android:textColor="#000000"
-                android:textSize="20dp" />
+                android:layout_height="184dp"
+                android:childDivider="#E02D2F"/>
 
         </LinearLayout>
     </ScrollView>
+
 </LinearLayout>

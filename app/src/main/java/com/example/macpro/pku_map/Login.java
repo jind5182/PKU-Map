@@ -52,7 +52,6 @@ public class Login extends Activity implements View.OnClickListener {
                     Toast.makeText(this, "用户名：" + Username + " 密码为：" + Passwd, Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(Login.this, MainActivity.class));
                 }
-                finish();
                 break;
             case R.id.signupbtn:
                 break;
