@@ -18,7 +18,7 @@
             android:orientation="vertical">
 
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="55dp"
                 android:background="@color/green">
 
@@ -74,7 +74,7 @@
             </LinearLayout>
 
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="362dp"
                 android:layout_height="200dp">
 
                 <TextView
@@ -100,14 +100,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="     选择事件类型:"
+                android:text="选择事件类型:"
                 android:textColor="#000000"
-                android:textSize="20dp" />
+                android:textSize="18dp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#b6b3b3" />
+
 
             <RadioGroup
                 android:layout_width="match_parent"
@@ -121,7 +122,7 @@
                     android:paddingLeft="5dp"
                     android:text="实时"
                     android:textColor="#000000"
-                    android:textSize="18dp" />
+                    android:textSize="16dp" />
 
                 <RadioButton
                     android:layout_width="130dp"
@@ -130,7 +131,7 @@
                     android:paddingLeft="5dp"
                     android:text="活动预告"
                     android:textColor="#000000"
-                    android:textSize="18dp" />
+                    android:textSize="16dp" />
 
                 <RadioButton
                     android:layout_width="100dp"
@@ -139,9 +140,88 @@
                     android:paddingLeft="5dp"
                     android:text="求救"
                     android:textColor="#000000"
-                    android:textSize="18dp" />
+                    android:textSize="16dp" />
 
             </RadioGroup>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#b6b3b3" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="7dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="开始时间"
+                    android:textColor="#000000"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/sdate_view"
+                    style="@style/block_name" />
+
+                <ImageView
+                    android:id="@+id/startDate"
+                    android:layout_width="30sp"
+                    android:layout_height="30sp"
+                    android:src="@mipmap/date" />
+
+                <TextView
+                    android:id="@+id/stime_view"
+                    style="@style/block_name" />
+
+                <ImageView
+                    android:id="@+id/startTime"
+                    android:layout_width="30sp"
+                    android:layout_height="30sp"
+                    android:src="@mipmap/time" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#b6b3b3" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="7dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="结束时间"
+                    android:textColor="#000000"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/edate_view"
+                    style="@style/block_name" />
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:id="@+id/endDate"
+                    android:layout_width="30sp"
+                    android:layout_height="30sp"
+                    android:visibility="visible"
+                    android:src="@mipmap/date" />
+
+                <TextView
+                    android:id="@+id/etime_view"
+                    style="@style/block_name" />
+
+                <ImageView
+                    android:id="@+id/endTime"
+                    android:layout_width="30sp"
+                    android:layout_height="30sp"
+                    android:src="@mipmap/time" />
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -152,7 +232,7 @@
                 android:id="@+id/exlist_lol"
                 android:layout_width="match_parent"
                 android:layout_height="184dp"
-                android:childDivider="#E02D2F"/>
+                android:childDivider="#E02D2F" />
 
         </LinearLayout>
     </ScrollView>
