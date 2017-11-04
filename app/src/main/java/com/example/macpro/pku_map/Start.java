@@ -40,6 +40,7 @@ public class Start extends Activity {
         if (isShow) {
             initLog();
         } else {
+            PreferenceUtil.setBoolean(this, PreferenceUtil.SHOW_GUIDE, true);
             initView();
         }
     }
