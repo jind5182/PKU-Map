@@ -47,13 +47,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         txt_contract=(TextView)findViewById(R.id.txt_event);
         txt_me=(TextView)findViewById(R.id.txt_me);
         drawable = ContextCompat.getDrawable(mContext, R.drawable.tab_menu_map);
-        drawable.setBounds(0, 0, 100, 100);
+        drawable.setBounds(0, 0, 80, 80);
         txt_chat.setCompoundDrawables(null, drawable, null, null);
         drawable = ContextCompat.getDrawable(mContext, R.drawable.tab_menu_event);
-        drawable.setBounds(0, 0, 100, 100);
+        drawable.setBounds(0, 0, 80, 80);
         txt_contract.setCompoundDrawables(null, drawable, null, null);
         drawable = ContextCompat.getDrawable(mContext, R.drawable.tab_menu_me);
-        drawable.setBounds(0, 0, 100, 100);
+        drawable.setBounds(0, 0, 80, 80);
         txt_me.setCompoundDrawables(null, drawable, null, null);
 
         txt_chat.setOnClickListener(this);

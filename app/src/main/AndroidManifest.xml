@@ -38,7 +38,8 @@
             android:name=".Login"
             android:windowSoftInputMode="stateVisible">
         </activity>
-        <activity android:name=".NewEvent"></activity>
+        <activity android:name=".NewEvent">
+        </activity>
     </application>
 
 </manifest>

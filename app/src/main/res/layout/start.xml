@@ -4,13 +4,19 @@
     android:layout_height="match_parent"
     android:background="@mipmap/startback">
 
-    <ImageButton
-        android:id="@+id/startbtn"
-        android:layout_width="70dp"
-        android:layout_height="60dp"
-        android:src="@mipmap/ic_send_black"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/guide_viewPager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@android:color/transparent" />
+
+    <LinearLayout
+        android:id="@+id/dots"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="80dp"
-        android:layout_centerHorizontal="true"/>
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" >
+    </LinearLayout>
 
 </RelativeLayout>
