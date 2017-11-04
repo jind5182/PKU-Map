@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">PKU_Map</string>
-    <string name="map">地 图</string>
-    <string name="event">事 件</string>
-    <string name="me">用 户</string>
+    <string name="map">地图</string>
+    <string name="event">事件</string>
+    <string name="me">用户</string>
     <string name="later"><b>or sign up later</b></string>
 </resources>
