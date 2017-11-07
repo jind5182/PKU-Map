@@ -21,8 +21,10 @@ public class EventFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.event_content, container, false);
-        TextView txt_content = (TextView) view.findViewById(R.id.txt_content);
-        txt_content.setText(getArguments().getString("content"));
+        TextView event_content = (TextView) view.findViewById(R.id.event_content);
+        TextView event_title = (TextView)view.findViewById(R.id.event_title);
+        event_title.setText(getArguments().getString("title"));
+        event_content.setText(getArguments().getString("content"));
         final ImageView retpic = (ImageView) getActivity().findViewById(R.id.retpic);
         final Button retbtn = (Button) getActivity().findViewById(R.id.retbtn);
         retpic.setVisibility(View.VISIBLE);
