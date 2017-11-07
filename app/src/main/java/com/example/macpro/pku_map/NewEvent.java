@@ -1,18 +1,29 @@
 package com.example.macpro.pku_map;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
+import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -20,18 +31,17 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
+import java.util.LinkedList;
 
 public class NewEvent extends Activity implements View.OnClickListener{
 
-    private ArrayList<Group> gData = null;
-    private ArrayList<ArrayList<Item>> iData = null;
-    private ArrayList<Item> lData = null;
     private Button publishbtn = null;
     private Button neretbtn = null;
     private Context mContext = null;
-    private CustomExpandableListView exlist_lol;
-    private MyBaseExpandableListAdapter myAdapter = null;
+    private Button exlist_lol;
+    private TextView loc = null;
+    private RadioGroup radgroup = null;
+    private LinearLayout stime, etime;
     private int month, day, year, hour, minute;
     private static final int msgKey1 = 1;
     private TimeThread update_thread;
@@ -39,6 +49,10 @@ public class NewEvent extends Activity implements View.OnClickListener{
     private ImageView startDate, startTime, endDate, endTime;
     private TextView sdate_view, stime_view, edate_view, etime_view;
     private String date_time;
+    private AlertDialog alert = null;
+    private AlertDialog.Builder builder = null;
+    private View view_custom;
+
     public class TimeThread extends Thread {
         @Override
         public void run() {
@@ -80,28 +94,7 @@ public class NewEvent extends Activity implements View.OnClickListener{
         bindViews();
 
         mContext = NewEvent.this;
-        gData = new ArrayList<Group>();
-        iData = new ArrayList<ArrayList<Item>>();
-        gData.add(new Group("选择事件地点"));
-
-        lData = new ArrayList<Item>();
-
-        lData.add(new Item("一教"));
-        lData.add(new Item("二教"));
-        lData.add(new Item("三教"));
-        lData.add(new Item("四教"));
-        iData.add(lData);
-
-        myAdapter = new MyBaseExpandableListAdapter(gData, iData, mContext);
-        exlist_lol.setAdapter(myAdapter);
-
-        exlist_lol.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                Toast.makeText(mContext, "你点击了：" + iData.get(groupPosition).get(childPosition).getiName(), Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
+        exlist_lol.setOnClickListener(this);
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -190,11 +183,27 @@ public class NewEvent extends Activity implements View.OnClickListener{
         stime_view = (TextView)findViewById(R.id.stime_view);
         edate_view = (TextView)findViewById(R.id.edate_view);
         etime_view = (TextView)findViewById(R.id.etime_view);
-        exlist_lol = (CustomExpandableListView) findViewById(R.id.exlist_lol);
+        exlist_lol = (Button) findViewById(R.id.exlist_lol);
         publishbtn = (Button) findViewById(R.id.publishbtn);
         neretbtn = (Button) findViewById(R.id.neretbtn);
+        loc = (TextView) findViewById(R.id.loc);
+        radgroup = (RadioGroup) findViewById(R.id.radiogroup);
+        stime = (LinearLayout) findViewById(R.id.stime);
+        etime = (LinearLayout) findViewById(R.id.etime);
+        radgroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int checkedId) {
+                if (checkedId == R.id.btn2) {
+                    stime.setVisibility(View.VISIBLE);
+                }
+                else {
+                    stime.setVisibility(View.GONE);
+                }
+            }
+        });
         publishbtn.setOnClickListener(this);
         neretbtn.setOnClickListener(this);
+        exlist_lol.setOnClickListener(this);
     }
     private void getDate() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -239,10 +248,52 @@ public class NewEvent extends Activity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.publishbtn:
+                alert = null;
+                builder = new AlertDialog.Builder(mContext, R.style.AlertDialog);
+                alert = builder.setMessage("是否确定发布？")
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(mContext, "你点击了取消按钮~", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(mContext, "你点击了确定按钮~", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        }).create();             //创建AlertDialog对象
+                alert.show();                    //显示对话框
                 break;
             case R.id.neretbtn:
                 finish();
                 break;
+            case R.id.exlist_lol:
+                final String[] location = new String[]{"语文", "数学", "英语", "化学", "生物", "物理", "体育","1","2","3","4","5"};
+                alert = null;
+                builder = new AlertDialog.Builder(mContext, R.style.AlertDialog);
+                builder.setCancelable(true);
+                alert = builder.setTitle("地点选择")
+                        .setItems(location, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                loc.setText(location[which]);
+                            }
+                        }).create();
+                alert.show();
+                Window dialogWindow = alert.getWindow();
+                WindowManager m = this.getWindowManager();
+                Display d = m.getDefaultDisplay(); // 获取屏幕宽、高度
+                WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+                Point size = new Point();
+                d.getSize(size);
+                p.height = (int) (size.y * 0.6);
+                p.width = (int) (size.x * 0.8); // 宽度设置为屏幕的0.65，根据实际情况调整
+                dialogWindow.setAttributes(p);
+                break;
+            default:
+                alert.dismiss();
         }
     }
 }

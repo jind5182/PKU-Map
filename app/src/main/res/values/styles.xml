@@ -20,4 +20,14 @@
         <item name="android:textSize">12dp</item>
     </style>
 
+    <style name="AlertDialog" parent="@android:style/Theme.DeviceDefault.Light.Dialog">
+        <!-- 这里设置背景为透明，为了隐藏边框 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 这里是修改顶部标题背景颜色，具体颜色自己定，可以是图片 -->
+        <item name="android:topDark">#FFFFFF</item>
+        <!-- 这里是修改内容区域背景颜色 -->
+        <item name="android:centerDark">#FFFFFF</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+    </style>
 </resources>
