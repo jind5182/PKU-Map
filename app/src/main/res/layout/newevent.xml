@@ -151,7 +151,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#b6b3b3" />
+                android:background="#b6b3b4" />
 
             <LinearLayout
                 android:id="@+id/stime"
