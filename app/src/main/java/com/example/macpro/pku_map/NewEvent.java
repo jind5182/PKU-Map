@@ -78,7 +78,6 @@ public class NewEvent extends Activity implements View.OnClickListener{
                     if(time_flag == true) {
                         getTime();
                         setTime(1);
-                        setTime(2);
                     }
                     break;
 
