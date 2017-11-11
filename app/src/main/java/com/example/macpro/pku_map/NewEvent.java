@@ -261,15 +261,14 @@ public class NewEvent extends Activity implements View.OnClickListener{
                 finish();
                 break;
             case R.id.exlist_lol:
-                final String[] location = new String[]{"语文", "数学", "英语", "化学", "生物", "物理", "体育","1","2","3","4","5"};
                 alert = null;
                 builder = new AlertDialog.Builder(mContext, R.style.AlertDialog);
                 builder.setCancelable(true);
                 alert = builder.setTitle("地点选择")
-                        .setItems(location, new DialogInterface.OnClickListener() {
+                        .setItems(PreferenceUtil.place, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                loc.setText(location[which]);
+                                loc.setText(PreferenceUtil.place[which]);
                             }
                         }).create();
                 alert.show();
