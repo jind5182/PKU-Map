@@ -79,7 +79,7 @@ public class Login extends Activity implements View.OnClickListener {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Toast.makeText(Login.this, "status code is:"+ statusCode+ "connection success!"+response.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(Login.this, "status code is:"+ statusCode+ "connection success!"+response.toString(), Toast.LENGTH_SHORT).show();
                 //Log.e("rs",response.toString());
                 //Toast.makeText(mContext, "connection success!"+response.toString(), Toast.LENGTH_SHORT).show();
                 //System.out.println("response: " + response);
@@ -87,8 +87,8 @@ public class Login extends Activity implements View.OnClickListener {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_SHORT).show();
                 super.onFailure(statusCode, headers, throwable, errorResponse);
+                Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_SHORT).show();
                 //Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_SHORT).show();
             }
         });
