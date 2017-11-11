@@ -55,7 +55,7 @@ public class Login extends Activity implements View.OnClickListener {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
-        String url = "http://120.25.232.47:8001/login/";
+        String url = "http://120.25.232.47:8002/login/";
         //String url = "http://www.baidu.com";
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
