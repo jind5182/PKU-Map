@@ -78,8 +78,8 @@ public class Login extends Activity implements View.OnClickListener {
             //如果成功
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Toast.makeText(Login.this, "status code is:"+ statusCode+ "connection success!"+response.toString(), Toast.LENGTH_LONG).show();
                 super.onSuccess(statusCode, headers, response);
+                Toast.makeText(Login.this, "status code is:"+ statusCode+ "connection success!"+response.toString(), Toast.LENGTH_LONG).show();
                 //Log.e("rs",response.toString());
                 //Toast.makeText(mContext, "connection success!"+response.toString(), Toast.LENGTH_SHORT).show();
                 //System.out.println("response: " + response);
