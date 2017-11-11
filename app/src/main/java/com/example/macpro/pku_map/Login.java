@@ -9,6 +9,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+import org.apache.http.Header;
+
 public class Login extends Activity implements View.OnClickListener {
 
     private Button signinbtn = null;
@@ -16,7 +21,6 @@ public class Login extends Activity implements View.OnClickListener {
     private Button signinlater = null;
     private EditText username = null;
     private EditText passwd = null;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +51,7 @@ public class Login extends Activity implements View.OnClickListener {
                 else {
                     String[] param = {Username, Passwd};
                     TextView displaytxt = (TextView) findViewById(R.id.display_txt);
-                    GetInfo task = new GetInfo();
+                    GetInfo task = new GetInfo(displaytxt);
                     task.loginByAsyncHttpClientPost(param[0], param[1]);
                     Toast.makeText(this, "用户名：" + Username + " 密码为：" + Passwd, Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(Login.this, MainActivity.class));

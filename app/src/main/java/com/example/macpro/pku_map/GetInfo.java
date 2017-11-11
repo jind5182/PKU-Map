@@ -1,6 +1,5 @@
 package com.example.macpro.pku_map;
 
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -17,9 +16,14 @@ import com.loopj.android.http.RequestParams;
 import org.apache.http.Header;
 
 public class GetInfo{
-    private TextView tv_result;
+
+    TextView displayTxt = null;
+    public GetInfo(TextView dt) {
+        displayTxt = dt;
+    }
     //post请求
     protected void loginByAsyncHttpClientPost(String userName, String userPass) {
+
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
@@ -28,18 +32,19 @@ public class GetInfo{
         //请求的参数对象
         RequestParams params = new RequestParams();
         //将参数加入到参数对象中
-        params.put("username",userName);
-        params.put("userpass",userPass);
+        params.put("username", userName);
+        params.put("userpass", userPass);
         //进行post请求
         client.post(url, params, new AsyncHttpResponseHandler() {
             //如果成功
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
                 //i代表状态码
-                if (i == 200){
-                    tv_result.setText(new String(bytes));
+                if (i == 200) {
+                    displayTxt.setText(new String(bytes));
                 }
             }
+
             //如果失败
             @Override
             public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
@@ -69,7 +74,7 @@ public class GetInfo{
                     Header header = headers[ii];
                     Log.d("values","header name:"+header.getName()+" value:"+header.getValue());
                 }
-                tv_result.setText(new String(bytes));
+                displayTxt.setText(new String(bytes));
             }
 
             @Override
