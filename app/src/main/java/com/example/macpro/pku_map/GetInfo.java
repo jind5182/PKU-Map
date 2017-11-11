@@ -1,14 +1,23 @@
 package com.example.macpro.pku_map;
 
 
+import android.app.Activity;
+import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import org.apache.http.Header;
 
 public class GetInfo{
-
+    private TextView tv_result;
     //post请求
     protected void loginByAsyncHttpClientPost(String userName, String userPass) {
         //创建异步请求对象
