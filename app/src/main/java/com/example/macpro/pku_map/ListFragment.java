@@ -41,6 +41,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         FragmentTransaction fTransaction = fManager.beginTransaction();
         EventFragment ncFragment = new EventFragment();
         Bundle bd = new Bundle();
+        bd.putString("title", datas.get(position).getNew_title());
         bd.putString("content", datas.get(position).getNew_content());
         ncFragment.setArguments(bd);
         fTransaction.replace(R.id.fl_content, ncFragment);

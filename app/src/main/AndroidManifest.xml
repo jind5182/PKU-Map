@@ -25,24 +25,20 @@
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="Nc13Q0Tx4LMnr5McPKfoDGYocMXOg4Wd" />
-        <activity android:name=".Start"
-            android:alwaysRetainTaskState="true">
+            android:value="ErxOO8HKko9GT12S9nH5c4lFz1xzsRPx" />
+        <activity android:name=".Start">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
-        </activity>
+        <activity android:name=".MainActivity"></activity>
         <activity
             android:name=".Login"
             android:windowSoftInputMode="stateVisible">
         </activity>
-        <activity android:name=".NewEvent">
-        </activity>
-        <activity android:name=".Signup">
-        </activity>
+        <activity android:name=".NewEvent"></activity>
     </application>
 
 </manifest>

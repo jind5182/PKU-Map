@@ -47,8 +47,8 @@ public class Login extends Activity implements View.OnClickListener {
                 else {
                     String[] param = {Username, Passwd};
                     TextView displaytxt = (TextView) findViewById(R.id.display_txt);
-                    GetInfoTask task = new GetInfoTask(displaytxt);
-                    task.execute(param);
+                    GetInfo task = new GetInfo();
+                    task.loginByAsyncHttpClientPost(param[0], param[1]);
                     Toast.makeText(this, "用户名：" + Username + " 密码为：" + Passwd, Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(Login.this, MainActivity.class));
                     finish();

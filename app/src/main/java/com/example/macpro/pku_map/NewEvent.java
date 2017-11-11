@@ -78,7 +78,6 @@ public class NewEvent extends Activity implements View.OnClickListener{
                     if(time_flag == true) {
                         getTime();
                         setTime(1);
-                        setTime(2);
                     }
                     break;
 
@@ -164,7 +163,16 @@ public class NewEvent extends Activity implements View.OnClickListener{
             }
         });
     }
-
+    public void onStart(){
+        super.onStart();
+        getDate();
+        getTime();
+        setDate(1);
+        setTime(1);
+        time_flag = true;
+        update_thread = new TimeThread();
+        update_thread.start();
+    }
     private void bindViews() {
         startDate = (ImageView)findViewById(R.id.startDate);
         startTime = (ImageView) findViewById(R.id.startTime);
