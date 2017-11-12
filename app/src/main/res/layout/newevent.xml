@@ -62,15 +62,17 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
                     android:text="标题:"
-                    android:textColor="#000000"
+                    android:textColor="#2e2e2e"
                     android:textSize="20dp" />
 
                 <EditText
+                    android:id="@+id/header"
                     android:layout_width="260dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:textColor="#000000"/>
             </LinearLayout>
 
             <RelativeLayout
@@ -85,6 +87,7 @@
                     android:textSize="20dp" />
 
                 <EditText
+                    android:id="@+id/content"
                     android:layout_width="350dp"
                     android:layout_height="150dp"
                     android:layout_centerInParent="true"

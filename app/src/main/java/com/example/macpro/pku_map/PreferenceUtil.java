@@ -31,6 +31,13 @@ public class PreferenceUtil {
             39.997601, 39.998038, 39.997768, 40.00074, 40.000053, 39.999917
     };
 
+    public static int getPlace(String p) {
+        for (int i = 0; i < place.length; i++) {
+            if (place[i] == p)
+                return i;
+        }
+        return -1;
+    }
     /**
      * 保存到Preference
      */

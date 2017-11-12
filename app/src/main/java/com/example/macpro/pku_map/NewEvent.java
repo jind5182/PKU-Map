@@ -19,6 +19,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -41,6 +42,7 @@ public class NewEvent extends Activity implements View.OnClickListener{
     private Button exlist_lol;
     private TextView loc = null;
     private RadioGroup radgroup = null;
+    private RadioButton btn1 = null;
     private LinearLayout stime, etime;
     private int month, day, year, hour, minute;
     private static final int msgKey1 = 1;
@@ -51,7 +53,7 @@ public class NewEvent extends Activity implements View.OnClickListener{
     private String date_time;
     private AlertDialog alert = null;
     private AlertDialog.Builder builder = null;
-    private View view_custom;
+    private EditText header, content;
 
     public class TimeThread extends Thread {
         @Override
@@ -187,6 +189,8 @@ public class NewEvent extends Activity implements View.OnClickListener{
         neretbtn = (Button) findViewById(R.id.neretbtn);
         loc = (TextView) findViewById(R.id.loc);
         radgroup = (RadioGroup) findViewById(R.id.radiogroup);
+        btn1 = (RadioButton) findViewById(R.id.btn1);
+        btn1.setChecked(true);
         stime = (LinearLayout) findViewById(R.id.stime);
         etime = (LinearLayout) findViewById(R.id.etime);
         radgroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -200,6 +204,8 @@ public class NewEvent extends Activity implements View.OnClickListener{
                 }
             }
         });
+        header = (EditText) findViewById(R.id.header);
+        content = (EditText) findViewById(R.id.content);
         publishbtn.setOnClickListener(this);
         neretbtn.setOnClickListener(this);
         exlist_lol.setOnClickListener(this);
@@ -259,8 +265,41 @@ public class NewEvent extends Activity implements View.OnClickListener{
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(mContext, "你点击了确定按钮~", Toast.LENGTH_SHORT).show();
-                                finish();
+                                if (header.getText().toString().equals("")) {
+                                    Toast.makeText(mContext, "标题不能为空", Toast.LENGTH_SHORT).show();
+                                    alert.dismiss();
+                                }
+                                else if (content.getText().toString().equals("")) {
+                                    Toast.makeText(mContext, "事件内容不能为空", Toast.LENGTH_SHORT).show();
+                                    alert.dismiss();
+                                }
+                                else if (edate_view.getText().toString().equals("") || etime_view.getText().toString().equals("")) {
+                                    Toast.makeText(mContext, "请选择时间", Toast.LENGTH_SHORT).show();
+                                    alert.dismiss();
+                                }
+                                else if (loc.getText().toString().equals("")) {
+                                    Toast.makeText(mContext, "请选择地点", Toast.LENGTH_SHORT).show();
+                                    alert.dismiss();
+                                }
+                                else {
+                                    Event event = new Event();
+                                    event.setEventID(1);
+                                    event.setTitle(header.getText().toString());
+                                    event.setLocation(PreferenceUtil.getPlace(loc.getText().toString()));
+                                    event.setBeginTime(sdate_view.getText().toString(), stime_view.getText().toString());
+                                    event.setEndTime(edate_view.getText().toString(), etime_view.getText().toString());
+                                    event.setType(((RadioButton)findViewById(radgroup.getCheckedRadioButtonId())).getText().toString());
+                                    event.setDescription(content.getText().toString());
+                                    event.setOutdate(false);
+                                    if (event.Post(mContext)) {
+                                        Toast.makeText(mContext, "发布成功", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    }
+                                    else {
+                                        Toast.makeText(mContext, "发布失败", Toast.LENGTH_SHORT).show();
+                                        alert.dismiss();
+                                    }
+                                }
                             }
                         }).create();             //创建AlertDialog对象
                 alert.show();                    //显示对话框
