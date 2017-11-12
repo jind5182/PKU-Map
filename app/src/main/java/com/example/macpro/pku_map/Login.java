@@ -79,8 +79,18 @@ public class Login extends Activity implements View.OnClickListener {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Toast.makeText(mContext, "status code is:"+ statusCode+ "connection success!"+response.toString(), Toast.LENGTH_LONG).show();
-                Log.e("rs",response.toString());
+                try {
+                    int status = response.getInt("loginStatus");
+                    if (status == 1) {
+                        Toast.makeText(mContext, "status code is:"+ statusCode+ "\nlogin failed!\n", Toast.LENGTH_LONG).show();
+                    }
+                    else if(status == 0) {
+                        Toast.makeText(mContext, "status code is:"+ statusCode+ "\nlogin success!\n"+response.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                //Log.e("rs",response.toString());
                 //Toast.makeText(mContext, "connection success!"+response.toString(), Toast.LENGTH_SHORT).show();
                 //System.out.println("response: " + response);
             }
@@ -88,7 +98,7 @@ public class Login extends Activity implements View.OnClickListener {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
-                Toast.makeText(Login.this, "connection error!Error number is:" + statusCode,  Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_LONG).show();
                 //Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_SHORT).show();
             }
         });
