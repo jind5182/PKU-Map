@@ -60,8 +60,8 @@ public class Login extends Activity implements View.OnClickListener {
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("username",userName);
-            jsonObject.put("password",userPass);
+            jsonObject.put("userName",userName);
+            jsonObject.put("pwd",userPass);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -79,8 +79,8 @@ public class Login extends Activity implements View.OnClickListener {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Toast.makeText(Login.this, "status code is:"+ statusCode+ "connection success!"+response.toString(), Toast.LENGTH_SHORT).show();
-                //Log.e("rs",response.toString());
+                Toast.makeText(mContext, "status code is:"+ statusCode+ "connection success!"+response.toString(), Toast.LENGTH_LONG).show();
+                Log.e("rs",response.toString());
                 //Toast.makeText(mContext, "connection success!"+response.toString(), Toast.LENGTH_SHORT).show();
                 //System.out.println("response: " + response);
             }
@@ -88,7 +88,7 @@ public class Login extends Activity implements View.OnClickListener {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
-                Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_SHORT).show();
+                Toast.makeText(Login.this, "connection error!Error number is:" + statusCode,  Toast.LENGTH_LONG).show();
                 //Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_SHORT).show();
             }
         });
