@@ -25,7 +25,6 @@ public class Event {
     public String type;
     public String description;
     public boolean outdate;
-    private Context mContext;
 
     public void setEventID(int eventID) {
         this.eventID = eventID;
@@ -56,13 +55,7 @@ public class Event {
         this.outdate = outdate;
     }
 
-    public Boolean Post(Context mContext) {
-        this.mContext = mContext;
-        eventByAsyncHttpClientPost();
-        return true;
-    }
-
-    private void eventByAsyncHttpClientPost() {
+    public void eventByAsyncHttpClientPost(final Context mContext) {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
@@ -102,7 +95,7 @@ public class Event {
                 super.onSuccess(statusCode, headers, response);
                 //Toast.makeText(mContext, "status code is:"+ statusCode+ "connection success!"+response.toString(), Toast.LENGTH_SHORT).show();
                 //Log.e("rs",response.toString());
-                //Toast.makeText(mContext, "connection success!"+response.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "connection success!"+response.toString(), Toast.LENGTH_SHORT).show();
                 //System.out.println("response: " + response);
             }
 
@@ -110,7 +103,7 @@ public class Event {
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
                 //Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_SHORT).show();
-                //Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "connection error!Error number is:" + statusCode, Toast.LENGTH_SHORT).show();
             }
         });
         return;

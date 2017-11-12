@@ -29,6 +29,17 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.apache.http.Header;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.protocol.HTTP;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -269,8 +280,16 @@ public class NewEvent extends Activity implements View.OnClickListener{
                                     Toast.makeText(mContext, "标题不能为空", Toast.LENGTH_SHORT).show();
                                     alert.dismiss();
                                 }
+                                else if (header.getText().toString().length() > 20) {
+                                    Toast.makeText(mContext, "标题不能超过20个字", Toast.LENGTH_SHORT).show();
+                                    alert.dismiss();
+                                }
                                 else if (content.getText().toString().equals("")) {
                                     Toast.makeText(mContext, "事件内容不能为空", Toast.LENGTH_SHORT).show();
+                                    alert.dismiss();
+                                }
+                                else if (content.getText().toString().length() > 100) {
+                                    Toast.makeText(mContext, "事件内容不能超过100个字", Toast.LENGTH_SHORT).show();
                                     alert.dismiss();
                                 }
                                 else if (edate_view.getText().toString().equals("") || etime_view.getText().toString().equals("")) {
@@ -291,14 +310,7 @@ public class NewEvent extends Activity implements View.OnClickListener{
                                     event.setType(((RadioButton)findViewById(radgroup.getCheckedRadioButtonId())).getText().toString());
                                     event.setDescription(content.getText().toString());
                                     event.setOutdate(false);
-                                    if (event.Post(mContext)) {
-                                        Toast.makeText(mContext, "发布成功", Toast.LENGTH_SHORT).show();
-                                        finish();
-                                    }
-                                    else {
-                                        Toast.makeText(mContext, "发布失败", Toast.LENGTH_SHORT).show();
-                                        alert.dismiss();
-                                    }
+                                    eventByAsyncHttpClientPost(event);
                                 }
                             }
                         }).create();             //创建AlertDialog对象
@@ -332,5 +344,58 @@ public class NewEvent extends Activity implements View.OnClickListener{
             default:
                 alert.dismiss();
         }
+    }
+    public void eventByAsyncHttpClientPost(Event event) {
+        //创建异步请求对象
+        AsyncHttpClient client = new AsyncHttpClient();
+        //输入要请求的url
+        String url = "http://120.25.232.47:8002/login/";
+        //String url = "http://www.baidu.com";
+        //请求的参数对象
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("eventID", event.eventID);
+            jsonObject.put("title", event.title);
+            jsonObject.put("locationID", event.locationID);
+            jsonObject.put("locationX", event.locationX);
+            jsonObject.put("locationY", event.locationY);
+            jsonObject.put("beginDate", event.beginDate);
+            jsonObject.put("beginTime", event.beginTime);
+            jsonObject.put("endDate", event.endDate);
+            jsonObject.put("endTime", event.endTime);
+            jsonObject.put("type", event.type);
+            jsonObject.put("description", event.description);
+            jsonObject.put("outdate", event.outdate);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        //将参数加入到参数对象中
+        ByteArrayEntity entity = null;
+        try {
+            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        //进行post请求
+        client.post(mContext, url, entity, "application/json", new JsonHttpResponseHandler() {
+            //如果成功
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                //Toast.makeText(mContext, "status code is:"+ statusCode+ "connection success!"+response.toString(), Toast.LENGTH_SHORT).show();
+                //Log.e("rs",response.toString());
+                Toast.makeText(mContext, "123", Toast.LENGTH_SHORT).show();
+                //System.out.println("response: " + response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                //Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "connection error!Error number is:" + statusCode, Toast.LENGTH_SHORT).show();
+            }
+        });
+        return;
     }
 }
