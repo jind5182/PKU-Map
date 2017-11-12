@@ -1,6 +1,7 @@
 package com.example.macpro.pku_map;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,17 @@ import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.*;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.model.LatLngBounds;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.apache.http.Header;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.protocol.HTTP;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 
 public class MyFragment1 extends Fragment implements View.OnClickListener {
 
@@ -29,7 +41,9 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
     private AlertDialog alert = null;
     private AlertDialog.Builder builder = null;
     private Marker marker;
+    private Event[] events = new Event[100];
     private int count = 0;
+    private int type;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -88,7 +102,10 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
         view_custom.findViewById(R.id.cat3btn).setOnClickListener(this);
         return view;
     }
-
+    public void onStart(){
+        super.onStart();
+        getEventByTypeAsyncHttpClientPost(1);
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -129,5 +146,44 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
     public void onPause(){
         super.onPause();
         map.onPause();
+    }
+    private void getEventByTypeAsyncHttpClientPost(int type) {
+        //创建异步请求对象
+        AsyncHttpClient client = new AsyncHttpClient();
+        //输入要请求的url
+        String url = "http://120.25.232.47:8002/getEventByType/";
+        //String url = "http://www.baidu.com";
+        //请求的参数对象
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("type",0);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        //将参数加入到参数对象中
+        ByteArrayEntity entity = null;
+        try {
+            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        //进行post请求
+        client.post(mContext, url, entity, "application/json", new JsonHttpResponseHandler() {
+            //如果成功
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                Toast.makeText(mContext, response.toString(), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_LONG).show();
+            }
+        });
+        return;
+
     }
 }
