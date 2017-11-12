@@ -6,6 +6,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
@@ -349,19 +350,20 @@ public class NewEvent extends Activity implements View.OnClickListener{
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
-        String url = "http://120.25.232.47:8002/login/";
+        String url = "http://120.25.232.47:8002/postEvent/";
         //String url = "http://www.baidu.com";
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
         try {
+            jsonObject.put("publisherID", 1);
             jsonObject.put("eventID", event.eventID);
             jsonObject.put("title", event.title);
             jsonObject.put("locationID", event.locationID);
             jsonObject.put("locationX", event.locationX);
             jsonObject.put("locationY", event.locationY);
-            jsonObject.put("beginDate", event.beginDate);
+            //jsonObject.put("beginDate", event.beginDate);
             jsonObject.put("beginTime", event.beginTime);
-            jsonObject.put("endDate", event.endDate);
+            //jsonObject.put("endDate", event.endDate);
             jsonObject.put("endTime", event.endTime);
             jsonObject.put("type", event.type);
             jsonObject.put("description", event.description);
@@ -385,6 +387,7 @@ public class NewEvent extends Activity implements View.OnClickListener{
                 super.onSuccess(statusCode, headers, response);
                 //Toast.makeText(mContext, "status code is:"+ statusCode+ "connection success!"+response.toString(), Toast.LENGTH_SHORT).show();
                 //Log.e("rs",response.toString());
+
                 Toast.makeText(mContext, "123", Toast.LENGTH_SHORT).show();
                 //System.out.println("response: " + response);
             }
