@@ -282,7 +282,7 @@ public class NewEvent extends Activity implements View.OnClickListener{
                                     alert.dismiss();
                                 }
                                 else {
-                                    Event event = null;
+                                    Event event = new Event();
                                     event.setEventID(1);
                                     event.setTitle(header.getText().toString());
                                     event.setLocation(PreferenceUtil.getPlace(loc.getText().toString()));
