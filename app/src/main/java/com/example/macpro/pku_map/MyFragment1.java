@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.baidu.mapapi.SDKInitializer;
@@ -120,6 +121,19 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
                 p.width = (int) (size.x * 0.8); // 宽度设置为屏幕的0.65，根据实际情况调整
                 dialogWindow.setAttributes(p);
                 break;
+            case R.id.cat1btn:
+                Toast.makeText(mContext, "切换为实时", Toast.LENGTH_SHORT).show();
+                alert.dismiss();
+                PreferenceUtil.maptype = 0;
+                break;
+            case R.id.cat2btn:
+                Toast.makeText(mContext, "切换为活动", Toast.LENGTH_SHORT).show();
+                alert.dismiss();
+                PreferenceUtil.maptype = 1;
+            case R.id.cat3btn:
+                Toast.makeText(mContext, "切换为帮忙", Toast.LENGTH_SHORT).show();
+                alert.dismiss();
+                PreferenceUtil.maptype = 2;
             default:
                 alert.dismiss();
         }

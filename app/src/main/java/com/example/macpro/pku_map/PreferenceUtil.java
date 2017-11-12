@@ -8,6 +8,8 @@ public class PreferenceUtil {
     /**
      * 是否显示欢迎界面,true表示显示，false表示不显示
      */
+    public static int maptype = 0;
+    public static Boolean islogged = false;
     public static final String SHOW_GUIDE = "showguide";
     public static final String[] place = {"第一教学楼", "第二教学楼", "第三教学楼",
             "第四教学楼", "理科教学楼", "光华管理学院", "新闻与传播学院", "化学学院",
