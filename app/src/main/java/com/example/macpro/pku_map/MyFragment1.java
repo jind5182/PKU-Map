@@ -27,6 +27,7 @@ import org.apache.http.Header;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,10 +43,11 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
     private AlertDialog alert = null;
     private AlertDialog.Builder builder = null;
     private Marker marker;
-    private Event[] events = new Event[100];
+    private Event[] eventList = new Event[100];
     private int count = 0;
     private int type;
-
+    private BitmapDescriptor bitmap = BitmapDescriptorFactory
+            .fromResource(R.mipmap.icon_gcoding);
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fg_content1, container, false);
@@ -67,12 +69,10 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
         bdmap.setOnMapLongClickListener(new BaiduMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
-                Toast.makeText(mContext, latLng.toString(), Toast.LENGTH_LONG).show();
+                /*Toast.makeText(mContext, latLng.toString(), Toast.LENGTH_LONG).show();
                 //定义Maker坐标点
                 LatLng point = latLng;
                 //构建Marker图标
-                BitmapDescriptor bitmap = BitmapDescriptorFactory
-                        .fromResource(R.mipmap.icon_gcoding);
                 Bundle bundle = new Bundle();
                 bundle.putInt("id", count++);
                 //构建MarkerOption，用于在地图上添加Marker
@@ -81,7 +81,8 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
                         .icon(bitmap)
                         .extraInfo(bundle);
                 //在地图上添加Marker，并显示
-                marker = (Marker) bdmap.addOverlay(option);
+                marker = (Marker) bdmap.addOverlay(option);*/
+                bdmap.clear();
             }
         });
         bdmap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
@@ -105,7 +106,8 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
     }
     public void onStart(){
         super.onStart();
-        getEventByTypeAsyncHttpClientPost(1);
+        type = PreferenceUtil.maptype;
+        getEventByTypeAsyncHttpClientPost(type);
     }
     @Override
     public void onClick(View v) {
@@ -188,7 +190,42 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Toast.makeText(mContext, response.toString(), Toast.LENGTH_LONG).show();
+                try {
+                    int status = response.getInt("getStatus");
+                    if (status == 1) {
+                        Toast.makeText(mContext, "status code is:"+ statusCode+ "\nget failed!\n", Toast.LENGTH_LONG).show();
+                    }
+                    else if(status == 0) {
+                        //Toast.makeText(mContext, response.toString(), Toast.LENGTH_LONG).show();
+                        int count = response.getInt("eventNum");
+                        JSONArray events = response.getJSONArray("events");
+                        Toast.makeText(mContext, events.toString(), Toast.LENGTH_LONG).show();
+                        for (int i = 0; i < count; i++)
+                        {
+                            JSONObject temp = events.getJSONObject(0);
+                            eventList[i].setEventID(temp.getInt("eventID"));
+                            eventList[i].setBeginTime(temp.getString("beginTime"));
+                            eventList[i].setDescription(temp.getString("description"));
+                            eventList[i].setEndTime(temp.getString("endTime"));
+                            eventList[i].setLocation(temp.getInt("locationID"));
+                            eventList[i].setOutdate(temp.getBoolean("outdate"));
+                            eventList[i].type = (temp.getInt("type"));
+                            eventList[i].setPublisherID(temp.getInt("publisherID"));
+                            eventList[i].setTitle("title");
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("eventID", eventList[i].eventID);
+                            LatLng point = new LatLng(eventList[i].locationY, eventList[i].locationX);
+                            OverlayOptions option = new MarkerOptions()
+                                    .position(point)
+                                    .icon(bitmap)
+                                    .extraInfo(bundle);
+                            //在地图上添加Marker，并显示
+                            marker = (Marker) bdmap.addOverlay(option);
+                        }
+                    }
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override

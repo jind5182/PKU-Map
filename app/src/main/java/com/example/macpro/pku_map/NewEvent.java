@@ -306,8 +306,8 @@ public class NewEvent extends Activity implements View.OnClickListener{
                                     event.setEventID(1);
                                     event.setTitle(header.getText().toString());
                                     event.setLocation(PreferenceUtil.getPlace(loc.getText().toString()));
-                                    event.setBeginTime(sdate_view.getText().toString(), stime_view.getText().toString());
-                                    event.setEndTime(edate_view.getText().toString(), etime_view.getText().toString());
+                                    //event.setBeginTime(sdate_view.getText().toString(), stime_view.getText().toString());
+                                    //event.setEndTime(edate_view.getText().toString(), etime_view.getText().toString());
                                     event.setType(((RadioButton)findViewById(radgroup.getCheckedRadioButtonId())).getText().toString());
                                     event.setDescription(content.getText().toString());
                                     event.setOutdate(false);
@@ -355,7 +355,6 @@ public class NewEvent extends Activity implements View.OnClickListener{
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("publisherID", 1);
             jsonObject.put("eventID", event.eventID);
             jsonObject.put("title", event.title);
             jsonObject.put("locationID", event.locationID);
@@ -366,6 +365,7 @@ public class NewEvent extends Activity implements View.OnClickListener{
             //jsonObject.put("endDate", event.endDate);
             jsonObject.put("endTime", event.endTime);
             jsonObject.put("type", event.type);
+            jsonObject.put("publisherID", 1);
             jsonObject.put("description", event.description);
             jsonObject.put("outdate", event.outdate);
         } catch (JSONException e) {

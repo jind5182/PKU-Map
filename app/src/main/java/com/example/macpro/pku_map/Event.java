@@ -18,6 +18,7 @@ import java.io.UnsupportedEncodingException;
 public class Event {
 
     public int eventID;
+    public int publisherID;
     public String title;
     public int locationID;
     public double locationX, locationY;
@@ -30,6 +31,9 @@ public class Event {
     public void setEventID(int eventID) {
         this.eventID = eventID;
     }
+    public void setPublisherID(int publisherID){
+        this.publisherID = publisherID;
+    }
     public void setTitle(String title) {
         this.title = title;
     }
@@ -38,14 +42,20 @@ public class Event {
         this.locationX = PreferenceUtil.coordinateX[index];
         this.locationY = PreferenceUtil.coordinateY[index];
     }
-    public void setBeginTime(String beginDate, String beginTime) {
+    /*public void setBeginTime(String beginDate, String beginTime) {
         this.beginDate = beginDate;
         this.beginTime = beginTime;
+    }*/
+    public void setBeginTime(String beginTime){
+        this.beginTime = beginTime;
     }
-    public void setEndTime(String endDate, String endTime) {
+    public void setEndTime(String endTime){
+        this.beginTime = endTime;
+    }
+    /*public void setEndTime(String endDate, String endTime) {
         this.endDate = endDate;
         this.endTime = endTime;
-    }
+    }*/
     public void setType(String type) {
         switch (type) {
             case "实时":
