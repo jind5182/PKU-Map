@@ -303,14 +303,15 @@ public class NewEvent extends Activity implements View.OnClickListener{
                                 }
                                 else {
                                     Event event = new Event();
-                                    event.setEventID(1);
                                     event.setTitle(header.getText().toString());
                                     event.setLocation(PreferenceUtil.getPlace(loc.getText().toString()));
                                     //event.setBeginTime(sdate_view.getText().toString(), stime_view.getText().toString());
                                     //event.setEndTime(edate_view.getText().toString(), etime_view.getText().toString());
+                                    event.setBeginTime(stime_view.getText().toString());
+                                    event.setEndTime(etime_view.getText().toString());
                                     event.setType(((RadioButton)findViewById(radgroup.getCheckedRadioButtonId())).getText().toString());
                                     event.setDescription(content.getText().toString());
-                                    event.setOutdate(false);
+                                    event.setOutdate(0);
                                     eventByAsyncHttpClientPost(event);
                                 }
                             }

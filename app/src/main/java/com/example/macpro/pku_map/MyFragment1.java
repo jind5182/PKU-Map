@@ -202,13 +202,14 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
                         Toast.makeText(mContext, events.toString(), Toast.LENGTH_LONG).show();
                         for (int i = 0; i < count; i++)
                         {
-                            JSONObject temp = events.getJSONObject(0);
+                            JSONObject temp = events.getJSONObject(i);
+                            eventList[i] = new Event();
                             eventList[i].setEventID(temp.getInt("eventID"));
-                            eventList[i].setBeginTime(temp.getString("beginTime"));
+                            //eventList[i].setBeginTime(temp.getString("beginTime"));
                             eventList[i].setDescription(temp.getString("description"));
-                            eventList[i].setEndTime(temp.getString("endTime"));
+                            //eventList[i].setEndTime(temp.getString("endTime"));
                             eventList[i].setLocation(temp.getInt("locationID"));
-                            eventList[i].setOutdate(temp.getBoolean("outdate"));
+                            eventList[i].setOutdate(temp.getInt("outdate"));
                             eventList[i].type = (temp.getInt("type"));
                             eventList[i].setPublisherID(temp.getInt("publisherID"));
                             eventList[i].setTitle("title");

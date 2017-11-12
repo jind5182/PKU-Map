@@ -25,7 +25,7 @@ public class Event {
     public String beginDate, beginTime, endDate, endTime;
     public int type;
     public String description;
-    public boolean outdate;
+    public int outdate;
     private Context mContext = null;
 
     public void setEventID(int eventID) {
@@ -50,7 +50,7 @@ public class Event {
         this.beginTime = beginTime;
     }
     public void setEndTime(String endTime){
-        this.beginTime = endTime;
+        this.endTime = endTime;
     }
     /*public void setEndTime(String endDate, String endTime) {
         this.endDate = endDate;
@@ -72,7 +72,7 @@ public class Event {
     public void setDescription(String description) {
         this.description = description;
     }
-    public void setOutdate(boolean outdate) {
+    public void setOutdate(int outdate) {
         this.outdate = outdate;
     }
 }
