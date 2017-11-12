@@ -86,6 +86,8 @@ public class Login extends Activity implements View.OnClickListener {
                     }
                     else if(status == 0) {
                         Toast.makeText(mContext, "status code is:"+ statusCode+ "\nlogin success!\n"+response.toString(), Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(Login.this, MainActivity.class));
+                        finish();
                     }
                 }catch (JSONException e) {
                     e.printStackTrace();
@@ -120,8 +122,6 @@ public class Login extends Activity implements View.OnClickListener {
                     TextView displaytxt = (TextView) findViewById(R.id.display_txt);
                     loginByAsyncHttpClientPost(param[0], param[1]);
                     Toast.makeText(this, "用户名：" + Username + " 密码为：" + Passwd, Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(Login.this, MainActivity.class));
-                    finish();
                 }
                 break;
             case R.id.signupbtn:
