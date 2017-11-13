@@ -231,7 +231,7 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
                 try {
                     int status = response.getInt("getStatus");
                     if (status == 1) {
-                        Toast.makeText(mContext, "status code is:"+ statusCode+ "\nget failed!\n", Toast.LENGTH_LONG).show();
+                        Toast.makeText(mContext, "status code is:"+ statusCode+ "\n更新失败!\n", Toast.LENGTH_LONG).show();
                     }
                     else if(status == 0) {
                         //Toast.makeText(mContext, response.toString(), Toast.LENGTH_LONG).show();
