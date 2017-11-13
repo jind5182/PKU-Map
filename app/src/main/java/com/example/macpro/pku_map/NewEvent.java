@@ -313,6 +313,7 @@ public class NewEvent extends Activity implements View.OnClickListener{
                                     event.setDescription(content.getText().toString());
                                     event.setOutdate(0);
                                     eventByAsyncHttpClientPost(event);
+                                    finish();
                                 }
                             }
                         }).create();             //创建AlertDialog对象
@@ -389,7 +390,7 @@ public class NewEvent extends Activity implements View.OnClickListener{
                 //Toast.makeText(mContext, "status code is:"+ statusCode+ "connection success!"+response.toString(), Toast.LENGTH_SHORT).show();
                 //Log.e("rs",response.toString());
 
-                Toast.makeText(mContext, "123", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "发布成功", Toast.LENGTH_SHORT).show();
                 //System.out.println("response: " + response);
             }
 
@@ -397,7 +398,7 @@ public class NewEvent extends Activity implements View.OnClickListener{
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
                 //Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_SHORT).show();
-                Toast.makeText(mContext, "connection error!Error number is:" + statusCode, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "发布失败", Toast.LENGTH_SHORT).show();
             }
         });
         return;
