@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.Display;
@@ -48,6 +50,40 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
     private int type;
     private BitmapDescriptor bitmap = BitmapDescriptorFactory
             .fromResource(R.mipmap.icon_gcoding);
+    private static final int msgKey1 = 1;
+    private MyFragment1.TimeThread update_thread;
+
+    public class TimeThread extends Thread {
+        @Override
+        public void run() {
+            do {
+                try {
+                    Thread.sleep(5000);
+                    Message msg = new Message();
+                    msg.what = msgKey1;
+                    mHandler.sendMessage(msg);
+                }
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } while(true);
+        }
+    }
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage (Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case msgKey1:
+                    getEventByTypeAsyncHttpClientPost(type);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fg_content1, container, false);
@@ -88,7 +124,7 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
         bdmap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                Toast.makeText(mContext, marker.getExtraInfo().get("id").toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, marker.getExtraInfo().get("EventID").toString(), Toast.LENGTH_LONG).show();
                 return false;
             }
         });
@@ -108,6 +144,8 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
         super.onStart();
         type = PreferenceUtil.maptype;
         getEventByTypeAsyncHttpClientPost(type);
+        update_thread = new MyFragment1.TimeThread();
+        update_thread.start();
     }
     @Override
     public void onClick(View v) {
@@ -199,7 +237,7 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
                         //Toast.makeText(mContext, response.toString(), Toast.LENGTH_LONG).show();
                         int count = response.getInt("eventNum");
                         JSONArray events = response.getJSONArray("events");
-                        Toast.makeText(mContext, events.toString(), Toast.LENGTH_LONG).show();
+                        //Toast.makeText(mContext, events.toString(), Toast.LENGTH_LONG).show();
                         for (int i = 0; i < count; i++)
                         {
                             JSONObject temp = events.getJSONObject(i);
