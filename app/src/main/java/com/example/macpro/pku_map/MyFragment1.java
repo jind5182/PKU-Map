@@ -45,7 +45,7 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
     private AlertDialog alert = null;
     private AlertDialog.Builder builder = null;
     private Marker marker;
-    private Event[] eventList = new Event[100];
+    private Event[] eventList = new Event[1000];
     private int count = 0;
     private int type;
     private BitmapDescriptor bitmap = BitmapDescriptorFactory
