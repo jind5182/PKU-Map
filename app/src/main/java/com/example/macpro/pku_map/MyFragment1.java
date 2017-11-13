@@ -124,7 +124,7 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
         bdmap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                Toast.makeText(mContext, marker.getExtraInfo().get("EventID").toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, marker.getExtraInfo().get("index").toString(), Toast.LENGTH_LONG).show();
                 return false;
             }
         });
@@ -252,7 +252,7 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
                             eventList[i].setPublisherID(temp.getInt("publisherID"));
                             eventList[i].setTitle("title");
                             Bundle bundle = new Bundle();
-                            bundle.putInt("eventID", eventList[i].eventID);
+                            bundle.putInt("index", i);
                             LatLng point = new LatLng(eventList[i].locationY, eventList[i].locationX);
                             OverlayOptions option = new MarkerOptions()
                                     .position(point)
