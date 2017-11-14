@@ -205,9 +205,9 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
     public void onStart(){
         super.onStart();
         type = PreferenceUtil.maptype;
-        //getEventByTypeAsyncHttpClientPost(type);
-        //update_thread = new MyFragment1.TimeThread();
-        //update_thread.start();
+        getEventByTypeAsyncHttpClientPost(type);
+        update_thread = new MyFragment1.TimeThread();
+        update_thread.start();
     }
     @Override
     public void onClick(View v) {
