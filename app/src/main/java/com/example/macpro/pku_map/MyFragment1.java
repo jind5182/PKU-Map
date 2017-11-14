@@ -2,6 +2,7 @@ package com.example.macpro.pku_map;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,11 +17,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.*;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.map.InfoWindow.*;
 import com.baidu.mapapi.model.LatLngBounds;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -52,6 +55,8 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
             .fromResource(R.mipmap.icon_gcoding);
     private static final int msgKey1 = 1;
     private MyFragment1.TimeThread update_thread;
+    private InfoWindow addWindow;
+    private InfoWindow eventWindow;
 
     public class TimeThread extends Thread {
         @Override
@@ -85,7 +90,7 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
     };
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fg_content1, container, false);
         mContext = getActivity();
         map = (MapView) view.findViewById(R.id.bdmap);
@@ -94,10 +99,12 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
         bdmap.setOnMapClickListener(new BaiduMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
+                bdmap.hideInfoWindow();
             }
 
             @Override
             public boolean onMapPoiClick(MapPoi mapPoi) {
+                bdmap.hideInfoWindow();
                 Toast.makeText(mContext, "请到详情页选择地点！", Toast.LENGTH_LONG).show();
                 return false;
             }
@@ -105,26 +112,55 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
         bdmap.setOnMapLongClickListener(new BaiduMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
-                /*Toast.makeText(mContext, latLng.toString(), Toast.LENGTH_LONG).show();
-                //定义Maker坐标点
-                LatLng point = latLng;
-                //构建Marker图标
-                Bundle bundle = new Bundle();
-                bundle.putInt("id", count++);
-                //构建MarkerOption，用于在地图上添加Marker
-                OverlayOptions option = new MarkerOptions()
-                        .position(point)
-                        .icon(bitmap)
-                        .extraInfo(bundle);
-                //在地图上添加Marker，并显示
-                marker = (Marker) bdmap.addOverlay(option);*/
-                bdmap.clear();
+                bdmap.hideInfoWindow();
+                LayoutInflater inflater = LayoutInflater.from(mContext);
+                View view = inflater.inflate(R.layout.addwindow, null);
+                Button add = view.findViewById(R.id.addButton);
+
+                add.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        //在这个地方转到添加新事件
+                        Toast.makeText(mContext, "转到添加事件", Toast.LENGTH_LONG).show();
+                    }
+                });
+                addWindow = new InfoWindow(view, latLng, 0);
+                bdmap.showInfoWindow(addWindow);
             }
         });
         bdmap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                Toast.makeText(mContext, marker.getExtraInfo().get("index").toString(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(mContext, marker.getExtraInfo().get("index").toString(), Toast.LENGTH_LONG).show();
+                int eventIndex = (int)marker.getExtraInfo().get("index");
+                bdmap.hideInfoWindow();
+                LayoutInflater inflater = LayoutInflater.from(mContext);
+                View view = inflater.inflate(R.layout.infowindow, null);
+                TextView title = (TextView)view.findViewById(R.id.popTitle);
+                Button next = (Button)view.findViewById(R.id.nextButton);
+                Button pre = (Button)view.findViewById(R.id.preButton);
+                Button getContent = (Button)view.findViewById(R.id.getContent);
+                title.setText("标题: "+eventList[eventIndex].title);
+                getContent.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(mContext, "转到事件详情", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                next.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(mContext, "该地的下一个事件", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                pre.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(mContext, "该地的上一个事件", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                LatLng point = marker.getPosition();
+                eventWindow = new InfoWindow(view, point, -47);
+                bdmap.showInfoWindow(eventWindow);
                 return false;
             }
         });
@@ -250,7 +286,7 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
                             eventList[i].setOutdate(temp.getInt("outdate"));
                             eventList[i].type = (temp.getInt("type"));
                             eventList[i].setPublisherID(temp.getInt("publisherID"));
-                            eventList[i].setTitle("title");
+                            eventList[i].setTitle(temp.getString("title"));
                             Bundle bundle = new Bundle();
                             bundle.putInt("index", i);
                             LatLng point = new LatLng(eventList[i].locationY, eventList[i].locationX);

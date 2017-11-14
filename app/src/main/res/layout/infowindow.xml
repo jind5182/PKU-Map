@@ -4,44 +4,53 @@
     android:layout_width="200dp"
     android:layout_height="wrap_content"
     android:background="@mipmap/popup"
-    android:paddingTop="15dp"
-    android:paddingBottom="30dp"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="20dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
     >
 
     <TextView
         android:id="@+id/popTitle"
-        android:layout_width="match_parent"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
-        android:textSize="20dp"/>
+        android:textSize="13dp"
+        android:textColor="@color/text_black" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginTop="20dp">
+        android:layout_height="20dp"
+        android:layout_marginTop="10dp">
 
         <Button
-            android:id="@+id/button"
-            android:layout_width="40dp"
+            android:id="@+id/preButton"
+            android:layout_width="30dp"
             android:layout_height="match_parent"
-            android:layout_marginEnd="29dp"
-            android:layout_marginRight="29dp"
             android:background="@mipmap/pre_"
             android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/button2"
-            android:layout_toStartOf="@+id/button2" />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <Button
-            android:id="@+id/button2"
-            android:layout_width="40dp"
+            android:id="@+id/getContent"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
+            android:background="#00000000"
+            android:text="查看详情"
+            android:textColor="@color/text_black"
+            android:textSize="13dp"
             android:layout_alignParentTop="true"
-            android:layout_marginEnd="29dp"
-            android:layout_marginRight="29dp"
-            android:background="@mipmap/next_" />
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            android:id="@+id/nextButton"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:background="@mipmap/next_"
+            android:layout_alignBaseline="@+id/getContent"
+            android:layout_alignBottom="@+id/getContent"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
 
