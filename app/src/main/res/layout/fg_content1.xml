@@ -4,6 +4,48 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
+    <RelativeLayout
+        android:id="@+id/topbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="#51a486"
+            android:gravity="center"
+            android:text="事 件"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:layout_alignParentTop="true" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="12dp"
+            android:src="@mipmap/arrow_left_white" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="返回"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="3dp"
+            android:layout_marginLeft="-5dp"
+            android:background="#00000000"/>
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="+"
+            android:textSize="30dp"
+            android:layout_alignParentRight="true"
+            android:paddingTop="5dp"
+            android:background="#00000000"/>
+    </RelativeLayout>
+
     <Button
         android:id="@+id/locbtn"
         android:layout_height="30dp"
@@ -16,7 +58,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/bdmap"
-        android:clickable="true">
+        android:clickable="true"
+        android:layout_below="@+id/hiddentopbar">
     </com.baidu.mapapi.map.MapView>
 
 </RelativeLayout>

@@ -9,10 +9,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-/**
- * Created by macpro on 2017/9/28.
- */
-
 public class MyAdapter extends BaseAdapter {
 
     private List<Data> mData;

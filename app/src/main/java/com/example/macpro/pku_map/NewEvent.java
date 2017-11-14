@@ -66,6 +66,8 @@ public class NewEvent extends Activity implements View.OnClickListener{
     private AlertDialog alert = null;
     private AlertDialog.Builder builder = null;
     private EditText header, content;
+    private double locationX, locationY;
+    private Boolean hasbd = false;
 
     public class TimeThread extends Thread {
         @Override
@@ -104,6 +106,15 @@ public class NewEvent extends Activity implements View.OnClickListener{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.newevent);
+        ((LinearLayout)findViewById(R.id.selectplace)).setVisibility(View.VISIBLE);
+        Bundle bd = getIntent().getExtras();
+        if (bd != null) {
+            ((LinearLayout)findViewById(R.id.selectplace)).setVisibility(View.GONE);
+            hasbd = true;
+            locationX = bd.getDouble("locationX");
+            locationY = bd.getDouble("locationY");
+            Toast.makeText(this, "有bd", Toast.LENGTH_SHORT).show();
+        }
         bindViews();
 
         mContext = NewEvent.this;
@@ -297,14 +308,17 @@ public class NewEvent extends Activity implements View.OnClickListener{
                                     Toast.makeText(mContext, "请选择时间", Toast.LENGTH_SHORT).show();
                                     alert.dismiss();
                                 }
-                                else if (loc.getText().toString().equals("")) {
+                                else if (loc.getText().toString().equals("") && !hasbd) {
                                     Toast.makeText(mContext, "请选择地点", Toast.LENGTH_SHORT).show();
                                     alert.dismiss();
                                 }
                                 else {
                                     Event event = new Event();
                                     event.setTitle(header.getText().toString());
-                                    event.setLocation(PreferenceUtil.getPlace(loc.getText().toString()));
+                                    if (hasbd)
+                                        event.setLocation(locationX, locationY);
+                                    else
+                                        event.setLocation(PreferenceUtil.getPlace(loc.getText().toString()));
                                     //event.setBeginTime(sdate_view.getText().toString(), stime_view.getText().toString());
                                     //event.setEndTime(edate_view.getText().toString(), etime_view.getText().toString());
                                     event.setBeginTime(stime_view.getText().toString());

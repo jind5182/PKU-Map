@@ -38,7 +38,7 @@ public class MyFragment2 extends Fragment {
             Data data = new Data("  事件" + i, i + "~事件内容及评论～～～～～～～～");
             datas.add(data);
         }
-        ListFragment nlFragment = new ListFragment(fManager, datas);
+        ListFragment nlFragment = new ListFragment(fManager, datas, 0);
         FragmentTransaction ft = fManager.beginTransaction();
         ft.replace(R.id.fl_content, nlFragment);
         ft.commit();

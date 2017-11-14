@@ -8,8 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -18,12 +20,14 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
     private FragmentManager fManager;
     private ArrayList<Data> datas;
     private ListView list_event;
+    private int which;
 
     public ListFragment() {}
 
-    public ListFragment(FragmentManager fManager, ArrayList<Data> datas) {
+    public ListFragment(FragmentManager fManager, ArrayList<Data> datas, int which) {
         this.fManager = fManager;
         this.datas = datas;
+        this.which = which;
     }
 
     @Override
@@ -43,8 +47,12 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         Bundle bd = new Bundle();
         bd.putString("title", datas.get(position).getNew_title());
         bd.putString("content", datas.get(position).getNew_content());
+        bd.putInt("which", which);
         ncFragment.setArguments(bd);
-        fTransaction.replace(R.id.fl_content, ncFragment);
+        if (which == 0)
+            fTransaction.replace(R.id.fl_content, ncFragment);
+        if (which == 1)
+            fTransaction.replace(R.id.myeventfl, ncFragment);
         fTransaction.addToBackStack(null);
         fTransaction.commit();
     }

@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -16,7 +18,9 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +61,7 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
     private MyFragment1.TimeThread update_thread;
     private InfoWindow addWindow;
     private InfoWindow eventWindow;
+    private RelativeLayout topbar = null;
 
     public class TimeThread extends Thread {
         @Override
@@ -95,6 +100,7 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
         mContext = getActivity();
         map = (MapView) view.findViewById(R.id.bdmap);
         locbtn = (Button) view.findViewById(R.id.locbtn);
+        topbar = (RelativeLayout) view.findViewById(R.id.topbar);
         bdmap = map.getMap();
         bdmap.setOnMapClickListener(new BaiduMap.OnMapClickListener() {
             @Override
@@ -109,6 +115,7 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
                 return false;
             }
         });
+        //final LinearLayout selectplace = (LinearLayout) view.findViewById(R.id.selectplace);
         bdmap.setOnMapLongClickListener(new BaiduMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
@@ -121,6 +128,13 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
                     public void onClick(View v) {
                         //在这个地方转到添加新事件
                         Toast.makeText(mContext, "转到添加事件", Toast.LENGTH_LONG).show();
+                        //selectplace.setVisibility(View.GONE);
+                        Bundle bd = new Bundle();
+                        bd.putDouble("locationX", 1);
+                        bd.putDouble("locationY", 2);
+                        Intent it = new Intent(getActivity(), NewEvent.class);
+                        it.putExtras(bd);
+                        startActivity(it);
                     }
                 });
                 addWindow = new InfoWindow(view, latLng, 0);
@@ -144,6 +158,18 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(mContext, "转到事件详情", Toast.LENGTH_SHORT).show();
+                        final FragmentManager fManager = getFragmentManager();
+                        FragmentTransaction fTransaction = fManager.beginTransaction();
+                        EventFragment ncFragment = new EventFragment();
+                        Bundle bd = new Bundle();
+                        bd.putString("title", "title");
+                        bd.putString("content", "content");
+                        bd.putInt("which", 2);
+                        ncFragment.setArguments(bd);
+                        fTransaction.replace(R.id.bdmap, ncFragment);
+                        fTransaction.addToBackStack(null);
+                        fTransaction.commit();
+                        topbar.setVisibility(View.VISIBLE);
                     }
                 });
                 next.setOnClickListener(new View.OnClickListener() {
@@ -179,9 +205,9 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
     public void onStart(){
         super.onStart();
         type = PreferenceUtil.maptype;
-        getEventByTypeAsyncHttpClientPost(type);
-        update_thread = new MyFragment1.TimeThread();
-        update_thread.start();
+        //getEventByTypeAsyncHttpClientPost(type);
+        //update_thread = new MyFragment1.TimeThread();
+        //update_thread.start();
     }
     @Override
     public void onClick(View v) {

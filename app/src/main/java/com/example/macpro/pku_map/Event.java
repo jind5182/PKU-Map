@@ -42,6 +42,11 @@ public class Event {
         this.locationX = PreferenceUtil.coordinateX[index];
         this.locationY = PreferenceUtil.coordinateY[index];
     }
+    public void setLocation(double locationX, double locationY) {
+        this.locationID = -1;
+        this.locationX = locationX;
+        this.locationY = locationY;
+    }
     /*public void setBeginTime(String beginDate, String beginTime) {
         this.beginDate = beginDate;
         this.beginTime = beginTime;
