@@ -123,12 +123,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        ImageView retpic = (ImageView) findViewById(R.id.retpic);
-        Button retbtn = (Button) findViewById(R.id.retbtn);
-        retpic.setVisibility(View.INVISIBLE);
-        retbtn.setVisibility(View.INVISIBLE);
-        super.onBackPressed();
-    }
 }

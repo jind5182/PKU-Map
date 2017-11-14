@@ -6,13 +6,13 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
+import android.support.v4.media.RatingCompat;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -338,7 +338,7 @@ public class NewEvent extends Activity implements View.OnClickListener{
                 break;
             case R.id.exlist_lol:
                 alert = null;
-                builder = new AlertDialog.Builder(mContext, R.style.AlertDialog);
+                builder = new AlertDialog.Builder(mContext, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
                 builder.setCancelable(true);
                 alert = builder.setTitle("地点选择")
                         .setItems(PreferenceUtil.place, new DialogInterface.OnClickListener() {

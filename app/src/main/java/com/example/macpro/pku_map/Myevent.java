@@ -46,12 +46,5 @@ public class Myevent extends AppCompatActivity {
                 finish();
             }
         });
-        editbtn = (Button) findViewById(R.id.editbtn);
-        editbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(Myevent.this, "你点击了编辑按钮~", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }

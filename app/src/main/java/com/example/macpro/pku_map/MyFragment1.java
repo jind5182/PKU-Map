@@ -1,16 +1,14 @@
 package com.example.macpro.pku_map;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,17 +16,11 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.*;
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.map.InfoWindow.*;
-import com.baidu.mapapi.model.LatLngBounds;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -42,13 +34,12 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
-public class MyFragment1 extends Fragment implements View.OnClickListener {
+public class MyFragment1 extends Fragment {
 
     MapView map = null;
     BaiduMap bdmap;
     private Button locbtn = null;
     private Context mContext;
-    private View view_custom;
     private AlertDialog alert = null;
     private AlertDialog.Builder builder = null;
     private Marker marker;
@@ -61,7 +52,6 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
     private MyFragment1.TimeThread update_thread;
     private InfoWindow addWindow;
     private InfoWindow eventWindow;
-    private RelativeLayout topbar = null;
 
     public class TimeThread extends Thread {
         @Override
@@ -100,7 +90,30 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
         mContext = getActivity();
         map = (MapView) view.findViewById(R.id.bdmap);
         locbtn = (Button) view.findViewById(R.id.locbtn);
-        topbar = (RelativeLayout) view.findViewById(R.id.topbar);
+        locbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String[] eventtype = new String[]{"实时", "活动预告", "求救"};
+                builder = new AlertDialog.Builder(mContext, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
+                builder.setCancelable(true);
+                alert = builder
+                        .setItems(eventtype, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                PreferenceUtil.maptype = which;
+                            }
+                        }).create();
+                alert.show();
+                Window dialogWindow = alert.getWindow();
+                WindowManager m = getActivity().getWindowManager();
+                Display d = m.getDefaultDisplay(); // 获取屏幕宽、高度
+                WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+                Point size = new Point();
+                d.getSize(size);
+                p.width = (int) (size.x * 0.8); // 宽度设置为屏幕的0.65，根据实际情况调整
+                dialogWindow.setAttributes(p);
+            }
+        });
         bdmap = map.getMap();
         bdmap.setOnMapClickListener(new BaiduMap.OnMapClickListener() {
             @Override
@@ -115,7 +128,6 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
                 return false;
             }
         });
-        //final LinearLayout selectplace = (LinearLayout) view.findViewById(R.id.selectplace);
         bdmap.setOnMapLongClickListener(new BaiduMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
@@ -128,10 +140,11 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
                     public void onClick(View v) {
                         //在这个地方转到添加新事件
                         Toast.makeText(mContext, "转到添加事件", Toast.LENGTH_LONG).show();
-                        //selectplace.setVisibility(View.GONE);
+                        double coordinateX = 116.316777;
+                        double coordinateY = 39.998777;
                         Bundle bd = new Bundle();
-                        bd.putDouble("locationX", 1);
-                        bd.putDouble("locationY", 2);
+                        bd.putDouble("locationX", coordinateX);
+                        bd.putDouble("locationY", coordinateY);
                         Intent it = new Intent(getActivity(), NewEvent.class);
                         it.putExtras(bd);
                         startActivity(it);
@@ -144,7 +157,6 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
         bdmap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                //Toast.makeText(mContext, marker.getExtraInfo().get("index").toString(), Toast.LENGTH_LONG).show();
                 int eventIndex = (int)marker.getExtraInfo().get("index");
                 bdmap.hideInfoWindow();
                 LayoutInflater inflater = LayoutInflater.from(mContext);
@@ -157,19 +169,14 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
                 getContent.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(mContext, "转到事件详情", Toast.LENGTH_SHORT).show();
-                        final FragmentManager fManager = getFragmentManager();
-                        FragmentTransaction fTransaction = fManager.beginTransaction();
-                        EventFragment ncFragment = new EventFragment();
                         Bundle bd = new Bundle();
                         bd.putString("title", "title");
                         bd.putString("content", "content");
                         bd.putInt("which", 2);
-                        ncFragment.setArguments(bd);
-                        fTransaction.replace(R.id.bdmap, ncFragment);
-                        fTransaction.addToBackStack(null);
-                        fTransaction.commit();
-                        topbar.setVisibility(View.VISIBLE);
+                        Intent it = new Intent(getActivity(), EventActivity.class);
+                        it.putExtras(bd);
+                        startActivity(it);
+                        Toast.makeText(mContext, "转到事件详情", Toast.LENGTH_SHORT).show();
                     }
                 });
                 next.setOnClickListener(new View.OnClickListener() {
@@ -190,55 +197,14 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
                 return false;
             }
         });
-        builder = new AlertDialog.Builder(mContext);
-
-        view_custom = inflater.inflate(R.layout.dialog, null, false);
-        builder.setView(view_custom);
-        builder.setCancelable(true);
-        alert = builder.create();
-        locbtn.setOnClickListener(this);
-        view_custom.findViewById(R.id.cat1btn).setOnClickListener(this);
-        view_custom.findViewById(R.id.cat2btn).setOnClickListener(this);
-        view_custom.findViewById(R.id.cat3btn).setOnClickListener(this);
         return view;
     }
     public void onStart(){
         super.onStart();
         type = PreferenceUtil.maptype;
-        //getEventByTypeAsyncHttpClientPost(type);
-        //update_thread = new MyFragment1.TimeThread();
-        //update_thread.start();
-    }
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.locbtn:
-                alert.show();
-                Window dialogWindow = alert.getWindow();
-                WindowManager m = getActivity().getWindowManager();
-                Display d = m.getDefaultDisplay(); // 获取屏幕宽、高度
-                WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-                Point size = new Point();
-                d.getSize(size);
-                p.width = (int) (size.x * 0.8); // 宽度设置为屏幕的0.65，根据实际情况调整
-                dialogWindow.setAttributes(p);
-                break;
-            case R.id.cat1btn:
-                Toast.makeText(mContext, "切换为实时", Toast.LENGTH_SHORT).show();
-                alert.dismiss();
-                PreferenceUtil.maptype = 0;
-                break;
-            case R.id.cat2btn:
-                Toast.makeText(mContext, "切换为活动", Toast.LENGTH_SHORT).show();
-                alert.dismiss();
-                PreferenceUtil.maptype = 1;
-            case R.id.cat3btn:
-                Toast.makeText(mContext, "切换为帮忙", Toast.LENGTH_SHORT).show();
-                alert.dismiss();
-                PreferenceUtil.maptype = 2;
-            default:
-                alert.dismiss();
-        }
+        getEventByTypeAsyncHttpClientPost(type);
+        update_thread = new MyFragment1.TimeThread();
+        update_thread.start();
     }
 
     public void onDestroy(){
@@ -272,7 +238,7 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("type",0);
+            jsonObject.put("type", type);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -308,7 +274,10 @@ public class MyFragment1 extends Fragment implements View.OnClickListener {
                             //eventList[i].setBeginTime(temp.getString("beginTime"));
                             eventList[i].setDescription(temp.getString("description"));
                             //eventList[i].setEndTime(temp.getString("endTime"));
-                            eventList[i].setLocation(temp.getInt("locationID"));
+                            if (temp.getInt("locationID") == -1)
+                                eventList[i].setLocation(temp.getDouble("locationX"), temp.getDouble("locationY"));
+                            else
+                                eventList[i].setLocation(temp.getInt("locationID"));
                             eventList[i].setOutdate(temp.getInt("outdate"));
                             eventList[i].type = (temp.getInt("type"));
                             eventList[i].setPublisherID(temp.getInt("publisherID"));
