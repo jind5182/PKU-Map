@@ -92,13 +92,14 @@ public class MyFragment1 extends Fragment {
         locbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String[] eventtype = new String[]{"实时", "活动预告", "求救"};
+                final String[] eventtype = new String[]{"实时", "活动预告", "求救"};
                 builder = new AlertDialog.Builder(mContext, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
                 builder.setCancelable(true);
                 alert = builder
                         .setItems(eventtype, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                locbtn.setText(eventtype[which]);
                                 PreferenceUtil.maptype = which;
                             }
                         }).create();
@@ -129,7 +130,7 @@ public class MyFragment1 extends Fragment {
         });
         bdmap.setOnMapLongClickListener(new BaiduMap.OnMapLongClickListener() {
             @Override
-            public void onMapLongClick(LatLng latLng) {
+            public void onMapLongClick(final LatLng latLng) {
                 bdmap.hideInfoWindow();
                 LayoutInflater inflater = LayoutInflater.from(mContext);
                 View view = inflater.inflate(R.layout.addwindow, null);
@@ -138,9 +139,8 @@ public class MyFragment1 extends Fragment {
                 add.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         //在这个地方转到添加新事件
-                        Toast.makeText(mContext, "转到添加事件", Toast.LENGTH_LONG).show();
-                        double coordinateX = 116.316777;
-                        double coordinateY = 39.998777;
+                        double coordinateX = latLng.longitude;
+                        double coordinateY = latLng.latitude;
                         Bundle bd = new Bundle();
                         bd.putDouble("locationX", coordinateX);
                         bd.putDouble("locationY", coordinateY);
@@ -175,7 +175,6 @@ public class MyFragment1 extends Fragment {
                         Intent it = new Intent(getActivity(), EventActivity.class);
                         it.putExtras(bd);
                         startActivity(it);
-                        Toast.makeText(mContext, "转到事件详情", Toast.LENGTH_SHORT).show();
                     }
                 });
                 next.setOnClickListener(new View.OnClickListener() {

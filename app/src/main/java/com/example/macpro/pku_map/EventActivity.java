@@ -5,12 +5,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +19,6 @@ import org.apache.http.Header;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -71,14 +68,12 @@ public class EventActivity extends Activity {
                             .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Toast.makeText(mContext, "你点击了取消按钮~", Toast.LENGTH_SHORT).show();
                                 }
                             })
                             .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Toast.makeText(mContext, "你点击了确定按钮~", Toast.LENGTH_SHORT).show();
-                                    deleteEventByTypeAsyncHttpClientPost(eventID);
+                                    deleteEventAsyncHttpClientPost(eventID);
                                 }
                             }).create();
                     alert.show();
@@ -87,7 +82,7 @@ public class EventActivity extends Activity {
         }
     }
 
-    private void deleteEventByTypeAsyncHttpClientPost(final int eventID) {
+    private void deleteEventAsyncHttpClientPost(final int eventID) {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
