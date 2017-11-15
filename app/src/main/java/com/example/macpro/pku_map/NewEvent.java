@@ -12,19 +12,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
-import android.support.v4.media.RatingCompat;
 import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -43,9 +39,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 
 public class NewEvent extends Activity implements View.OnClickListener{
 
@@ -55,7 +49,6 @@ public class NewEvent extends Activity implements View.OnClickListener{
     private Button exlist_lol;
     private TextView loc = null;
     private RadioGroup radgroup = null;
-    private RadioButton btn1 = null;
     private LinearLayout stime, etime;
     private int month, day, year, hour, minute;
     private static final int msgKey1 = 1;
@@ -114,7 +107,6 @@ public class NewEvent extends Activity implements View.OnClickListener{
             hasbd = true;
             locationX = bd.getDouble("locationX");
             locationY = bd.getDouble("locationY");
-            Toast.makeText(this, "有bd", Toast.LENGTH_SHORT).show();
         }
         bindViews();
 
@@ -213,10 +205,23 @@ public class NewEvent extends Activity implements View.OnClickListener{
         neretbtn = (Button) findViewById(R.id.neretbtn);
         loc = (TextView) findViewById(R.id.loc);
         radgroup = (RadioGroup) findViewById(R.id.radiogroup);
-        btn1 = (RadioButton) findViewById(R.id.btn1);
-        btn1.setChecked(true);
         stime = (LinearLayout) findViewById(R.id.stime);
         etime = (LinearLayout) findViewById(R.id.etime);
+        switch (PreferenceUtil.maptype) {
+            case 0:
+                RadioButton btn1 = (RadioButton) findViewById(R.id.btn1);
+                btn1.setChecked(true);
+                break;
+            case 1:
+                RadioButton btn2 = (RadioButton) findViewById(R.id.btn2);
+                stime.setVisibility(View.VISIBLE);
+                btn2.setChecked(true);
+                break;
+            case 2:
+                RadioButton btn3 = (RadioButton) findViewById(R.id.btn3);
+                btn3.setChecked(true);
+                break;
+        }
         radgroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, @IdRes int checkedId) {
@@ -372,7 +377,6 @@ public class NewEvent extends Activity implements View.OnClickListener{
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("eventID", event.eventID);
             jsonObject.put("title", event.title);
             jsonObject.put("locationID", event.locationID);
             jsonObject.put("locationX", event.locationX);
@@ -382,7 +386,7 @@ public class NewEvent extends Activity implements View.OnClickListener{
             //jsonObject.put("endDate", event.endDate);
             jsonObject.put("endTime", event.endTime);
             jsonObject.put("type", event.type);
-            jsonObject.put("publisherID", 1);
+            jsonObject.put("publisherID", PreferenceUtil.userID);
             jsonObject.put("description", event.description);
             jsonObject.put("outdate", event.outdate);
         } catch (JSONException e) {
@@ -402,13 +406,13 @@ public class NewEvent extends Activity implements View.OnClickListener{
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                //Toast.makeText(mContext, "status code is:"+ statusCode+ "connection success!"+response.toString(), Toast.LENGTH_SHORT).show();
-                //Log.e("rs",response.toString());
-                //((ListView)findViewById(R.id.list_event)).deferNotifyDataSetChanged();
-                Toast.makeText(mContext, "发布成功", Toast.LENGTH_SHORT).show();
+                try {
+                    event.setEventID(response.getInt("eventID"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 PreferenceUtil.datas.add(event);
                 PreferenceUtil.myAdapter.notifyDataSetChanged();
-                //System.out.println("response: " + response);
             }
 
             @Override

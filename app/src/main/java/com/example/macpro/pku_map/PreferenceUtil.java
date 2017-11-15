@@ -40,6 +40,14 @@ public class PreferenceUtil {
             39.997601, 39.998038, 39.997768, 40.00074, 40.000053, 39.999917
     };
 
+    public static Event getEvent(int eventID) {
+        for (int i = 0; i < datas.size(); i++) {
+            if (datas.get(i).getEventId() == eventID) {
+                return datas.get(i);
+            }
+        }
+        return null;
+    }
     public static void deletebyID(int eventID) {
         for (int i = 0; i < datas.size(); i++) {
             if (datas.get(i).getEventId() == eventID) {
