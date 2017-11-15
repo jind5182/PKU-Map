@@ -11,17 +11,17 @@ import java.util.List;
 
 public class MyAdapter extends BaseAdapter {
 
-    private List<Data> mData;
+    private List<Event> mEvent;
     private Context mContext;
 
-    public MyAdapter(List<Data> mData, Context mContext) {
+    public MyAdapter(List<Event> mEvent, Context mContext) {
         this.mContext = mContext;
-        this.mData = mData;
+        this.mEvent = mEvent;
     }
 
     @Override
     public int getCount() {
-        return mData.size();
+        return mEvent.size();
     }
 
     @Override
@@ -45,7 +45,7 @@ public class MyAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.txt_item_title.setText(mData.get(position).getNew_title());
+        viewHolder.txt_item_title.setText(mEvent.get(position).getTitle());
         return convertView;
     }
 

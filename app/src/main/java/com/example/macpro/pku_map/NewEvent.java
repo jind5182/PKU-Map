@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -362,7 +363,7 @@ public class NewEvent extends Activity implements View.OnClickListener{
                 alert.dismiss();
         }
     }
-    public void eventByAsyncHttpClientPost(Event event) {
+    public void eventByAsyncHttpClientPost(final Event event) {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
@@ -403,8 +404,10 @@ public class NewEvent extends Activity implements View.OnClickListener{
                 super.onSuccess(statusCode, headers, response);
                 //Toast.makeText(mContext, "status code is:"+ statusCode+ "connection success!"+response.toString(), Toast.LENGTH_SHORT).show();
                 //Log.e("rs",response.toString());
-
+                //((ListView)findViewById(R.id.list_event)).deferNotifyDataSetChanged();
                 Toast.makeText(mContext, "发布成功", Toast.LENGTH_SHORT).show();
+                PreferenceUtil.datas.add(event);
+                PreferenceUtil.myAdapter.notifyDataSetChanged();
                 //System.out.println("response: " + response);
             }
 

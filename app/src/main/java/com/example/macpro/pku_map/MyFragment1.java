@@ -45,7 +45,6 @@ public class MyFragment1 extends Fragment {
     private Marker marker;
     private Event[] eventList = new Event[1000];
     private int count = 0;
-    private int type;
     private BitmapDescriptor bitmap = BitmapDescriptorFactory
             .fromResource(R.mipmap.icon_gcoding);
     private static final int msgKey1 = 1;
@@ -75,7 +74,7 @@ public class MyFragment1 extends Fragment {
             super.handleMessage(msg);
             switch (msg.what) {
                 case msgKey1:
-                    getEventByTypeAsyncHttpClientPost(type);
+                    getEventByTypeAsyncHttpClientPost(PreferenceUtil.maptype);
                     break;
 
                 default:
@@ -101,6 +100,7 @@ public class MyFragment1 extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 PreferenceUtil.maptype = which;
+                                Toast.makeText(getActivity(), Integer.toString(which), Toast.LENGTH_SHORT).show();
                             }
                         }).create();
                 alert.show();
@@ -201,8 +201,7 @@ public class MyFragment1 extends Fragment {
     }
     public void onStart(){
         super.onStart();
-        type = PreferenceUtil.maptype;
-        getEventByTypeAsyncHttpClientPost(type);
+        getEventByTypeAsyncHttpClientPost(PreferenceUtil.maptype);
         update_thread = new MyFragment1.TimeThread();
         update_thread.start();
     }

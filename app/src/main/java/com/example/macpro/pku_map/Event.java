@@ -67,4 +67,38 @@ public class Event {
     public void setOutdate(int outdate) {
         this.outdate = outdate;
     }
+
+    public int getEventId() {
+        return eventID;
+    }
+    public int getPublisherID() {
+        return publisherID;
+    }
+    public String getTitle() {
+        return title;
+    }
+    public int getLocationID() {
+        return locationID;
+    }
+    public double getLocationX() {
+        return locationX;
+    }
+    public double getLocationY() {
+        return locationY;
+    }
+    public int getTyoe() {
+        return type;
+    }
+    public String getBeginTime() {
+        return beginTime;
+    }
+    public String getEndTime() {
+        return endTime;
+    }
+    public String getDescription() {
+        return description;
+    }
+    public int getOutdate() {
+        return outdate;
+    }
 }
