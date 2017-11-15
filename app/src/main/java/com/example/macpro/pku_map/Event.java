@@ -1,19 +1,6 @@
 package com.example.macpro.pku_map;
 
 import android.content.Context;
-import android.widget.Toast;
-
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
-
-import org.apache.http.Header;
-import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.protocol.HTTP;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
 
 public class Event {
 
@@ -79,5 +66,39 @@ public class Event {
     }
     public void setOutdate(int outdate) {
         this.outdate = outdate;
+    }
+
+    public int getEventId() {
+        return eventID;
+    }
+    public int getPublisherID() {
+        return publisherID;
+    }
+    public String getTitle() {
+        return title;
+    }
+    public int getLocationID() {
+        return locationID;
+    }
+    public double getLocationX() {
+        return locationX;
+    }
+    public double getLocationY() {
+        return locationY;
+    }
+    public int getTyoe() {
+        return type;
+    }
+    public String getBeginTime() {
+        return beginTime;
+    }
+    public String getEndTime() {
+        return endTime;
+    }
+    public String getDescription() {
+        return description;
+    }
+    public int getOutdate() {
+        return outdate;
     }
 }

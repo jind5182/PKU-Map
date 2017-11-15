@@ -6,13 +6,13 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
+import android.support.v4.media.RatingCompat;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -338,7 +339,7 @@ public class NewEvent extends Activity implements View.OnClickListener{
                 break;
             case R.id.exlist_lol:
                 alert = null;
-                builder = new AlertDialog.Builder(mContext, R.style.AlertDialog);
+                builder = new AlertDialog.Builder(mContext, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
                 builder.setCancelable(true);
                 alert = builder.setTitle("地点选择")
                         .setItems(PreferenceUtil.place, new DialogInterface.OnClickListener() {
@@ -362,7 +363,7 @@ public class NewEvent extends Activity implements View.OnClickListener{
                 alert.dismiss();
         }
     }
-    public void eventByAsyncHttpClientPost(Event event) {
+    public void eventByAsyncHttpClientPost(final Event event) {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
@@ -403,8 +404,10 @@ public class NewEvent extends Activity implements View.OnClickListener{
                 super.onSuccess(statusCode, headers, response);
                 //Toast.makeText(mContext, "status code is:"+ statusCode+ "connection success!"+response.toString(), Toast.LENGTH_SHORT).show();
                 //Log.e("rs",response.toString());
-
+                //((ListView)findViewById(R.id.list_event)).deferNotifyDataSetChanged();
                 Toast.makeText(mContext, "发布成功", Toast.LENGTH_SHORT).show();
+                PreferenceUtil.datas.add(event);
+                PreferenceUtil.myAdapter.notifyDataSetChanged();
                 //System.out.println("response: " + response);
             }
 

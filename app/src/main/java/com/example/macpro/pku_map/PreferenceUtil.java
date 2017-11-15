@@ -3,13 +3,20 @@ package com.example.macpro.pku_map;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.ArrayList;
+
 public class PreferenceUtil {
 
     /**
      * 是否显示欢迎界面,true表示显示，false表示不显示
      */
+    public static MyAdapter myAdapter = null;
+    public static MyAdapter myAdapter2 = null;
+    public static ArrayList<Event> datas = new ArrayList<Event>();
+    public static ArrayList<Event> mydatas = new ArrayList<Event>();
     public static int maptype = 0;
-    public static Boolean islogged = false;
+    public static boolean islogged = false;
+    public static int userID;
     public static final String SHOW_GUIDE = "showguide";
     public static final String[] place = {"第一教学楼", "第二教学楼", "第三教学楼",
             "第四教学楼", "理科教学楼", "光华管理学院", "新闻与传播学院", "化学学院",
@@ -32,6 +39,21 @@ public class PreferenceUtil {
             39.993495, 39.992007, 39.996587, 39.994981, 39.993818, 39.994152,
             39.997601, 39.998038, 39.997768, 40.00074, 40.000053, 39.999917
     };
+
+    public static void deletebyID(int eventID) {
+        for (int i = 0; i < datas.size(); i++) {
+            if (datas.get(i).getEventId() == eventID) {
+                datas.remove(i);
+                break;
+            }
+        }
+        for (int i = 0; i < mydatas.size(); i++) {
+            if (mydatas.get(i).getEventId() == eventID) {
+                mydatas.remove(i);
+                break;
+            }
+        }
+    }
 
     public static int getPlace(String p) {
         for (int i = 0; i < place.length; i++) {
