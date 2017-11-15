@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import org.apache.http.Header;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,14 +35,18 @@ public class MyFragment3 extends Fragment {
         myevent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), Myevent.class));
+                if (PreferenceUtil.islogged)
+                    startActivity(new Intent(getActivity(), Myevent.class));
+                else
+                    Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();
             }
         });
-        getEventByTypeAsyncHttpClientPost(1);
+        if (PreferenceUtil.islogged)
+            getEventByIDAsyncHttpClientPost(PreferenceUtil.userID);
         return view;
     }
 
-    private void getEventByTypeAsyncHttpClientPost(int userID) {
+    private void getEventByIDAsyncHttpClientPost(int userID) {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url

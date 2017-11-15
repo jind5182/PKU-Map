@@ -1,6 +1,5 @@
 package com.example.macpro.pku_map;
 
-import android.util.*;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,12 +16,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.apache.http.entity.ByteArrayEntity;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.BaseJsonHttpResponseHandler;
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 import org.apache.http.Header;
-import org.apache.http.Consts;
 import org.apache.http.message.BasicHeader;
 
 public class Login extends Activity implements View.OnClickListener {
@@ -82,26 +77,24 @@ public class Login extends Activity implements View.OnClickListener {
                 try {
                     int status = response.getInt("loginStatus");
                     if (status == 1) {
-                        Toast.makeText(mContext, "status code is:"+ statusCode+ "\nlogin failed!\n", Toast.LENGTH_LONG).show();
+                        Toast.makeText(mContext, "用户名或密码输入错误",  Toast.LENGTH_LONG).show();
                     }
                     else if(status == 0) {
-                        Toast.makeText(mContext, "status code is:"+ statusCode+ "\nlogin success!\n"+response.toString(), Toast.LENGTH_LONG).show();
+                        PreferenceUtil.islogged = true;
+                        PreferenceUtil.userID = response.getInt("userID");
+                        Toast.makeText(Login.this, "登录成功"+PreferenceUtil.userID, Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(Login.this, MainActivity.class));
                         finish();
                     }
                 }catch (JSONException e) {
                     e.printStackTrace();
                 }
-                //Log.e("rs",response.toString());
-                //Toast.makeText(mContext, "connection success!"+response.toString(), Toast.LENGTH_SHORT).show();
-                //System.out.println("response: " + response);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
                 Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_LONG).show();
-                //Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_SHORT).show();
             }
         });
         return;
@@ -121,8 +114,6 @@ public class Login extends Activity implements View.OnClickListener {
                     String[] param = {Username, Passwd};
                     TextView displaytxt = (TextView) findViewById(R.id.display_txt);
                     loginByAsyncHttpClientPost(param[0], param[1]);
-                    Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
-                    PreferenceUtil.islogged = true;
                 }
                 break;
             case R.id.signupbtn:

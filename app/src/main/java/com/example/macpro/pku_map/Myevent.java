@@ -11,10 +11,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.baidu.mapapi.map.Marker;
-import com.baidu.mapapi.map.MarkerOptions;
-import com.baidu.mapapi.map.OverlayOptions;
-import com.baidu.mapapi.model.LatLng;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -27,7 +23,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 
 public class Myevent extends AppCompatActivity {
 
@@ -43,7 +38,7 @@ public class Myevent extends AppCompatActivity {
         mContext = getApplicationContext();
         bindViews();
         PreferenceUtil.mydatas.clear();
-        getEventByTypeAsyncHttpClientPost(1);
+        getEventByIDAsyncHttpClientPost(PreferenceUtil.userID);
     }
 
     private void bindViews() {
@@ -57,7 +52,7 @@ public class Myevent extends AppCompatActivity {
         });
     }
 
-    private void getEventByTypeAsyncHttpClientPost(int userID) {
+    private void getEventByIDAsyncHttpClientPost(int userID) {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
@@ -113,7 +108,7 @@ public class Myevent extends AppCompatActivity {
                             PreferenceUtil.mydatas.add(event);
                         }
                         fManager = getSupportFragmentManager();
-                        ListFragment nlFragment = new ListFragment(fManager, 1);
+                        ListFragment nlFragment = new ListFragment(1);
                         FragmentTransaction ft = fManager.beginTransaction();
                         ft.replace(R.id.myeventfl, nlFragment);
                         ft.commit();
@@ -121,7 +116,6 @@ public class Myevent extends AppCompatActivity {
                 }catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(mContext, "获取成功", Toast.LENGTH_SHORT).show();
             }
 
             @Override

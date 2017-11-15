@@ -13,7 +13,6 @@ public class Event {
     public int type;
     public String description;
     public int outdate;
-    private Context mContext = null;
 
     public void setEventID(int eventID) {
         this.eventID = eventID;

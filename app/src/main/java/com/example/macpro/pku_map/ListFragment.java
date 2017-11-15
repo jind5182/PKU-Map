@@ -7,10 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -27,21 +27,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 
-public class ListFragment extends Fragment implements AdapterView.OnItemClickListener{
+public class ListFragment extends Fragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener{
 
-    private FragmentManager fManager;
     private ListView list_event;
-    private AlertDialog alert = null;
-    private AlertDialog.Builder builder = null;
     private int which;
     private Context mContext;
+    private AlertDialog alert;
+    private AlertDialog.Builder builder;
 
     public ListFragment() {}
 
-    public ListFragment(FragmentManager fManager, int which) {
-        this.fManager = fManager;
+    public ListFragment(int which) {
         this.which = which;
     }
 
@@ -53,14 +50,15 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         if (which == 0) {
             PreferenceUtil.myAdapter = new MyAdapter(PreferenceUtil.datas, getActivity());
             list_event.setAdapter(PreferenceUtil.myAdapter);
-            getEventByTypeAsyncHttpClientPost(0);
+            PreferenceUtil.datas.clear();
+            getEventAsyncHttpClientPost();
         }
         else if (which == 1) {
             PreferenceUtil.myAdapter2 = new MyAdapter(PreferenceUtil.mydatas, getActivity());
             list_event.setAdapter(PreferenceUtil.myAdapter2);
         }
         list_event.setOnItemClickListener(this);
-        //list_event.setOnItemLongClickListener(this);
+        list_event.setOnItemLongClickListener(this);
         return view;
     }
 
@@ -76,7 +74,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         startActivity(it);
     }
 
-    /*@Override
+    @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
         if (which == 1) {
             builder = new AlertDialog.Builder(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
@@ -85,23 +83,20 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                     .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(getActivity(), "你点击了取消按钮~", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            deleteEventByTypeAsyncHttpClientPost(datas.get(position).getEventId());
-                            Toast.makeText(getActivity(), "你点击了确定按钮~", Toast.LENGTH_SHORT).show();
-                            getEventByTypeAsyncHttpClientPost(1);
+                            deleteEventAsyncHttpClientPost(PreferenceUtil.mydatas.get(position).getEventId());
                         }
                     }).create();
             alert.show();
         }
         return true;
-    }*/
+    }
 
-    private void deleteEventByTypeAsyncHttpClientPost(int eventID) {
+    private void deleteEventAsyncHttpClientPost(int eventID) {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
@@ -141,19 +136,14 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
 
     }
 
-    private void getEventByTypeAsyncHttpClientPost(int type) {
+    private void getEventAsyncHttpClientPost() {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
-        String url = "http://120.25.232.47:8002/getEventByType/";
+        String url = "http://120.25.232.47:8002/getAllEvents/";
         //String url = "http://www.baidu.com";
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("type", type);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         //将参数加入到参数对象中
         ByteArrayEntity entity = null;
         try {
