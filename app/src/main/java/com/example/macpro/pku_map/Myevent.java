@@ -111,6 +111,7 @@ public class Myevent extends AppCompatActivity {
                             event.setPublisherID(temp.getInt("publisherID"));
                             event.setTitle(temp.getString("title"));
                             PreferenceUtil.mydatas.add(event);
+                            Toast.makeText(mContext, event.type+""+i, Toast.LENGTH_SHORT).show();
                         }
                         fManager = getSupportFragmentManager();
                         ListFragment nlFragment = new ListFragment(fManager, 1);

@@ -53,11 +53,12 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         if (which == 0) {
             PreferenceUtil.myAdapter = new MyAdapter(PreferenceUtil.datas, getActivity());
             list_event.setAdapter(PreferenceUtil.myAdapter);
-            getEventByTypeAsyncHttpClientPost(0);
+            getEventAsyncHttpClientPost();
         }
         else if (which == 1) {
             PreferenceUtil.myAdapter2 = new MyAdapter(PreferenceUtil.mydatas, getActivity());
             list_event.setAdapter(PreferenceUtil.myAdapter2);
+            Toast.makeText(getActivity(), PreferenceUtil.mydatas.size()+"", Toast.LENGTH_SHORT).show();
         }
         list_event.setOnItemClickListener(this);
         //list_event.setOnItemLongClickListener(this);
@@ -67,6 +68,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Bundle bd = new Bundle();
+        Toast.makeText(getActivity(),position+"", Toast.LENGTH_SHORT).show();
         bd.putString("title", PreferenceUtil.datas.get(position).getTitle());
         bd.putString("content", PreferenceUtil.datas.get(position).getDescription());
         bd.putInt("eventID", PreferenceUtil.datas.get(position).getEventId());
@@ -141,19 +143,14 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
 
     }
 
-    private void getEventByTypeAsyncHttpClientPost(int type) {
+    private void getEventAsyncHttpClientPost() {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
-        String url = "http://120.25.232.47:8002/getEventByType/";
+        String url = "http://120.25.232.47:8002/getAllEvents/";
         //String url = "http://www.baidu.com";
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("type", type);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         //将参数加入到参数对象中
         ByteArrayEntity entity = null;
         try {

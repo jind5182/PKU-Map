@@ -100,7 +100,6 @@ public class MyFragment1 extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 PreferenceUtil.maptype = which;
-                                Toast.makeText(getActivity(), Integer.toString(which), Toast.LENGTH_SHORT).show();
                             }
                         }).create();
                 alert.show();
@@ -263,6 +262,7 @@ public class MyFragment1 extends Fragment {
                     else if(status == 0) {
                         //Toast.makeText(mContext, response.toString(), Toast.LENGTH_LONG).show();
                         int count = response.getInt("eventNum");
+                        bdmap.clear();
                         JSONArray events = response.getJSONArray("events");
                         //Toast.makeText(mContext, events.toString(), Toast.LENGTH_LONG).show();
                         for (int i = 0; i < count; i++)
