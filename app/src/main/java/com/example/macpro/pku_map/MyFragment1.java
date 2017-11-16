@@ -139,14 +139,18 @@ public class MyFragment1 extends Fragment {
                 add.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         //在这个地方转到添加新事件
-                        double coordinateX = latLng.longitude;
-                        double coordinateY = latLng.latitude;
-                        Bundle bd = new Bundle();
-                        bd.putDouble("locationX", coordinateX);
-                        bd.putDouble("locationY", coordinateY);
-                        Intent it = new Intent(getActivity(), NewEvent.class);
-                        it.putExtras(bd);
-                        startActivity(it);
+                        if (PreferenceUtil.islogged) {
+                            double coordinateX = latLng.longitude;
+                            double coordinateY = latLng.latitude;
+                            Bundle bd = new Bundle();
+                            bd.putDouble("locationX", coordinateX);
+                            bd.putDouble("locationY", coordinateY);
+                            Intent it = new Intent(getActivity(), NewEvent.class);
+                            it.putExtras(bd);
+                            startActivity(it);
+                        }
+                        else
+                            Toast.makeText(mContext, "请先登录", Toast.LENGTH_SHORT).show();
                     }
                 });
                 addWindow = new InfoWindow(view, latLng, 0);
@@ -156,7 +160,7 @@ public class MyFragment1 extends Fragment {
         bdmap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                int eventIndex = (int)marker.getExtraInfo().get("index");
+                final int eventIndex = (int)marker.getExtraInfo().get("index");
                 bdmap.hideInfoWindow();
                 LayoutInflater inflater = LayoutInflater.from(mContext);
                 View view = inflater.inflate(R.layout.infowindow, null);
@@ -169,8 +173,7 @@ public class MyFragment1 extends Fragment {
                     @Override
                     public void onClick(View v) {
                         Bundle bd = new Bundle();
-                        bd.putString("title", "title");
-                        bd.putString("content", "content");
+                        bd.putInt("eventID", eventList[eventIndex].getEventId());
                         bd.putInt("which", 2);
                         Intent it = new Intent(getActivity(), EventActivity.class);
                         it.putExtras(bd);

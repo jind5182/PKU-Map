@@ -52,10 +52,11 @@ public class EventActivity extends Activity {
         deletebtn.setVisibility(View.GONE);
 
         Bundle bd = getIntent().getExtras();
-        event_title.setText(bd.getString("title"));
-        event_content.setText(bd.getString("content"));
         eventID = bd.getInt("eventID");
         which = bd.getInt("which");
+        Event event = PreferenceUtil.getEvent(eventID);
+        event_title.setText(event.getTitle());
+        event_content.setText(event.getDescription());
         if (which == 1) {
             deletebtn.setVisibility(View.VISIBLE);
             eventcontenttitle.setText("我的事件");

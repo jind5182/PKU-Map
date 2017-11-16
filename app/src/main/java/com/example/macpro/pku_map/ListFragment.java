@@ -65,8 +65,6 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Bundle bd = new Bundle();
-        bd.putString("title", PreferenceUtil.datas.get(position).getTitle());
-        bd.putString("content", PreferenceUtil.datas.get(position).getDescription());
         bd.putInt("eventID", PreferenceUtil.datas.get(position).getEventId());
         bd.putInt("which", which);
         Intent it = new Intent(getActivity(), EventActivity.class);
