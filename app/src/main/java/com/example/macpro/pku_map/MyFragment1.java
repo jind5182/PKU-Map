@@ -101,6 +101,7 @@ public class MyFragment1 extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 locbtn.setText(eventtype[which]);
                                 PreferenceUtil.maptype = which;
+                                getEventByTypeAsyncHttpClientPost(PreferenceUtil.maptype);
                             }
                         }).create();
                 alert.show();
@@ -131,7 +132,7 @@ public class MyFragment1 extends Fragment {
         bdmap.setOnMapLongClickListener(new BaiduMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(final LatLng latLng) {
-                bdmap.hideInfoWindow();
+                //bdmap.hideInfoWindow();
                 LayoutInflater inflater = LayoutInflater.from(mContext);
                 View view = inflater.inflate(R.layout.addwindow, null);
                 Button add = view.findViewById(R.id.addButton);
