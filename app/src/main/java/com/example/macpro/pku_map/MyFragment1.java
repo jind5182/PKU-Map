@@ -88,8 +88,8 @@ public class MyFragment1 extends Fragment {
                         onPause();
                     }
                     Thread.sleep(5000);
-                    while (pause){
-                        onPause();
+                    if (pause){
+                        continue;
                     }
                     Message msg = new Message();
                     msg.what = msgKey1;
