@@ -41,7 +41,11 @@
         <activity android:name=".NewEvent"></activity>
         <activity android:name=".Signup"></activity>
         <activity android:name=".Myevent"></activity>
-        <activity android:name=".EventActivity"></activity>
+        <activity
+            android:name=".EventActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+
+        </activity>
     </application>
 
 </manifest>

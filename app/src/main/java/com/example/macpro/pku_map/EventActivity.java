@@ -9,8 +9,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.inputmethod.*;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -32,6 +36,10 @@ public class EventActivity extends Activity {
     private Context mContext;
     private Button eventcontentret, deletebtn;
     private TextView event_content, event_title, eventcontenttitle;
+    private ImageView newComment;
+    private RelativeLayout rl_input, rl_comment;
+    private TextView hide;
+    private EditText comment_content;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,6 +57,37 @@ public class EventActivity extends Activity {
             }
         });
         deletebtn = (Button) findViewById(R.id.deletebtn);
+        rl_comment = (RelativeLayout)findViewById(R.id.rl_newComment);
+        rl_input = (RelativeLayout)findViewById(R.id.rl_input);
+        newComment = (ImageView)findViewById(R.id.newComment);
+        hide = (TextView)findViewById(R.id.hide_down);
+        comment_content = (EditText) findViewById(R.id.comment_content);
+
+
+        newComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 弹出输入法
+                InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+                // 显示评论框
+                rl_comment.setVisibility(View.GONE);
+                rl_input.setVisibility(View.VISIBLE);
+
+            }
+        });
+        hide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 隐藏评论框
+                rl_comment.setVisibility(View.VISIBLE);
+                rl_input.setVisibility(View.GONE);
+                // 隐藏输入法，然后暂存当前输入框的内容，方便下次使用
+                InputMethodManager im = (InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                im.hideSoftInputFromWindow(comment_content.getWindowToken(), 0);
+
+            }
+        });
         deletebtn.setVisibility(View.GONE);
 
         Bundle bd = getIntent().getExtras();
