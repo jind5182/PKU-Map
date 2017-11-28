@@ -60,10 +60,33 @@ public class MyFragment1 extends Fragment {
     private View nothing;
 
     public class TimeThread extends Thread {
+        private final Object lock = new Object();
+        private boolean pause = false;
+        void pauseThread(){
+            pause = true;
+        }
+        void resumeThread(){
+            pause = false;
+            synchronized (lock){
+                lock.notifyAll();
+            }
+        }
+        void onPause(){
+            synchronized (lock){
+                try{
+                    lock.wait();
+                }catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+            }
+        }
         @Override
         public void run() {
             do {
                 try {
+                    while (pause){
+                        onPause();
+                    }
                     Thread.sleep(5000);
                     Message msg = new Message();
                     msg.what = msgKey1;
@@ -130,11 +153,13 @@ public class MyFragment1 extends Fragment {
             @Override
             public void onMapClick(LatLng latLng) {
                 bdmap.hideInfoWindow();
+                update_thread.resumeThread();
             }
 
             @Override
             public boolean onMapPoiClick(MapPoi mapPoi) {
                 bdmap.hideInfoWindow();
+                update_thread.resumeThread();
                 Toast.makeText(mContext, "请到详情页选择地点！", Toast.LENGTH_LONG).show();
                 return false;
             }
@@ -142,7 +167,8 @@ public class MyFragment1 extends Fragment {
         bdmap.setOnMapLongClickListener(new BaiduMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(final LatLng latLng) {
-                //bdmap.hideInfoWindow();
+                bdmap.hideInfoWindow();
+                update_thread.pauseThread();
                 LayoutInflater inflater = LayoutInflater.from(mContext);
                 View view = inflater.inflate(R.layout.addwindow, null);
                 Button add = view.findViewById(R.id.addButton);
@@ -171,6 +197,7 @@ public class MyFragment1 extends Fragment {
         bdmap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+                update_thread.pauseThread();
                 final int eventIndex = (int)marker.getExtraInfo().get("index");
                 if (eventList[eventIndex].getLocationID() >= 0) {
                     showbuttom(eventList[eventIndex].getLocationID());
