@@ -2,6 +2,7 @@ package com.example.macpro.pku_map;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.net.LinkAddress;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -9,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.baidu.mapapi.SDKInitializer;
@@ -119,6 +121,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
             }
         }
+    }
+
+    public void setvisibility(boolean visible) {
+        LinearLayout ly_tab_bar = (LinearLayout) findViewById(R.id.ly_tab_bar);
+        if (visible)
+            ly_tab_bar.setVisibility(View.VISIBLE);
+        else
+            ly_tab_bar.setVisibility(View.GONE);
     }
 
 }

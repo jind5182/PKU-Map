@@ -47,7 +47,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         View view = inflater.inflate(R.layout.eventlist, container, false);
         mContext = getActivity();
         list_event = (ListView) view.findViewById(R.id.list_event);
-        if (which == 0) {
+        if (which == 0 || which == 3) {
             PreferenceUtil.myAdapter = new MyAdapter(PreferenceUtil.datas, getActivity());
             list_event.setAdapter(PreferenceUtil.myAdapter);
             PreferenceUtil.datas.clear();

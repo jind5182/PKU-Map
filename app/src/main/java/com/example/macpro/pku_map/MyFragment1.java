@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +55,9 @@ public class MyFragment1 extends Fragment {
     private MyFragment1.TimeThread update_thread;
     private InfoWindow addWindow;
     private InfoWindow eventWindow;
+    private FrameLayout buttomfl;
+    private Button tobuttom;
+    private View nothing;
 
     public class TimeThread extends Thread {
         @Override
@@ -87,6 +94,9 @@ public class MyFragment1 extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fg_content1, container, false);
         mContext = getActivity();
+        buttomfl = (FrameLayout) view.findViewById(R.id.buttomfl);
+        tobuttom = (Button) view.findViewById(R.id.tobuttom);
+        nothing = (View) view.findViewById(R.id.nothing);
         map = (MapView) view.findViewById(R.id.bdmap);
         locbtn = (Button) view.findViewById(R.id.locbtn);
         locbtn.setOnClickListener(new View.OnClickListener() {
@@ -162,7 +172,12 @@ public class MyFragment1 extends Fragment {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 final int eventIndex = (int)marker.getExtraInfo().get("index");
+                if (eventList[eventIndex].getLocationID() >= 0) {
+                    showbuttom(eventList[eventIndex].getLocationID());
+                    return false;
+                }
                 bdmap.hideInfoWindow();
+                hidebuttom();
                 LayoutInflater inflater = LayoutInflater.from(mContext);
                 View view = inflater.inflate(R.layout.infowindow, null);
                 TextView title = (TextView)view.findViewById(R.id.popTitle);
@@ -201,6 +216,35 @@ public class MyFragment1 extends Fragment {
         });
         return view;
     }
+
+    private void showbuttom(int locationID) {
+        ((MainActivity)getActivity()).setvisibility(false);
+        buttomfl.setVisibility(View.VISIBLE);
+        tobuttom.setVisibility(View.VISIBLE);
+        nothing.setVisibility(View.INVISIBLE);
+        FragmentManager fManager = getFragmentManager();
+        ListFragment nlFragment = new ListFragment(3);
+        FragmentTransaction ft = fManager.beginTransaction();
+        ft.replace(R.id.buttomfl, nlFragment);
+        ft.commit();
+        tobuttom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tobuttom.setVisibility(View.GONE);
+                buttomfl.setVisibility(View.GONE);
+                nothing.setVisibility(View.GONE);
+                ((MainActivity)getActivity()).setvisibility(true);
+            }
+        });
+    }
+
+    private void hidebuttom() {
+        tobuttom.setVisibility(View.GONE);
+        buttomfl.setVisibility(View.GONE);
+        nothing.setVisibility(View.GONE);
+        ((MainActivity)getActivity()).setvisibility(true);
+    }
+
     public void onStart(){
         super.onStart();
         getEventByTypeAsyncHttpClientPost(PreferenceUtil.maptype);
