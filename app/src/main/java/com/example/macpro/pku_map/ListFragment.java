@@ -52,13 +52,21 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
             list_event.setAdapter(PreferenceUtil.myAdapter);
             PreferenceUtil.datas.clear();
             getEventAsyncHttpClientPost();
+            list_event.setOnItemClickListener(this);
+            list_event.setOnItemLongClickListener(this);
         }
         else if (which == 1) {
             PreferenceUtil.myAdapter2 = new MyAdapter(PreferenceUtil.mydatas, getActivity());
             list_event.setAdapter(PreferenceUtil.myAdapter2);
+            list_event.setOnItemClickListener(this);
+            list_event.setOnItemLongClickListener(this);
         }
-        list_event.setOnItemClickListener(this);
-        list_event.setOnItemLongClickListener(this);
+        if (which == 4) {
+            PreferenceUtil.myAdapter = new MyAdapter(PreferenceUtil.datas, getActivity());
+            list_event.setAdapter(PreferenceUtil.myAdapter);
+            PreferenceUtil.datas.clear();
+            getEventAsyncHttpClientPost();
+        }
         return view;
     }
 

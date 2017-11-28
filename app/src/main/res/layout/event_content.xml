@@ -80,8 +80,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/contentLinear2"
         android:layout_below="@+id/contentLinear1"
-        android:layout_toRightOf="@+id/inputComment"
-        android:layout_toEndOf="@+id/inputComment"
         android:layout_marginTop="11dp">
         <TextView
             android:layout_width="wrap_content"
@@ -108,8 +106,9 @@
         android:id="@+id/view" />
 
     <LinearLayout
+        android:id="@+id/contentLinear3"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="120dp"
         android:layout_marginTop="13dp"
         android:layout_below="@+id/view"
         android:layout_alignParentLeft="true"
@@ -130,13 +129,22 @@
             android:textSize="18dp" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/comment_list"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="210dp"
-        android:layout_above="@+id/rl_newComment"
-        android:layout_toRightOf="@+id/rl_input"
-        android:layout_toEndOf="@+id/rl_input" />
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/comment_fl"
+        android:text="评 论"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        android:paddingLeft="15dp"
+        android:background="#f7d3d3"/>
+
+    <FrameLayout
+        android:id="@+id/comment_fl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/contentLinear3">
+    </FrameLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -152,6 +160,7 @@
             android:layout_centerHorizontal="true"
             android:src="@mipmap/comment" />
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/rl_input"
         android:layout_width="match_parent"
