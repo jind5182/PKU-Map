@@ -47,7 +47,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         View view = inflater.inflate(R.layout.eventlist, container, false);
         mContext = getActivity();
         list_event = (ListView) view.findViewById(R.id.list_event);
-        if (which == 0) {
+        if (which == 0 || which == 3) {
             PreferenceUtil.myAdapter = new MyAdapter(PreferenceUtil.datas, getActivity());
             list_event.setAdapter(PreferenceUtil.myAdapter);
             PreferenceUtil.datas.clear();
@@ -94,7 +94,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         return true;
     }
 
-    private void deleteEventAsyncHttpClientPost(int eventID) {
+    private void deleteEventAsyncHttpClientPost(final int eventID) {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
@@ -121,7 +121,9 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Toast.makeText(mContext, "删除成功", Toast.LENGTH_SHORT).show();
+                PreferenceUtil.deletebyID(eventID);
+                PreferenceUtil.myAdapter.notifyDataSetChanged();
+                PreferenceUtil.myAdapter2.notifyDataSetChanged();
             }
 
             @Override
