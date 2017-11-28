@@ -11,4 +11,5 @@
     <color name="text_topbar">#fcfbfb</color>
     <color name="div_white">#FFFAFA</color>
     <color name="green">#51a486</color>
+    <color name="btnGreen">#4dc445</color>
 </resources>
