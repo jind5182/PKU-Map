@@ -1,7 +1,5 @@
 package com.example.macpro.pku_map;
 
-import android.content.Context;
-
 public class Event {
 
     public int eventID;
