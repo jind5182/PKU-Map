@@ -8,10 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.PreemptiveAuthorizationHttpRequestInterceptor;
 
 import org.apache.http.Header;
 import org.apache.http.entity.ByteArrayEntity;
@@ -26,11 +28,15 @@ public class MyFragment3 extends Fragment {
 
     private Button myevent = null;
     private Context mContext = null;
+    private TextView name = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fg_content3, container, false);
         mContext = getActivity();
+        name = (TextView) view.findViewById(R.id.name);
+        if (PreferenceUtil.islogged)
+            name.setText(PreferenceUtil.username);
         myevent = (Button) view.findViewById(R.id.myevent);
         myevent.setOnClickListener(new View.OnClickListener() {
             @Override

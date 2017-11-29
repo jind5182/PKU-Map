@@ -37,7 +37,7 @@ public class EventActivity extends AppCompatActivity {
     private AlertDialog.Builder builder = null;
     private Context mContext;
     private Button eventcontentret, deletebtn, comment_send;
-    private TextView event_content, event_title, eventcontenttitle;
+    private TextView event_content, event_title, eventcontenttitle, event_user;
     private ImageButton newComment;
     private RelativeLayout rl_input;
     private TextView hide;
@@ -50,6 +50,7 @@ public class EventActivity extends AppCompatActivity {
         mContext = EventActivity.this;
         event_content = (TextView) findViewById(R.id.event_content);
         event_title = (TextView) findViewById(R.id.event_title);
+        event_user = (TextView) findViewById(R.id.event_user);
         eventcontenttitle = (TextView) findViewById(R.id.eventcontenttitle);
         eventcontentret = (Button) findViewById(R.id.eventcontentret);
         eventcontentret.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +72,7 @@ public class EventActivity extends AppCompatActivity {
         Event event = PreferenceUtil.getEvent(eventID);
         event_title.setText(event.getTitle());
         event_content.setText(event.getDescription());
+        event_user.setText(event.getUsername());
 
         newComment.setVisibility(View.GONE);
         if (which != 1) {

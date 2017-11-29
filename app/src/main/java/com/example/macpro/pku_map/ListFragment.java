@@ -215,6 +215,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                             event.type = (temp.getInt("type"));
                             event.setPublisherID(temp.getInt("publisherID"));
                             event.setTitle(temp.getString("title"));
+                            event.setUsername(temp.getString("username"));
                             PreferenceUtil.datas.add(event);
                         }
                         PreferenceUtil.myAdapter.notifyDataSetChanged();
@@ -289,6 +290,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                             event.type = (temp.getInt("type"));
                             event.setPublisherID(temp.getInt("publisherID"));
                             event.setTitle(temp.getString("title"));
+                            event.setUsername(temp.getString("username"));
                             PreferenceUtil.locdatas.add(event);
                         }
                         PreferenceUtil.myAdapterloc.notifyDataSetChanged();
@@ -354,6 +356,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                                 comment.setFatherID(temp.getInt("fatherID"));
                                 comment.setFatherType(temp.getString("fatherType"));
                                 comment.setPublisherID(temp.getInt("publisherID"));
+                                comment.setUsername(temp.getString("username"));
                                 PreferenceUtil.commentdatas.add(comment);
                             }
                             PreferenceUtil.myAdapterforComment.notifyDataSetChanged();

@@ -67,7 +67,7 @@ public class Login extends Activity implements View.OnClickListener {
         signinlater.setOnClickListener(this);
     }
 
-    private void loginByAsyncHttpClientPost(String userName, String userPass) {
+    private void loginByAsyncHttpClientPost(String userName, String userPass, final String username) {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
@@ -104,6 +104,7 @@ public class Login extends Activity implements View.OnClickListener {
                     else if(status == 0) {
                         PreferenceUtil.islogged = true;
                         PreferenceUtil.userID = response.getInt("userID");
+                        PreferenceUtil.username = username;
                         Toast.makeText(Login.this, "登录成功", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(Login.this, MainActivity.class));
                         finish();
@@ -135,7 +136,7 @@ public class Login extends Activity implements View.OnClickListener {
                 else {
                     String[] param = {Username, Passwd};
                     TextView displaytxt = (TextView) findViewById(R.id.display_txt);
-                    loginByAsyncHttpClientPost(param[0], param[1]);
+                    loginByAsyncHttpClientPost(param[0], param[1], Username);
                 }
                 break;
             case R.id.signupbtn:

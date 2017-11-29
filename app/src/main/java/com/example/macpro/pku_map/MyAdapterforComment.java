@@ -45,7 +45,7 @@ public class MyAdapterforComment extends BaseAdapter{
         } else {
             viewHolder = (MyAdapterforComment.ViewHolder) convertView.getTag();
         }
-        viewHolder.txt_item_title.setText(mComment.get(position).getContent());
+        viewHolder.txt_item_title.setText(mComment.get(position).getUsername() + " : " + mComment.get(position).getContent());
         return convertView;
     }
 

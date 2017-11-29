@@ -21,6 +21,7 @@ public class PreferenceUtil {
     public static int maptype = 0;
     public static boolean islogged = false;
     public static int userID;
+    public static String username;
     public static final String SHOW_GUIDE = "showguide";
     public static final String[] place = {"第一教学楼", "第二教学楼", "第三教学楼",
             "第四教学楼", "理科教学楼", "光华管理学院", "新闻与传播学院", "化学学院",

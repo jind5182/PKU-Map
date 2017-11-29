@@ -352,6 +352,7 @@ public class MyFragment1 extends Fragment {
                             eventList[i].type = (temp.getInt("type"));
                             eventList[i].setPublisherID(temp.getInt("publisherID"));
                             eventList[i].setTitle(temp.getString("title"));
+                            eventList[i].setUsername(temp.getString("username"));
                             Bundle bundle = new Bundle();
                             bundle.putInt("index", i);
                             LatLng point = new LatLng(eventList[i].locationY, eventList[i].locationX);

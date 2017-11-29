@@ -105,6 +105,7 @@ public class Myevent extends AppCompatActivity {
                             event.type = (temp.getInt("type"));
                             event.setPublisherID(temp.getInt("publisherID"));
                             event.setTitle(temp.getString("title"));
+
                             PreferenceUtil.mydatas.add(event);
                         }
                         fManager = getSupportFragmentManager();
