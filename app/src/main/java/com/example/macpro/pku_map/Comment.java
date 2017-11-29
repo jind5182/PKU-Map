@@ -4,7 +4,7 @@ public class Comment {
 
     public int commentID;
     public String content;
-    public int fatherType;
+    public String fatherType;
     public int fatherID;
 
     public int getCommentID() {
@@ -13,7 +13,7 @@ public class Comment {
     public String getContent() {
         return this.content;
     }
-    public int getFatherType() {
+    public String getFatherType() {
         return this.fatherType;
     }
     public int getFatherID() {
@@ -26,7 +26,7 @@ public class Comment {
     public void setContent(String content) {
         this.content = content;
     }
-    public void setFatherType(int fatherType) {
+    public void setFatherType(String fatherType) {
         this.fatherType = fatherType;
     }
     public void setFatherID(int fatherID) {

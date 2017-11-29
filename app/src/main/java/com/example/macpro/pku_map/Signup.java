@@ -128,7 +128,7 @@ public class Signup extends Activity{
                 if (UserCardID.length() != 10) {
                     Toast.makeText(mContext, "请填入10位学号", Toast.LENGTH_SHORT).show();
                 }
-                else if (UserPass.equals(UserPassConf)) {
+                else if (!UserPass.equals(UserPassConf)) {
                     Toast.makeText(mContext, "前后输入的密码不一致，请再次尝试", Toast.LENGTH_SHORT).show();
                 }
                 else {
@@ -136,8 +136,6 @@ public class Signup extends Activity{
                     TextView displaytxt = (TextView) findViewById(R.id.display_txt);
                     signupByAsyncHttpClientPost(param);
                 }
-                //startActivity(new Intent(Signup.this, MainActivity.class));
-                finish();
             }
         });
     }

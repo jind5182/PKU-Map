@@ -67,15 +67,16 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
             PreferenceUtil.locdatas.clear();
             PreferenceUtil.myAdapterloc = new MyAdapter(PreferenceUtil.locdatas, getActivity());
             list_event.setAdapter(PreferenceUtil.myAdapterloc);
-            getEventByLocationID(bd.getInt("locationID"));
+            getEventByLocationID(bd.getInt("locationID"), bd.getInt("type"));
             list_event.setOnItemClickListener(this);
             list_event.setOnItemLongClickListener(this);
         }
         if (which == 4) {
-            PreferenceUtil.myAdapter = new MyAdapter(PreferenceUtil.datas, getActivity());
-            list_event.setAdapter(PreferenceUtil.myAdapter);
-            PreferenceUtil.datas.clear();
-            getEventAsyncHttpClientPost();
+            PreferenceUtil.myAdapterforComment = new MyAdapterforComment(PreferenceUtil.commentdatas, getActivity());
+            list_event.setAdapter(PreferenceUtil.myAdapterforComment);
+            PreferenceUtil.commentdatas.clear();
+            Bundle bd = getArguments();
+            getCommentByFather(bd.getInt("fatherID"));
         }
         return view;
     }
@@ -83,7 +84,19 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Bundle bd = new Bundle();
-        bd.putInt("eventID", PreferenceUtil.datas.get(position).getEventId());
+        int eventID = 0;
+        switch (which) {
+            case 0:
+                eventID = PreferenceUtil.datas.get(position).getEventId();
+                break;
+            case 1:
+                eventID = PreferenceUtil.mydatas.get(position).getEventId();
+                break;
+            case 3:
+                eventID = PreferenceUtil.locdatas.get(position).getEventId();
+                break;
+        }
+        bd.putInt("eventID", eventID);
         bd.putInt("which", which);
         Intent it = new Intent(getActivity(), EventActivity.class);
         it.putExtras(bd);
@@ -222,7 +235,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
 
     }
 
-    private void getEventByLocationID(final int locationID) {
+    private void getEventByLocationID(final int locationID, final int type) {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
@@ -232,6 +245,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("locationID", locationID);
+            jsonObject.put("type", type);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -278,6 +292,72 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                             PreferenceUtil.locdatas.add(event);
                         }
                         PreferenceUtil.myAdapterloc.notifyDataSetChanged();
+                    }
+
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_LONG).show();
+            }
+        });
+        return;
+
+    }
+
+    private void getCommentByFather(final int fatherID) {
+        //创建异步请求对象
+        Toast.makeText(mContext, "111", Toast.LENGTH_SHORT).show();
+        AsyncHttpClient client = new AsyncHttpClient();
+        //输入要请求的url
+        String url = "http://120.25.232.47:8002/getCommentByFather/";
+        //String url = "http://www.baidu.com";
+        //请求的参数对象
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("fatherID", fatherID);
+            jsonObject.put("fatherType", "event");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        //将参数加入到参数对象中
+        ByteArrayEntity entity = null;
+        try {
+            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        //进行post请求
+        client.post(mContext, url, entity, "application/json", new JsonHttpResponseHandler() {
+            //如果成功
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                Toast.makeText(mContext, "成功", Toast.LENGTH_SHORT).show();
+                try {
+                    int status = response.getInt("getStatus");
+                    if (status == 1) {
+                        Toast.makeText(mContext, "status code is:"+ statusCode+ "\n更新失败!\n", Toast.LENGTH_LONG).show();
+                    }
+                    else if(status == 0) {
+                        int count = response.getInt("commentNum");
+                        JSONArray comments = response.getJSONArray("comments");
+                        for (int i = 0; i < count; i++)
+                        {
+                            JSONObject temp = comments.getJSONObject(i);
+                            Comment comment = new Comment();
+                            comment.setCommentID(temp.getInt("commentID"));
+                            comment.setContent(temp.getString("content"));
+                            comment.setFatherID(temp.getInt("fatherID"));
+                            comment.setFatherType(temp.getString("fatherType"));
+                            PreferenceUtil.commentdatas.add(comment);
+                        }
+                        PreferenceUtil.myAdapterforComment.notifyDataSetChanged();
                     }
 
                 }catch (JSONException e) {

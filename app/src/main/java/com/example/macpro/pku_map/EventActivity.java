@@ -123,6 +123,7 @@ public class EventActivity extends AppCompatActivity {
                                         } else {
                                             postComment(comment, PreferenceUtil.userID, eventID);
                                             alert.dismiss();
+                                            comment_content.setText("");
                                         }
                                     }
                                 }).create();             //创建AlertDialog对象
@@ -161,6 +162,9 @@ public class EventActivity extends AppCompatActivity {
         }
         FragmentManager fManager = getSupportFragmentManager();
         ListFragment nlFragment = new ListFragment(4);
+        Bundle bd2 = new Bundle();
+        bd.putInt("fatherID", eventID);
+        nlFragment.setArguments(bd2);
         FragmentTransaction ft = fManager.beginTransaction();
         ft.replace(R.id.comment_fl, nlFragment);
         ft.commit();
@@ -220,7 +224,7 @@ public class EventActivity extends AppCompatActivity {
             jsonObject.put("content", comment);
             jsonObject.put("publisherID", userID);
             jsonObject.put("fatherID", eventID);
-            jsonObject.put("fatherType", 0);
+            jsonObject.put("fatherType", "event");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -239,6 +243,17 @@ public class EventActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 Toast.makeText(mContext, "发布成功", Toast.LENGTH_SHORT).show();
+                Comment tmpcomment = new Comment();
+                try {
+                    tmpcomment.setCommentID(response.getInt("commentID"));
+                    tmpcomment.setFatherID(eventID);
+                    tmpcomment.setContent(comment);
+                    tmpcomment.setFatherType("event");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                PreferenceUtil.commentdatas.add(tmpcomment);
+                PreferenceUtil.myAdapterforComment.notifyDataSetChanged();
             }
 
             @Override
