@@ -215,8 +215,6 @@ public class MyFragment1 extends Fragment {
                 LayoutInflater inflater = LayoutInflater.from(mContext);
                 View view = inflater.inflate(R.layout.infowindow, null);
                 TextView title = (TextView)view.findViewById(R.id.popTitle);
-                Button next = (Button)view.findViewById(R.id.nextButton);
-                Button pre = (Button)view.findViewById(R.id.preButton);
                 Button getContent = (Button)view.findViewById(R.id.getContent);
                 title.setText("标题: "+eventList[eventIndex].title);
                 getContent.setOnClickListener(new View.OnClickListener() {
@@ -228,18 +226,6 @@ public class MyFragment1 extends Fragment {
                         Intent it = new Intent(getActivity(), EventActivity.class);
                         it.putExtras(bd);
                         startActivity(it);
-                    }
-                });
-                next.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(mContext, "该地的下一个事件", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                pre.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(mContext, "该地的上一个事件", Toast.LENGTH_SHORT).show();
                     }
                 });
                 LatLng point = marker.getPosition();
