@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baidu.mapapi.SDKInitializer;
 
@@ -29,6 +30,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final int PAGE_ONE = 0;
     public static final int PAGE_TWO = 1;
     public static final int PAGE_THREE = 2;
+
+    private long exitTime = 0;
+    public void onBackPressed(){
+        if (System.currentTimeMillis() - exitTime > 2000) {
+            Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+        }
+        else
+        {
+            finish();
+            System.exit(0);
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
