@@ -12,8 +12,10 @@ public class PreferenceUtil {
      */
     public static MyAdapter myAdapter = null;
     public static MyAdapter myAdapter2 = null;
+    public static MyAdapter myAdapterloc = null;
     public static ArrayList<Event> datas = new ArrayList<Event>();
     public static ArrayList<Event> mydatas = new ArrayList<Event>();
+    public static ArrayList<Event> locdatas = new ArrayList<Event>();
     public static int maptype = 0;
     public static boolean islogged = false;
     public static int userID;

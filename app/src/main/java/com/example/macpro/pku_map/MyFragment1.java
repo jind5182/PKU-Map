@@ -254,6 +254,9 @@ public class MyFragment1 extends Fragment {
         nothing.setVisibility(View.INVISIBLE);
         FragmentManager fManager = getFragmentManager();
         ListFragment nlFragment = new ListFragment(3);
+        Bundle bd = new Bundle();
+        bd.putInt("locationID", locationID);
+        nlFragment.setArguments(bd);
         FragmentTransaction ft = fManager.beginTransaction();
         ft.replace(R.id.buttomfl, nlFragment);
         ft.commit();

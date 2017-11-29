@@ -36,7 +36,7 @@ public class Signup extends Activity{
 
 
     private void signupByAsyncHttpClientPost(String... param) {
-        String studentID = param[0];
+        String userCardID = param[0];
         String userName = param[1];
         String userPass = param[2];
         String userPhoneNumber = param[3];
@@ -48,7 +48,7 @@ public class Signup extends Activity{
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("studentID",studentID);
+            jsonObject.put("userCardId",userCardID);
             jsonObject.put("userName",userName);
             jsonObject.put("pwd",userPass);
             jsonObject.put("contact", userPhoneNumber);
@@ -87,9 +87,6 @@ public class Signup extends Activity{
                     else if (status == 3){
                         Toast.makeText(mContext, "手机号已存在",  Toast.LENGTH_LONG).show();
                     }
-                    else if (status == 4){
-                        Toast.makeText(mContext, "error! signupStatus is:" + status ,Toast.LENGTH_LONG).show();
-                    }
                 }catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -123,42 +120,24 @@ public class Signup extends Activity{
         su.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String studentID = suid.getText().toString();
+                String UserCardID = suid.getText().toString();
                 String Username = suusername.getText().toString();
                 String UserPass = supasswd.getText().toString();
                 String UserPassConf = supasswd2.getText().toString();
                 String UserPhoneNumber = suphonenumber.getText().toString();
-                if (studentID.length() != 10) {
+                if (UserCardID.length() != 10) {
                     Toast.makeText(mContext, "请填入10位学号", Toast.LENGTH_SHORT).show();
                 }
-                else if(Username.length() == 0) {
-                    Toast.makeText(mContext, "用户名不能为空", Toast.LENGTH_SHORT).show();
-                }
-                else if(Username.length() > 10) {
-                    Toast.makeText(mContext, "用户名不能超过10个字符", Toast.LENGTH_SHORT).show();
-                }
-                else if(UserPhoneNumber.length() == 0){
-                    Toast.makeText(mContext, "手机号不能为空", Toast.LENGTH_SHORT).show();
-                }
-                else if(UserPass.length() == 0){
-                    Toast.makeText(mContext, "  请输入密码", Toast.LENGTH_SHORT).show();
-                }
-                else if(UserPass.length() > 32){
-                    Toast.makeText(mContext, "  密码不能超过32个字符", Toast.LENGTH_SHORT).show();
-                }
-                else if(UserPassConf.length() == 0){
-                    Toast.makeText(mContext, "  请输入确认密码", Toast.LENGTH_SHORT).show();
-                }
-                else if (!UserPass.equals(UserPassConf)) {
+                else if (UserPass.equals(UserPassConf)) {
                     Toast.makeText(mContext, "前后输入的密码不一致，请再次尝试", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    String[] param = {studentID, Username, UserPass, UserPhoneNumber};
+                    String[] param = {UserCardID, Username, UserPass, UserPhoneNumber};
                     TextView displaytxt = (TextView) findViewById(R.id.display_txt);
                     signupByAsyncHttpClientPost(param);
                 }
                 //startActivity(new Intent(Signup.this, MainActivity.class));
-                //finish();
+                finish();
             }
         });
     }

@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,8 +38,8 @@ public class EventActivity extends AppCompatActivity {
     private Context mContext;
     private Button eventcontentret, deletebtn, comment_send;
     private TextView event_content, event_title, eventcontenttitle;
-    private ImageView newComment;
-    private RelativeLayout rl_input, rl_comment;
+    private ImageButton newComment;
+    private RelativeLayout rl_input;
     private TextView hide;
     private EditText comment_content;
 
@@ -58,9 +59,8 @@ public class EventActivity extends AppCompatActivity {
             }
         });
         deletebtn = (Button) findViewById(R.id.deletebtn);
-        rl_comment = (RelativeLayout)findViewById(R.id.rl_newComment);
         rl_input = (RelativeLayout)findViewById(R.id.rl_input);
-        newComment = (ImageView)findViewById(R.id.newComment);
+        newComment = (ImageButton)findViewById(R.id.newComment);
         hide = (TextView)findViewById(R.id.hide_down);
         comment_content = (EditText) findViewById(R.id.comment_content);
         comment_send = (Button) findViewById(R.id.comment_send);
@@ -82,7 +82,7 @@ public class EventActivity extends AppCompatActivity {
                     InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
                     // 显示评论框
-                    rl_comment.setVisibility(View.GONE);
+                    newComment.setVisibility(View.GONE);
                     rl_input.setVisibility(View.VISIBLE);
 
                 }
@@ -91,7 +91,7 @@ public class EventActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     // 隐藏评论框
-                    rl_comment.setVisibility(View.VISIBLE);
+                    newComment.setVisibility(View.VISIBLE);
                     rl_input.setVisibility(View.GONE);
                     // 隐藏输入法，然后暂存当前输入框的内容，方便下次使用
                     InputMethodManager im = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -99,40 +99,40 @@ public class EventActivity extends AppCompatActivity {
 
                 }
             });
-        }
-        comment_send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (PreferenceUtil.islogged) {
-                    final String comment = comment_content.getText().toString();
-                    alert = null;
-                    builder = new AlertDialog.Builder(mContext, R.style.AlertDialog);
-                    alert = builder.setMessage("是否确定发布？")
-                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Toast.makeText(mContext, "你点击了取消按钮~", Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if (comment.equals("")) {
-                                        Toast.makeText(mContext, "评论不能为空", Toast.LENGTH_SHORT).show();
-                                        alert.dismiss();
-                                    } else {
-                                        //postComment(comment, PreferenceUtil.userID, eventID);
-                                        alert.dismiss();
+
+            comment_send.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (PreferenceUtil.islogged) {
+                        final String comment = comment_content.getText().toString();
+                        alert = null;
+                        builder = new AlertDialog.Builder(mContext, R.style.AlertDialog);
+                        alert = builder.setMessage("是否确定发布？")
+                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Toast.makeText(mContext, "你点击了取消按钮~", Toast.LENGTH_SHORT).show();
                                     }
-                                }
-                            }).create();             //创建AlertDialog对象
-                    alert.show();                    //显示对话框
+                                })
+                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if (comment.equals("")) {
+                                            Toast.makeText(mContext, "评论不能为空", Toast.LENGTH_SHORT).show();
+                                            alert.dismiss();
+                                        } else {
+                                            postComment(comment, PreferenceUtil.userID, eventID);
+                                            alert.dismiss();
+                                        }
+                                    }
+                                }).create();             //创建AlertDialog对象
+                        alert.show();                    //显示对话框
+                    } else {
+                        Toast.makeText(mContext, "请先登录", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                else {
-                    Toast.makeText(mContext, "请先登录", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+            });
+        }
 
         deletebtn.setVisibility(View.GONE);
         if (which == 1) {
@@ -217,9 +217,10 @@ public class EventActivity extends AppCompatActivity {
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("comment", comment);
-            jsonObject.put("userID", userID);
-            jsonObject.put("eventID", eventID);
+            jsonObject.put("content", comment);
+            jsonObject.put("publisherID", userID);
+            jsonObject.put("fatherID", eventID);
+            jsonObject.put("fatherType", 0);
         } catch (JSONException e) {
             e.printStackTrace();
         }
