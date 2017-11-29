@@ -88,6 +88,7 @@
                 android:textSize="17sp"
                 android:drawablePadding="15dp"
                 android:paddingLeft="15dp"
+                android:inputType="textPassword"
                 android:background="@null"/>
             <EditText
                 android:id="@+id/supasswd2"
@@ -100,6 +101,7 @@
                 android:textSize="17sp"
                 android:drawablePadding="15dp"
                 android:paddingLeft="15dp"
+                android:inputType="textPassword"
                 android:background="@null"/>
         </LinearLayout>
 

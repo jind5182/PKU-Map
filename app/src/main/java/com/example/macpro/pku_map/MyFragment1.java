@@ -157,12 +157,16 @@ public class MyFragment1 extends Fragment {
             public void onMapClick(LatLng latLng) {
                 bdmap.hideInfoWindow();
                 update_thread.resumeThread();
+                if (buttomfl.getVisibility() == View.VISIBLE)
+                    hidebuttom();
             }
 
             @Override
             public boolean onMapPoiClick(MapPoi mapPoi) {
                 bdmap.hideInfoWindow();
                 update_thread.resumeThread();
+                if (buttomfl.getVisibility() == View.VISIBLE)
+                    hidebuttom();
                 Toast.makeText(mContext, "请到详情页选择地点！", Toast.LENGTH_LONG).show();
                 return false;
             }
@@ -203,7 +207,7 @@ public class MyFragment1 extends Fragment {
                 update_thread.pauseThread();
                 final int eventIndex = (int)marker.getExtraInfo().get("index");
                 if (eventList[eventIndex].getLocationID() >= 0) {
-                    showbuttom(eventList[eventIndex].getLocationID());
+                    showbuttom(eventList[eventIndex].getLocationID(), PreferenceUtil.maptype);
                     return false;
                 }
                 bdmap.hideInfoWindow();
@@ -247,13 +251,17 @@ public class MyFragment1 extends Fragment {
         return view;
     }
 
-    private void showbuttom(int locationID) {
+    private void showbuttom(int locationID, int type) {
         ((MainActivity)getActivity()).setvisibility(false);
         buttomfl.setVisibility(View.VISIBLE);
         tobuttom.setVisibility(View.VISIBLE);
         nothing.setVisibility(View.INVISIBLE);
         FragmentManager fManager = getFragmentManager();
         ListFragment nlFragment = new ListFragment(3);
+        Bundle bd = new Bundle();
+        bd.putInt("locationID", locationID);
+        bd.putInt("type", type);
+        nlFragment.setArguments(bd);
         FragmentTransaction ft = fManager.beginTransaction();
         ft.replace(R.id.buttomfl, nlFragment);
         ft.commit();

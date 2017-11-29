@@ -146,20 +146,13 @@
         android:layout_below="@+id/contentLinear3">
     </FrameLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:id="@+id/newComment"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_alignParentBottom="true"
-        android:id="@+id/rl_newComment">
-
-        <ImageView
-            android:id="@+id/newComment"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:src="@mipmap/comment" />
-    </RelativeLayout>
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/comment" />
 
     <RelativeLayout
         android:id="@+id/rl_input"
