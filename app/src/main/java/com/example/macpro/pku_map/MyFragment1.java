@@ -369,6 +369,10 @@ public class MyFragment1 extends Fragment {
                             Bundle bundle = new Bundle();
                             bundle.putInt("index", i);
                             LatLng point = new LatLng(eventList[i].locationY, eventList[i].locationX);
+                            if (eventList[i].locationID >= 0)
+                                bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.icon_gcoding2);
+                            else
+                                bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.icon_gcoding);
                             OverlayOptions option = new MarkerOptions()
                                     .position(point)
                                     .icon(bitmap)

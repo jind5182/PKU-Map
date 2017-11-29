@@ -148,6 +148,7 @@
 
     <ImageButton
         android:id="@+id/newComment"
+        android:background="@color/bg_white"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
