@@ -10,6 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.content.*;
 import java.io.*;
+import java.math.BigInteger;
+import java.security.MessageDigest;
 
 import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
@@ -28,6 +30,7 @@ public class Login extends Activity implements View.OnClickListener {
     private EditText username = null;
     private EditText passwd = null;
     Context mContext = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
