@@ -24,7 +24,7 @@ public class Signup extends Activity{
 
     private Button su;
     private ImageButton suret;
-    private EditText suusername, supasswd, supasswd2, suid;
+    private EditText suusername, supasswd, supasswd2, suid, suphonenumber;
     Context mContext = this;
 
     @Override
@@ -36,9 +36,10 @@ public class Signup extends Activity{
 
 
     private void signupByAsyncHttpClientPost(String... param) {
-        String userid = param[0];
-        String username = param[1];
+        String userCardID = param[0];
+        String userName = param[1];
         String userPass = param[2];
+        String userPhoneNumber = param[3];
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
@@ -47,9 +48,10 @@ public class Signup extends Activity{
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("userId",userid);
-            jsonObject.put("userName",username);
+            jsonObject.put("userCardId",userCardID);
+            jsonObject.put("userName",userName);
             jsonObject.put("pwd",userPass);
+            jsonObject.put("contact", userPhoneNumber);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -69,15 +71,21 @@ public class Signup extends Activity{
                 super.onSuccess(statusCode, headers, response);
                 try {
                     int status = response.getInt("signupStatus");
-                    if (status == 1) {
-                        Toast.makeText(mContext, "用户名已存在",  Toast.LENGTH_LONG).show();
-                    }
-                    else if(status == 0) {
-                        PreferenceUtil.islogged = true;
-                        PreferenceUtil.userID = response.getInt("userID");
+                    if(status == 0) {
+                        //PreferenceUtil.islogged = true;
+                        //PreferenceUtil.userID = response.getInt("userID");
                         Toast.makeText(mContext, "注册成功", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(mContext, MainActivity.class));
                         finish();
+                    }
+                    if (status == 1) {
+                        Toast.makeText(mContext, "学号已存在",  Toast.LENGTH_LONG).show();
+                    }
+                    else if (status == 2){
+                        Toast.makeText(mContext, "用户名已存在",  Toast.LENGTH_LONG).show();
+                    }
+                    else if (status == 3){
+                        Toast.makeText(mContext, "手机号已存在",  Toast.LENGTH_LONG).show();
                     }
                 }catch (JSONException e) {
                     e.printStackTrace();
@@ -101,6 +109,7 @@ public class Signup extends Activity{
         supasswd = (EditText) findViewById(R.id.supasswd);
         supasswd2 = (EditText) findViewById(R.id.supasswd2);
         suid = (EditText) findViewById(R.id.suid);
+        suphonenumber = (EditText) findViewById(R.id.suphonenumber);
         suret.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,18 +120,19 @@ public class Signup extends Activity{
         su.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String Userid = suid.getText().toString();
+                String UserCardID = suid.getText().toString();
                 String Username = suusername.getText().toString();
                 String UserPass = supasswd.getText().toString();
                 String UserPassConf = supasswd2.getText().toString();
-                if (Userid.length() != 10) {
+                String UserPhoneNumber = suphonenumber.getText().toString();
+                if (UserCardID.length() != 10) {
                     Toast.makeText(mContext, "请填入10位学号", Toast.LENGTH_SHORT).show();
                 }
                 else if (UserPass.equals(UserPassConf)) {
                     Toast.makeText(mContext, "前后输入的密码不一致，请再次尝试", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    String[] param = {Userid, Username, UserPass};
+                    String[] param = {UserCardID, Username, UserPass, UserPhoneNumber};
                     TextView displaytxt = (TextView) findViewById(R.id.display_txt);
                     signupByAsyncHttpClientPost(param);
                 }
