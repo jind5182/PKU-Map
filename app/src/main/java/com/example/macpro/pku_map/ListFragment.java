@@ -311,7 +311,6 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
 
     private void getCommentByFather(final int fatherID) {
         //创建异步请求对象
-        Toast.makeText(mContext, "111", Toast.LENGTH_SHORT).show();
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
         String url = "http://120.25.232.47:8002/getCommentByFather/";
@@ -338,7 +337,6 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Toast.makeText(mContext, "成功", Toast.LENGTH_SHORT).show();
                 try {
                     int status = response.getInt("getStatus");
                     if (status == 1) {
@@ -346,18 +344,20 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                     }
                     else if(status == 0) {
                         int count = response.getInt("commentNum");
-                        JSONArray comments = response.getJSONArray("comments");
-                        for (int i = 0; i < count; i++)
-                        {
-                            JSONObject temp = comments.getJSONObject(i);
-                            Comment comment = new Comment();
-                            comment.setCommentID(temp.getInt("commentID"));
-                            comment.setContent(temp.getString("content"));
-                            comment.setFatherID(temp.getInt("fatherID"));
-                            comment.setFatherType(temp.getString("fatherType"));
-                            PreferenceUtil.commentdatas.add(comment);
+                        if (count != 0) {
+                            JSONArray comments = response.getJSONArray("comments");
+                            for (int i = 0; i < count; i++) {
+                                JSONObject temp = comments.getJSONObject(i);
+                                Comment comment = new Comment();
+                                comment.setCommentID(temp.getInt("commentID"));
+                                comment.setContent(temp.getString("content"));
+                                comment.setFatherID(temp.getInt("fatherID"));
+                                comment.setFatherType(temp.getString("fatherType"));
+                                comment.setPublisherID(temp.getInt("publisherID"));
+                                PreferenceUtil.commentdatas.add(comment);
+                            }
+                            PreferenceUtil.myAdapterforComment.notifyDataSetChanged();
                         }
-                        PreferenceUtil.myAdapterforComment.notifyDataSetChanged();
                     }
 
                 }catch (JSONException e) {

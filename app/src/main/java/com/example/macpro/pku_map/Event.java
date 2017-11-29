@@ -11,6 +11,7 @@ public class Event {
     public int type;
     public String description;
     public int outdate;
+    public String username;
 
     public void setEventID(int eventID) {
         this.eventID = eventID;
@@ -64,6 +65,9 @@ public class Event {
     public void setOutdate(int outdate) {
         this.outdate = outdate;
     }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public int getEventId() {
         return eventID;
@@ -97,5 +101,8 @@ public class Event {
     }
     public int getOutdate() {
         return outdate;
+    }
+    public String getUsername() {
+        return username;
     }
 }

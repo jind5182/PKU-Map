@@ -163,7 +163,7 @@ public class EventActivity extends AppCompatActivity {
         FragmentManager fManager = getSupportFragmentManager();
         ListFragment nlFragment = new ListFragment(4);
         Bundle bd2 = new Bundle();
-        bd.putInt("fatherID", eventID);
+        bd2.putInt("fatherID", eventID);
         nlFragment.setArguments(bd2);
         FragmentTransaction ft = fManager.beginTransaction();
         ft.replace(R.id.comment_fl, nlFragment);
@@ -249,6 +249,7 @@ public class EventActivity extends AppCompatActivity {
                     tmpcomment.setFatherID(eventID);
                     tmpcomment.setContent(comment);
                     tmpcomment.setFatherType("event");
+                    tmpcomment.setPublisherID(userID);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
