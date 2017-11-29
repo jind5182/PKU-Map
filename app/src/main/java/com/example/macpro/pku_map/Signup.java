@@ -100,7 +100,7 @@ public class Signup extends Activity{
                         //PreferenceUtil.islogged = true;
                         //PreferenceUtil.userID = response.getInt("userID");
                         Toast.makeText(mContext, "注册成功", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(mContext, MainActivity.class));
+                        startActivity(new Intent(Signup.this, Login.class));
                         finish();
                     }
                     if (status == 1) {
