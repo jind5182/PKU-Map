@@ -276,6 +276,7 @@ public class EventActivity extends AppCompatActivity {
                     tmpcomment.setContent(comment);
                     tmpcomment.setFatherType("event");
                     tmpcomment.setPublisherID(userID);
+                    tmpcomment.setUsername(PreferenceUtil.username);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
