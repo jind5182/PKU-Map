@@ -162,6 +162,30 @@ public class EventActivity extends AppCompatActivity {
                 }
             });
         }
+        else {
+            deletebtn.setVisibility(View.VISIBLE);
+            deletebtn.setText("举报");
+            deletebtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    alert = null;
+                    builder = new AlertDialog.Builder(mContext, R.style.AlertDialog);
+                    alert = builder.setMessage("是否确定举报？")
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //deleteEventAsyncHttpClientPost(eventID);
+                                }
+                            }).create();
+                    alert.show();
+                }
+            });
+        }
         FragmentManager fManager = getSupportFragmentManager();
         ListFragment nlFragment = new ListFragment(4);
         Bundle bd2 = new Bundle();

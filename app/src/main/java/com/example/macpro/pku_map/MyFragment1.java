@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.baidu.mapapi.map.*;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.model.LatLngBounds;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -186,6 +187,13 @@ public class MyFragment1 extends Fragment {
                         if (PreferenceUtil.islogged) {
                             double coordinateX = latLng.longitude;
                             double coordinateY = latLng.latitude;
+                            /*LatLng northwest = new LatLng(40.005716, 116.310486);
+                            LatLng southeast = new LatLng(39.992755, 116.328488);*/
+                            if (coordinateY < 39.992755 || coordinateY > 40.005716 || coordinateX < 116.310486 || coordinateX > 116.328488)
+                            {
+                                Toast.makeText(mContext, "超出服务范围", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
                             Bundle bd = new Bundle();
                             bd.putDouble("locationX", coordinateX);
                             bd.putDouble("locationY", coordinateY);
@@ -287,6 +295,10 @@ public class MyFragment1 extends Fragment {
         bdmap.setOnMapLoadedCallback(new BaiduMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
+                /*LatLng northwest = new LatLng(40.005716, 116.310486);
+                LatLng southeast = new LatLng(39.992755, 116.328488);
+                LatLngBounds bound = new LatLngBounds.Builder().include(northwest).include(southeast).build();
+                bdmap.setMapStatusLimits(bound);*/
                 LatLng center = new LatLng(39.99907, 116.316289);
                 MapStatus mMapStatus = new MapStatus.Builder().target(center).zoom(17).build();
                 MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);

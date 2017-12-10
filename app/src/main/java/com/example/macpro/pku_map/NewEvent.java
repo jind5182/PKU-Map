@@ -257,23 +257,27 @@ public class NewEvent extends Activity implements View.OnClickListener{
     }
 
     private void setDate(int number) {
+        String tempMonth = String.format("%02d", month);
+        String tempDay = String.format("%02d", day);
         switch (number){
             case 1:
-                sdate_view.setText(year + "/" + month + "/" + day);
+                sdate_view.setText(year + "-" + tempMonth + "-" + tempDay);
                 break;
             case 2:
-                edate_view.setText(year + "/" + month + "/" + day);
+                edate_view.setText(year + "-" + tempMonth + "-" + tempDay);
                 break;
         }
     }
 
     private void setTime(int number) {
+        String tempMin = String.format("%02d", minute);
+        String tempHour = String.format("%02d", hour);
         switch (number){
             case 1:
-                stime_view.setText(hour + ":" + minute);
+                stime_view.setText(tempHour + ":" + tempMin);
                 break;
             case 2:
-                etime_view.setText(hour + ":" + minute);
+                etime_view.setText(tempHour + ":" + tempMin);
                 break;
         }
     }
@@ -325,10 +329,8 @@ public class NewEvent extends Activity implements View.OnClickListener{
                                         event.setLocation(locationX, locationY);
                                     else
                                         event.setLocation(PreferenceUtil.getPlace(loc.getText().toString()));
-                                    //event.setBeginTime(sdate_view.getText().toString(), stime_view.getText().toString());
-                                    //event.setEndTime(edate_view.getText().toString(), etime_view.getText().toString());
-                                    event.setBeginTime(stime_view.getText().toString());
-                                    event.setEndTime(etime_view.getText().toString());
+                                    event.setBeginTime(sdate_view.getText().toString() + " " + stime_view.getText().toString() + ":00");
+                                    event.setEndTime(edate_view.getText().toString() + " " + etime_view.getText().toString() + ":00");
                                     event.setType(((RadioButton)findViewById(radgroup.getCheckedRadioButtonId())).getText().toString());
                                     event.setDescription(content.getText().toString());
                                     event.setOutdate(0);
@@ -381,9 +383,7 @@ public class NewEvent extends Activity implements View.OnClickListener{
             jsonObject.put("locationID", event.locationID);
             jsonObject.put("locationX", event.locationX);
             jsonObject.put("locationY", event.locationY);
-            //jsonObject.put("beginDate", event.beginDate);
             jsonObject.put("beginTime", event.beginTime);
-            //jsonObject.put("endDate", event.endDate);
             jsonObject.put("endTime", event.endTime);
             jsonObject.put("type", event.type);
             jsonObject.put("publisherID", PreferenceUtil.userID);
