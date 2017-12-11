@@ -50,18 +50,19 @@ public class ChangePwd extends Activity {
         return md5.length()==32?md5:fillMD5("0"+md5);
     }
 
-    private void loginByAsyncHttpClientPost(int userid, String oripwd) {
+    private void changePwdByAsyncHttpClientPost(int userID, String oldPass, String newPass) {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
-        String url = "http://120.25.232.47:8002/login/";
-        //String url = "http://www.baidu.com";
+        String url = "http://120.25.232.47:8002/changePwd/";
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
-        userPass = getMD5(userPass);
+        oldPass = getMD5(oldPass);
+        newPass = getMD5(newPass);
         try {
-            jsonObject.put("userName",userName);
-            jsonObject.put("pwd",userPass);
+            jsonObject.put("userID",userID);
+            jsonObject.put("oldPwd",oldPass);
+            jsonObject.put("newPwd",newPass);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -80,16 +81,12 @@ public class ChangePwd extends Activity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 try {
-                    int status = response.getInt("loginStatus");
+                    int status = response.getInt("changePwdStatus");
                     if (status == 1) {
-                        Toast.makeText(mContext, "用户名或密码输入错误",  Toast.LENGTH_LONG).show();
+                        Toast.makeText(mContext, "原密码输入错误",  Toast.LENGTH_LONG).show();
                     }
                     else if(status == 0) {
-                        PreferenceUtil.islogged = true;
-                        PreferenceUtil.userID = response.getInt("userID");
-                        PreferenceUtil.username = username;
-                        Toast.makeText(Login.this, "登录成功", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Login.this, MainActivity.class));
+                        Toast.makeText(ChangePwd.this, "密码更改成功", Toast.LENGTH_SHORT).show();
                         finish();
                     }
                 }catch (JSONException e) {
@@ -148,12 +145,9 @@ public class ChangePwd extends Activity {
                     Toast.makeText(mContext, "前后输入的密码不一致，请再次输入", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    String[] param = {OriPwd, NewPwd, ConfirmPwd};
                     TextView displaytxt = (TextView) findViewById(R.id.display_txt);
-                    loginByAsyncHttpClientPost(UserID, OriPwd);
+                    changePwdByAsyncHttpClientPost(UserID, OriPwd, NewPwd);
                 }
-                //startActivity(new Intent(Signup.this, MainActivity.class));
-                //finish();
             }
         });
     }
