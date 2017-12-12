@@ -41,6 +41,7 @@ public class EventActivity extends AppCompatActivity {
     private RelativeLayout rl_input;
     private TextView hide;
     private EditText comment_content;
+    private TextView helper;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -176,7 +177,7 @@ public class EventActivity extends AppCompatActivity {
         }
         else {
             ((TextView)findViewById(R.id.comment)).setVisibility(View.GONE);
-            final TextView helper = (TextView) findViewById(R.id.helper);
+            helper = (TextView) findViewById(R.id.helper);
             helper.setVisibility(View.VISIBLE);
             final Button helpbtn = (Button) findViewById(R.id.helpbtn);
             helpbtn.setVisibility(View.GONE);
@@ -195,7 +196,7 @@ public class EventActivity extends AppCompatActivity {
                             .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    helpAsyncHttpClientPost(event.getEventId(), PreferenceUtil.userID, helper, event);
+                                    helpAsyncHttpClientPost(event.getEventId(), PreferenceUtil.userID, event);
                                     helpbtn.setVisibility(View.GONE);
                                 }
                             }).create();             //创建AlertDialog对象
@@ -323,7 +324,7 @@ public class EventActivity extends AppCompatActivity {
         return;
     }
 
-    private void helpAsyncHttpClientPost(final int eventID, final int helperID, final TextView helper, final Event event) {
+    private void helpAsyncHttpClientPost(final int eventID, final int helperID, final Event event) {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
@@ -354,11 +355,7 @@ public class EventActivity extends AppCompatActivity {
                 Toast.makeText(mContext, "成功帮忙", Toast.LENGTH_SHORT).show();
                 event.setIshelped(1);
                 event.setHelper(PreferenceUtil.userID);
-                try {
-                    helper.setText("发布者手机号码：\n" + response.getInt("phone") + "\n快去帮忙吧！");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                helper.setText("发布者手机号码：\n" + "1234567890" + "\n快去帮忙吧！");
             }
 
             @Override
