@@ -27,6 +27,7 @@ import java.io.UnsupportedEncodingException;
 public class MyFragment3 extends Fragment {
 
     private Button myevent = null;
+    private Button pwd = null;
     private Context mContext = null;
     private TextView name = null;
 
@@ -38,6 +39,16 @@ public class MyFragment3 extends Fragment {
         if (PreferenceUtil.islogged)
             name.setText(PreferenceUtil.username);
         myevent = (Button) view.findViewById(R.id.myevent);
+        pwd = (Button) view.findViewById(R.id.pwd);
+        pwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (PreferenceUtil.islogged)
+                    startActivity(new Intent(getActivity(), ChangePwd.class));
+                else
+                    Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();
+            }
+        });
         myevent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

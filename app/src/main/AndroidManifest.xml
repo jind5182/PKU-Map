@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.macpro.pku_map">
+
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
@@ -26,6 +27,7 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="Nc13Q0Tx4LMnr5McPKfoDGYocMXOg4Wd" />
+
         <activity android:name=".Start">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,19 +35,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
         <activity
             android:name=".Login"
-            android:windowSoftInputMode="stateVisible">
-        </activity>
-        <activity android:name=".NewEvent"></activity>
-        <activity android:name=".Signup"></activity>
-        <activity android:name=".Myevent"></activity>
+            android:windowSoftInputMode="stateVisible" />
+        <activity android:name=".NewEvent" />
+        <activity android:name=".Signup" />
+        <activity android:name=".Myevent" />
         <activity
             android:name=".EventActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize">
-
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name=".ChangePwd"></activity>
     </application>
 
 </manifest>
