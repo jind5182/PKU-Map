@@ -346,42 +346,43 @@ public class MyFragment1 extends Fragment {
                         //Toast.makeText(mContext, response.toString(), Toast.LENGTH_LONG).show();
                         int count = response.getInt("eventNum");
                         bdmap.clear();
-                        JSONArray events = response.getJSONArray("events");
-                        //Toast.makeText(mContext, events.toString(), Toast.LENGTH_LONG).show();
-                        for (int i = 0; i < count; i++)
-                        {
-                            JSONObject temp = events.getJSONObject(i);
-                            eventList[i] = new Event();
-                            eventList[i].setEventID(temp.getInt("eventID"));
-                            //eventList[i].setBeginTime(temp.getString("beginTime"));
-                            eventList[i].setDescription(temp.getString("description"));
-                            //eventList[i].setEndTime(temp.getString("endTime"));
-                            if (temp.getInt("locationID") == -1)
-                                eventList[i].setLocation(temp.getDouble("locationX"), temp.getDouble("locationY"));
-                            else
-                                eventList[i].setLocation(temp.getInt("locationID"));
-                            eventList[i].setOutdate(temp.getInt("outdate"));
-                            eventList[i].setType(temp.getInt("type"));
-                            if (eventList[i].getType() == 2) {
-                                eventList[i].setIshelped(temp.getBoolean("ishelped"));
-                                eventList[i].setHelper(temp.getInt("helperID"));
+                        if (count > 0) {
+                            JSONArray events = response.getJSONArray("events");
+                            //Toast.makeText(mContext, events.toString(), Toast.LENGTH_LONG).show();
+                            for (int i = 0; i < count; i++) {
+                                JSONObject temp = events.getJSONObject(i);
+                                eventList[i] = new Event();
+                                eventList[i].setEventID(temp.getInt("eventID"));
+                                //eventList[i].setBeginTime(temp.getString("beginTime"));
+                                eventList[i].setDescription(temp.getString("description"));
+                                //eventList[i].setEndTime(temp.getString("endTime"));
+                                if (temp.getInt("locationID") == -1)
+                                    eventList[i].setLocation(temp.getDouble("locationX"), temp.getDouble("locationY"));
+                                else
+                                    eventList[i].setLocation(temp.getInt("locationID"));
+                                eventList[i].setOutdate(temp.getInt("outdate"));
+                                eventList[i].setType(temp.getInt("type"));
+                                if (eventList[i].getType() == 2) {
+                                    eventList[i].setIshelped(temp.getInt("isHelped"));
+                                    eventList[i].setHelper(temp.getInt("helperID"));
+                                }
+                                eventList[i].setPublisherID(temp.getInt("publisherID"));
+                                eventList[i].setTitle(temp.getString("title"));
+                                eventList[i].setUsername(temp.getString("username"));
+                                Bundle bundle = new Bundle();
+                                bundle.putInt("index", i);
+                                LatLng point = new LatLng(eventList[i].locationY, eventList[i].locationX);
+                                if (eventList[i].locationID >= 0)
+                                    bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.icon_gcoding2);
+                                else
+                                    bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.icon_gcoding);
+                                OverlayOptions option = new MarkerOptions()
+                                        .position(point)
+                                        .icon(bitmap)
+                                        .extraInfo(bundle);
+                                //在地图上添加Marker，并显示
+                                marker = (Marker) bdmap.addOverlay(option);
                             }
-                            eventList[i].setPublisherID(temp.getInt("publisherID"));
-                            eventList[i].setTitle(temp.getString("title"));
-                            eventList[i].setUsername(temp.getString("username"));
-                            Bundle bundle = new Bundle();
-                            bundle.putInt("index", i);
-                            LatLng point = new LatLng(eventList[i].locationY, eventList[i].locationX);
-                            if (eventList[i].locationID >= 0)
-                                bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.icon_gcoding2);
-                            else
-                                bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.icon_gcoding);
-                            OverlayOptions option = new MarkerOptions()
-                                    .position(point)
-                                    .icon(bitmap)
-                                    .extraInfo(bundle);
-                            //在地图上添加Marker，并显示
-                            marker = (Marker) bdmap.addOverlay(option);
                         }
                     }
                 }catch (JSONException e) {

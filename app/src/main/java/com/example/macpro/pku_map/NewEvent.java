@@ -416,7 +416,6 @@ public class NewEvent extends Activity implements View.OnClickListener{
                 PreferenceUtil.datas.add(event);
                 PreferenceUtil.myAdapter.notifyDataSetChanged();
             }
-
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);

@@ -12,7 +12,7 @@ public class Event {
     public String description;
     public int outdate;
     public String username;
-    public boolean isHelped;
+    public int isHelped;
     public int helper;
 
     public void setEventID(int eventID) {
@@ -73,7 +73,7 @@ public class Event {
     public void setUsername(String username) {
         this.username = username;
     }
-    public void setIshelped(boolean ishelped) {
+    public void setIshelped(int ishelped) {
         this.isHelped = ishelped;
     }
     public void setHelper(int helper) {
@@ -116,7 +116,7 @@ public class Event {
     public String getUsername() {
         return username;
     }
-    public boolean getIshelped() {
+    public int getIshelped() {
         return isHelped;
     }
     public int getHelper() {
