@@ -30,6 +30,7 @@ public class MyFragment3 extends Fragment {
     private Button pwd = null;
     private Context mContext = null;
     private TextView name = null;
+    private Button logout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,6 +48,15 @@ public class MyFragment3 extends Fragment {
                     startActivity(new Intent(getActivity(), ChangePwd.class));
                 else
                     Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();
+            }
+        });
+        logout = (Button)view.findViewById(R.id.logout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PreferenceUtil.islogged = false;
+                Toast.makeText(getActivity(), "退出登录",  Toast.LENGTH_SHORT);
+                startActivity(new Intent(getActivity(), Login.class));
             }
         });
         myevent.setOnClickListener(new View.OnClickListener() {
