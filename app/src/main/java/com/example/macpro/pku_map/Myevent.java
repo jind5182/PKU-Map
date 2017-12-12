@@ -102,7 +102,11 @@ public class Myevent extends AppCompatActivity {
                             else
                                 event.setLocation(temp.getInt("locationID"));
                             event.setOutdate(temp.getInt("outdate"));
-                            event.type = (temp.getInt("type"));
+                            event.setType(temp.getInt("type"));
+                            if (event.getType() == 2) {
+                                event.setIshelped(temp.getBoolean("isHelped"));
+                                event.setHelper(temp.getInt("helperID"));
+                            }
                             event.setPublisherID(temp.getInt("publisherID"));
                             event.setTitle(temp.getString("title"));
 

@@ -324,6 +324,8 @@ public class NewEvent extends Activity implements View.OnClickListener{
                                 }
                                 else {
                                     Event event = new Event();
+                                    event.setPublisherID(PreferenceUtil.userID);
+                                    event.setUsername(PreferenceUtil.username);
                                     event.setTitle(header.getText().toString());
                                     if (hasbd)
                                         event.setLocation(locationX, locationY);
@@ -418,7 +420,6 @@ public class NewEvent extends Activity implements View.OnClickListener{
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
-                //Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_SHORT).show();
                 Toast.makeText(mContext, "发布失败", Toast.LENGTH_SHORT).show();
             }
         });

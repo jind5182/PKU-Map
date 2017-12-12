@@ -361,7 +361,11 @@ public class MyFragment1 extends Fragment {
                             else
                                 eventList[i].setLocation(temp.getInt("locationID"));
                             eventList[i].setOutdate(temp.getInt("outdate"));
-                            eventList[i].type = (temp.getInt("type"));
+                            eventList[i].setType(temp.getInt("type"));
+                            if (eventList[i].getType() == 2) {
+                                eventList[i].setIshelped(temp.getBoolean("ishelped"));
+                                eventList[i].setHelper(temp.getInt("helperID"));
+                            }
                             eventList[i].setPublisherID(temp.getInt("publisherID"));
                             eventList[i].setTitle(temp.getString("title"));
                             eventList[i].setUsername(temp.getString("username"));
