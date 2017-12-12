@@ -126,10 +126,11 @@ public class MyFragment1 extends Fragment {
         nothing = (View) view.findViewById(R.id.nothing);
         map = (MapView) view.findViewById(R.id.bdmap);
         locbtn = (Button) view.findViewById(R.id.locbtn);
+        final String[] eventtype = new String[]{"实时", "活动预告", "求救"};
+        locbtn.setText(eventtype[PreferenceUtil.maptype]);
         locbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String[] eventtype = new String[]{"实时", "活动预告", "求救"};
                 builder = new AlertDialog.Builder(mContext, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
                 builder.setCancelable(true);
                 alert = builder
