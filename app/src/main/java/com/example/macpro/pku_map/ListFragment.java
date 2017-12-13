@@ -1,5 +1,6 @@
 package com.example.macpro.pku_map;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -38,7 +39,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
     private AlertDialog.Builder builder;
 
     public ListFragment() {}
-
+    @SuppressLint("ValidFragment")
     public ListFragment(int which) {
         this.which = which;
     }
