@@ -68,9 +68,14 @@ public class MyFragment3 extends Fragment {
                     Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();
             }
         });
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         if (PreferenceUtil.islogged)
             getEventByIDAsyncHttpClientPost(PreferenceUtil.userID);
-        return view;
     }
 
     public void getEventByIDAsyncHttpClientPost(int userID) {
