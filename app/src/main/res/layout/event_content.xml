@@ -49,6 +49,16 @@
             android:layout_marginRight="2dp"
             android:background="#00000000"
             android:visibility="gone"/>
+        <Button
+            android:id="@+id/reportbtn"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="举报超时"
+            android:textSize="17dp"
+            android:layout_alignParentRight="true"
+            android:paddingTop="4dp"
+            android:layout_marginRight="7dp"
+            android:background="#00000000"/>
     </RelativeLayout>
 
     <LinearLayout

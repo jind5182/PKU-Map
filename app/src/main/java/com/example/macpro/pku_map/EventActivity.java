@@ -21,6 +21,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.apache.http.TruncatedChunkException;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
@@ -35,7 +36,7 @@ public class EventActivity extends AppCompatActivity {
     private AlertDialog alert = null;
     private AlertDialog.Builder builder = null;
     private Context mContext;
-    private Button eventcontentret, deletebtn, comment_send;
+    private Button eventcontentret, deletebtn, reportbtn, comment_send;
     private TextView event_content, event_title, eventcontenttitle, event_user;
     private ImageButton newComment;
     private RelativeLayout rl_input;
@@ -60,6 +61,7 @@ public class EventActivity extends AppCompatActivity {
             }
         });
         deletebtn = (Button) findViewById(R.id.deletebtn);
+        reportbtn = (Button) findViewById(R.id.reportbtn);
         rl_input = (RelativeLayout)findViewById(R.id.rl_input);
         newComment = (ImageButton)findViewById(R.id.newComment);
         hide = (TextView)findViewById(R.id.hide_down);
@@ -138,8 +140,52 @@ public class EventActivity extends AppCompatActivity {
         }
 
         deletebtn.setVisibility(View.GONE);
+        reportbtn.setVisibility(View.VISIBLE);
+        reportbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!PreferenceUtil.islogged) {
+                    Toast.makeText(mContext, "请先登录", Toast.LENGTH_SHORT).show();
+                }
+                else if (PreferenceUtil.userID == event.getPublisherID()) {
+                    alert = null;
+                    builder = new AlertDialog.Builder(mContext, R.style.AlertDialog);
+                    alert = builder.setMessage("您是该事件的发布者\n是否删除该事件？")
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    deleteEventAsyncHttpClientPost(eventID);
+                                }
+                            }).create();
+                    alert.show();
+                }
+                else {
+                    alert = null;
+                    builder = new AlertDialog.Builder(mContext, R.style.AlertDialog);
+                    alert = builder.setMessage("是否确定举报该事件超时？")
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    reportEventAsyncHttpClientPost(eventID);
+                                }
+                            }).create();
+                    alert.show();
+                }
+            }
+        });
         if (which == 1) {
             deletebtn.setVisibility(View.VISIBLE);
+            reportbtn.setVisibility(View.GONE);
             eventcontenttitle.setText("我的事件");
             deletebtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -205,11 +251,11 @@ public class EventActivity extends AppCompatActivity {
             });
             if (event.getIshelped() == 1) {
                 if (PreferenceUtil.islogged && PreferenceUtil.userID == event.getPublisherID()) {
-                    helper.setText("您的求助已经被人收到，他/她的号码是：\n" + "123456");
+                    userInfoAsyncHttpClientPost(event.getHelper(), true);
                 }
                 else {
                     if (PreferenceUtil.islogged && PreferenceUtil.userID == event.getHelper())
-                        helper.setText("发布者手机号码：\n" + "1234567890" + "\n快去帮忙吧！");
+                        userInfoAsyncHttpClientPost(event.getPublisherID(), false);
                     else
                         helper.setText("该求助已经有人帮忙了，看看其他的求助吧！");
                 }
@@ -256,7 +302,52 @@ public class EventActivity extends AppCompatActivity {
                 Toast.makeText(mContext, "删除成功", Toast.LENGTH_SHORT).show();
                 PreferenceUtil.deletebyID(eventID);
                 PreferenceUtil.myAdapter.notifyDataSetChanged();
-                PreferenceUtil.myAdapter2.notifyDataSetChanged();
+                if (PreferenceUtil.myAdapter2 != null)
+                    PreferenceUtil.myAdapter2.notifyDataSetChanged();
+                finish();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_LONG).show();
+            }
+        });
+        return;
+    }
+
+    private void reportEventAsyncHttpClientPost(final int eventID) {
+        //创建异步请求对象
+        AsyncHttpClient client = new AsyncHttpClient();
+        //输入要请求的url
+        String url = "http://120.25.232.47:8002/deleteEventByID/";
+        //String url = "http://www.baidu.com";
+        //请求的参数对象
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("eventID", eventID);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        //将参数加入到参数对象中
+        ByteArrayEntity entity = null;
+        try {
+            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        //进行post请求
+        client.post(mContext, url, entity, "application/json", new JsonHttpResponseHandler() {
+            //如果成功
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                Toast.makeText(mContext, "举报成功", Toast.LENGTH_SHORT).show();
+                PreferenceUtil.deletebyID(eventID);
+                PreferenceUtil.myAdapter.notifyDataSetChanged();
+                if (PreferenceUtil.myAdapter2 != null)
+                    PreferenceUtil.myAdapter2.notifyDataSetChanged();
                 finish();
             }
 
@@ -355,9 +446,59 @@ public class EventActivity extends AppCompatActivity {
                 Toast.makeText(mContext, "成功帮忙", Toast.LENGTH_SHORT).show();
                 event.setIshelped(1);
                 event.setHelper(PreferenceUtil.userID);
-                helper.setText("发布者手机号码：\n" + "1234567890" + "\n快去帮忙吧！");
+                try {
+                    helper.setText("发布者手机号码：\n" + response.getString("contact") + "\n快去帮忙吧！");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_LONG).show();
+            }
+        });
+        return;
+    }
+
+    private void userInfoAsyncHttpClientPost(final int userID, final boolean flag) {
+        //创建异步请求对象
+        AsyncHttpClient client = new AsyncHttpClient();
+        //输入要请求的url
+        String url = "http://120.25.232.47:8002/getUserInfo/";
+        //String url = "http://www.baidu.com";
+        //请求的参数对象
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("userID", userID);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        //将参数加入到参数对象中
+        ByteArrayEntity entity = null;
+        try {
+            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        //进行post请求
+        client.post(mContext, url, entity, "application/json", new JsonHttpResponseHandler() {
+            //如果成功
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                try {
+                    Toast.makeText(mContext, response.getString("contact"), Toast.LENGTH_SHORT).show();
+                    if (flag)
+                        helper.setText(response.getString("userName") + "回应了你的请求\n他/她的电话是：\n" + response.getString("contact"));
+                    else
+                        helper.setText("发布者手机号码：\n" + response.getString("contact") + "\n快去帮忙吧！");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
