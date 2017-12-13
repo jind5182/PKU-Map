@@ -12,6 +12,8 @@ public class Event {
     public String description;
     public int outdate;
     public String username;
+    public int isHelped;
+    public int helper;
 
     public void setEventID(int eventID) {
         this.eventID = eventID;
@@ -59,6 +61,9 @@ public class Event {
                 break;
         }
     }
+    public void setType(int type) {
+        this.type = type;
+    }
     public void setDescription(String description) {
         this.description = description;
     }
@@ -67,6 +72,12 @@ public class Event {
     }
     public void setUsername(String username) {
         this.username = username;
+    }
+    public void setIshelped(int ishelped) {
+        this.isHelped = ishelped;
+    }
+    public void setHelper(int helper) {
+        this.helper = helper;
     }
 
     public int getEventId() {
@@ -87,7 +98,7 @@ public class Event {
     public double getLocationY() {
         return locationY;
     }
-    public int getTyoe() {
+    public int getType() {
         return type;
     }
     public String getBeginTime() {
@@ -104,5 +115,11 @@ public class Event {
     }
     public String getUsername() {
         return username;
+    }
+    public int getIshelped() {
+        return isHelped;
+    }
+    public int getHelper() {
+        return helper;
     }
 }

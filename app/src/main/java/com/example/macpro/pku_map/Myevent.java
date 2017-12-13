@@ -87,32 +87,37 @@ public class Myevent extends AppCompatActivity {
                     else if(status == 0) {
                         //Toast.makeText(mContext, response.toString(), Toast.LENGTH_LONG).show();
                         int count = response.getInt("eventNum");
-                        JSONArray events = response.getJSONArray("events");
-                        //Toast.makeText(mContext, events.toString(), Toast.LENGTH_LONG).show();
-                        for (int i = 0; i < count; i++)
-                        {
-                            JSONObject temp = events.getJSONObject(i);
-                            Event event = new Event();
-                            event.setEventID(temp.getInt("eventID"));
-                            //eventList[i].setBeginTime(temp.getString("beginTime"));
-                            event.setDescription(temp.getString("description"));
-                            //eventList[i].setEndTime(temp.getString("endTime"));
-                            if (temp.getInt("locationID") == -1)
-                                event.setLocation(temp.getDouble("locationX"), temp.getDouble("locationY"));
-                            else
-                                event.setLocation(temp.getInt("locationID"));
-                            event.setOutdate(temp.getInt("outdate"));
-                            event.type = (temp.getInt("type"));
-                            event.setPublisherID(temp.getInt("publisherID"));
-                            event.setTitle(temp.getString("title"));
+                        if (count > 0) {
+                            JSONArray events = response.getJSONArray("events");
+                            //Toast.makeText(mContext, events.toString(), Toast.LENGTH_LONG).show();
+                            for (int i = 0; i < count; i++) {
+                                JSONObject temp = events.getJSONObject(i);
+                                Event event = new Event();
+                                event.setEventID(temp.getInt("eventID"));
+                                //eventList[i].setBeginTime(temp.getString("beginTime"));
+                                event.setDescription(temp.getString("description"));
+                                //eventList[i].setEndTime(temp.getString("endTime"));
+                                if (temp.getInt("locationID") == -1)
+                                    event.setLocation(temp.getDouble("locationX"), temp.getDouble("locationY"));
+                                else
+                                    event.setLocation(temp.getInt("locationID"));
+                                event.setOutdate(temp.getInt("outdate"));
+                                event.setType(temp.getInt("type"));
+                                if (event.getType() == 2) {
+                                    event.setIshelped(temp.getInt("isHelped"));
+                                    event.setHelper(temp.getInt("helperID"));
+                                }
+                                event.setPublisherID(temp.getInt("publisherID"));
+                                event.setTitle(temp.getString("title"));
 
-                            PreferenceUtil.mydatas.add(event);
+                                PreferenceUtil.mydatas.add(event);
+                            }
+                            fManager = getSupportFragmentManager();
+                            ListFragment nlFragment = new ListFragment(1);
+                            FragmentTransaction ft = fManager.beginTransaction();
+                            ft.replace(R.id.myeventfl, nlFragment);
+                            ft.commit();
                         }
-                        fManager = getSupportFragmentManager();
-                        ListFragment nlFragment = new ListFragment(1);
-                        FragmentTransaction ft = fManager.beginTransaction();
-                        ft.replace(R.id.myeventfl, nlFragment);
-                        ft.commit();
                     }
                 }catch (JSONException e) {
                     e.printStackTrace();

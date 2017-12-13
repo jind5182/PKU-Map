@@ -49,6 +49,16 @@
             android:layout_marginRight="2dp"
             android:background="#00000000"
             android:visibility="gone"/>
+        <Button
+            android:id="@+id/reportbtn"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="举报超时"
+            android:textSize="17dp"
+            android:layout_alignParentRight="true"
+            android:paddingTop="4dp"
+            android:layout_marginRight="7dp"
+            android:background="#00000000"/>
     </RelativeLayout>
 
     <LinearLayout
@@ -130,6 +140,7 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/comment_fl"
@@ -144,6 +155,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/contentLinear3">
+
+        <TextView
+            android:id="@+id/helper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:visibility="gone"/>
+        <Button
+            android:id="@+id/helpbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="点击帮忙"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="60dp"
+            android:visibility="gone"/>
     </FrameLayout>
 
     <ImageButton

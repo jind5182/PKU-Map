@@ -155,6 +155,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                 PreferenceUtil.deletebyID(eventID);
                 PreferenceUtil.myAdapter.notifyDataSetChanged();
                 PreferenceUtil.myAdapter2.notifyDataSetChanged();
+
             }
 
             @Override
@@ -197,28 +198,33 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                     else if(status == 0) {
                         //Toast.makeText(mContext, response.toString(), Toast.LENGTH_LONG).show();
                         int count = response.getInt("eventNum");
-                        JSONArray events = response.getJSONArray("events");
-                        //Toast.makeText(mContext, events.toString(), Toast.LENGTH_LONG).show();
-                        for (int i = 0; i < count; i++)
-                        {
-                            JSONObject temp = events.getJSONObject(i);
-                            Event event = new Event();
-                            event.setEventID(temp.getInt("eventID"));
-                            //eventList[i].setBeginTime(temp.getString("beginTime"));
-                            event.setDescription(temp.getString("description"));
-                            //eventList[i].setEndTime(temp.getString("endTime"));
-                            if (temp.getInt("locationID") == -1)
-                                event.setLocation(temp.getDouble("locationX"), temp.getDouble("locationY"));
-                            else
-                                event.setLocation(temp.getInt("locationID"));
-                            event.setOutdate(temp.getInt("outdate"));
-                            event.type = (temp.getInt("type"));
-                            event.setPublisherID(temp.getInt("publisherID"));
-                            event.setTitle(temp.getString("title"));
-                            event.setUsername(temp.getString("username"));
-                            PreferenceUtil.datas.add(event);
+                        if (count > 0) {
+                            JSONArray events = response.getJSONArray("events");
+                            //Toast.makeText(mContext, events.toString(), Toast.LENGTH_LONG).show();
+                            for (int i = 0; i < count; i++) {
+                                JSONObject temp = events.getJSONObject(i);
+                                Event event = new Event();
+                                event.setEventID(temp.getInt("eventID"));
+                                //eventList[i].setBeginTime(temp.getString("beginTime"));
+                                event.setDescription(temp.getString("description"));
+                                //eventList[i].setEndTime(temp.getString("endTime"));
+                                if (temp.getInt("locationID") == -1)
+                                    event.setLocation(temp.getDouble("locationX"), temp.getDouble("locationY"));
+                                else
+                                    event.setLocation(temp.getInt("locationID"));
+                                event.setOutdate(temp.getInt("outdate"));
+                                event.setType(temp.getInt("type"));
+                                if (event.getType() == 2) {
+                                    event.setIshelped(temp.getInt("isHelped"));
+                                    event.setHelper(temp.getInt("helperID"));
+                                }
+                                event.setPublisherID(temp.getInt("publisherID"));
+                                event.setTitle(temp.getString("title"));
+                                event.setUsername(temp.getString("username"));
+                                PreferenceUtil.datas.add(event);
+                            }
+                            PreferenceUtil.myAdapter.notifyDataSetChanged();
                         }
-                        PreferenceUtil.myAdapter.notifyDataSetChanged();
                     }
 
                 }catch (JSONException e) {
@@ -272,28 +278,33 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                     else if(status == 0) {
                         //Toast.makeText(mContext, response.toString(), Toast.LENGTH_LONG).show();
                         int count = response.getInt("eventNum");
-                        JSONArray events = response.getJSONArray("events");
-                        //Toast.makeText(mContext, events.toString(), Toast.LENGTH_LONG).show();
-                        for (int i = 0; i < count; i++)
-                        {
-                            JSONObject temp = events.getJSONObject(i);
-                            Event event = new Event();
-                            event.setEventID(temp.getInt("eventID"));
-                            //eventList[i].setBeginTime(temp.getString("beginTime"));
-                            event.setDescription(temp.getString("description"));
-                            //eventList[i].setEndTime(temp.getString("endTime"));
-                            if (temp.getInt("locationID") == -1)
-                                event.setLocation(temp.getDouble("locationX"), temp.getDouble("locationY"));
-                            else
-                                event.setLocation(temp.getInt("locationID"));
-                            event.setOutdate(temp.getInt("outdate"));
-                            event.type = (temp.getInt("type"));
-                            event.setPublisherID(temp.getInt("publisherID"));
-                            event.setTitle(temp.getString("title"));
-                            event.setUsername(temp.getString("username"));
-                            PreferenceUtil.locdatas.add(event);
+                        if (count > 0) {
+                            JSONArray events = response.getJSONArray("events");
+                            //Toast.makeText(mContext, events.toString(), Toast.LENGTH_LONG).show();
+                            for (int i = 0; i < count; i++) {
+                                JSONObject temp = events.getJSONObject(i);
+                                Event event = new Event();
+                                event.setEventID(temp.getInt("eventID"));
+                                //eventList[i].setBeginTime(temp.getString("beginTime"));
+                                event.setDescription(temp.getString("description"));
+                                //eventList[i].setEndTime(temp.getString("endTime"));
+                                if (temp.getInt("locationID") == -1)
+                                    event.setLocation(temp.getDouble("locationX"), temp.getDouble("locationY"));
+                                else
+                                    event.setLocation(temp.getInt("locationID"));
+                                event.setOutdate(temp.getInt("outdate"));
+                                event.setType(temp.getInt("type"));
+                                if (event.getType() == 2) {
+                                    event.setIshelped(temp.getInt("isHelped"));
+                                    event.setHelper(temp.getInt("helperID"));
+                                }
+                                event.setPublisherID(temp.getInt("publisherID"));
+                                event.setTitle(temp.getString("title"));
+                                event.setUsername(temp.getString("username"));
+                                PreferenceUtil.locdatas.add(event);
+                            }
+                            PreferenceUtil.myAdapterloc.notifyDataSetChanged();
                         }
-                        PreferenceUtil.myAdapterloc.notifyDataSetChanged();
                     }
 
                 }catch (JSONException e) {
