@@ -143,7 +143,7 @@
             android:layout_height="match_parent"
             android:padding="7dp"
             android:paddingLeft="5dp"
-            android:text="求救"
+            android:text="求助"
             android:textColor="#000000"
             android:textSize="16dp" />
 
