@@ -73,12 +73,11 @@ public class MyFragment3 extends Fragment {
         return view;
     }
 
-    private void getEventByIDAsyncHttpClientPost(int userID) {
+    public void getEventByIDAsyncHttpClientPost(int userID) {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
         String url = "http://120.25.232.47:8002/getEventByID/";
-        //String url = "http://www.baidu.com";
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
         try {

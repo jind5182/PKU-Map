@@ -155,6 +155,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                 PreferenceUtil.deletebyID(eventID);
                 PreferenceUtil.myAdapter.notifyDataSetChanged();
                 PreferenceUtil.myAdapter2.notifyDataSetChanged();
+
             }
 
             @Override

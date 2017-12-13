@@ -176,7 +176,7 @@ public class EventActivity extends AppCompatActivity {
                             .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    reportEventAsyncHttpClientPost(eventID);
+                                    reportEventAsyncHttpClientPost(eventID, event);
                                 }
                             }).create();
                     alert.show();
@@ -230,23 +230,28 @@ public class EventActivity extends AppCompatActivity {
             helpbtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    alert = null;
-                    builder = new AlertDialog.Builder(mContext, R.style.AlertDialog);
-                    alert = builder.setMessage("您将获得发布者的手机号码\n我们会将您的号码告诉发布者\n是否确定帮忙？")
-                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Toast.makeText(mContext, "你点击了取消按钮~", Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    helpAsyncHttpClientPost(event.getEventId(), PreferenceUtil.userID, event);
-                                    helpbtn.setVisibility(View.GONE);
-                                }
-                            }).create();             //创建AlertDialog对象
-                    alert.show();                    //显示对话框
+                    if (!PreferenceUtil.islogged) {
+                        Toast.makeText(mContext, "请先登录", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        alert = null;
+                        builder = new AlertDialog.Builder(mContext, R.style.AlertDialog);
+                        alert = builder.setMessage("您将获得发布者的手机号码\n我们会将您的号码告诉发布者\n是否确定帮忙？")
+                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Toast.makeText(mContext, "你点击了取消按钮~", Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        helpAsyncHttpClientPost(event.getEventId(), PreferenceUtil.userID, event);
+                                        helpbtn.setVisibility(View.GONE);
+                                    }
+                                }).create();             //创建AlertDialog对象
+                        alert.show();                    //显示对话框
+                    }
                 }
             });
             if (event.getIshelped() == 1) {
@@ -316,11 +321,11 @@ public class EventActivity extends AppCompatActivity {
         return;
     }
 
-    private void reportEventAsyncHttpClientPost(final int eventID) {
+    private void reportEventAsyncHttpClientPost(final int eventID, final Event event) {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
-        String url = "http://120.25.232.47:8002/deleteEventByID/";
+        String url = "http://120.25.232.47:8002/reportOutDate/";
         //String url = "http://www.baidu.com";
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
@@ -344,11 +349,7 @@ public class EventActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 Toast.makeText(mContext, "举报成功", Toast.LENGTH_SHORT).show();
-                PreferenceUtil.deletebyID(eventID);
-                PreferenceUtil.myAdapter.notifyDataSetChanged();
-                if (PreferenceUtil.myAdapter2 != null)
-                    PreferenceUtil.myAdapter2.notifyDataSetChanged();
-                finish();
+                event.setOutdate(1);
             }
 
             @Override
