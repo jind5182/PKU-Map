@@ -29,7 +29,6 @@ public class Message extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.message);
         mContext = Message.this;
-        PreferenceUtil.ischecked = false;
         time = new TimeCount(60000, 1000);
         phone = (TextView) findViewById(R.id.phone);
         code = (TextView) findViewById(R.id.code);
@@ -60,7 +59,8 @@ public class Message extends Activity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (true/*PreferenceUtil.ischecked*/) {
+
+                if (true) {
                     Intent it = new Intent(Message.this, Signup.class);
                     it.putExtra("phonenumber", phone.getText().toString());
                     startActivity(it);
