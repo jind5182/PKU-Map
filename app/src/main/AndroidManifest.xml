@@ -46,6 +46,7 @@
             android:name=".EventActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".ChangePwd"></activity>
+        <activity android:name=".Message"></activity>
     </application>
 
 </manifest>

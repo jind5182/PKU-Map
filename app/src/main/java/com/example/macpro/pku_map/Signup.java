@@ -1,6 +1,7 @@
 package com.example.macpro.pku_map;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -27,8 +28,11 @@ public class Signup extends Activity{
 
     private Button su;
     private ImageButton suret;
-    private EditText suusername, supasswd, supasswd2, suid, suphonenumber;
+    private EditText suusername, supasswd, supasswd2, suid;
+    private String phonenumber;
     Context mContext = this;
+    private AlertDialog alert = null;
+    private AlertDialog.Builder builder = null;
 
     public static String getMD5(String str) {
         try {
@@ -55,6 +59,8 @@ public class Signup extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup);
+        Intent it = getIntent();
+        phonenumber = it.getStringExtra("phonenumber");
         bindViews();
     }
 
@@ -137,10 +143,26 @@ public class Signup extends Activity{
         supasswd = (EditText) findViewById(R.id.supasswd);
         supasswd2 = (EditText) findViewById(R.id.supasswd2);
         suid = (EditText) findViewById(R.id.suid);
-        suphonenumber = (EditText) findViewById(R.id.suphonenumber);
         suret.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                alert = null;
+                builder = new AlertDialog.Builder(mContext, R.style.AlertDialog);
+                alert = builder.setMessage("是否确定重新验证手机？")
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(mContext, "你点击了取消按钮~", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivity(new Intent(Signup.this, Message.class));
+                                finish();
+                            }
+                        }).create();             //创建AlertDialog对象
+                alert.show();                    //显示对话框
                 startActivity(new Intent(Signup.this, Login.class));
                 finish();
             }
@@ -152,7 +174,7 @@ public class Signup extends Activity{
                 String Username = suusername.getText().toString();
                 String UserPass = supasswd.getText().toString();
                 String UserPassConf = supasswd2.getText().toString();
-                String UserPhoneNumber = suphonenumber.getText().toString();
+                String UserPhoneNumber = phonenumber;
                 if (studentID.length() != 10) {
                     Toast.makeText(mContext, "请填入10位学号", Toast.LENGTH_SHORT).show();
                 }

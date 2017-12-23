@@ -15,7 +15,7 @@
         android:id="@+id/textView" />
 
     <ImageButton
-        android:id="@+id/suret"
+        android:id="@+id/messageret"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginTop="12dp"
@@ -31,81 +31,63 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginTop="45dp"
+            android:layout_height="110dp"
+            android:layout_marginTop="60dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:orientation="vertical"
             android:background="#FFFFFF"
             android:showDividers="middle"
-            android:divider="@drawable/divider"
-            android:layout_weight="0.49">
+            android:divider="@drawable/divider">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/phone"
+                    android:layout_width="240dp"
+                    android:layout_height="match_parent"
+                    android:drawableLeft="@mipmap/ic_face_black"
+                    android:hint="请输入手机号"
+                    android:textColorHint="#717070"
+                    android:textColor="#000000"
+                    android:textSize="17sp"
+                    android:drawablePadding="15dp"
+                    android:paddingLeft="15dp"
+                    android:background="@null"/>
+                <Button
+                    android:id="@+id/getcode"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:text="获取验证码"/>
+            </LinearLayout>
 
             <EditText
-                android:id="@+id/suid"
+                android:id="@+id/code"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:drawableLeft="@mipmap/ic_face_black"
-                android:hint="请输入学号"
+                android:hint="请输入验证码"
                 android:textColorHint="#717070"
                 android:textColor="#000000"
                 android:textSize="17sp"
                 android:drawablePadding="15dp"
                 android:paddingLeft="15dp"
-                android:background="@null"/>
-            <EditText
-                android:id="@+id/suusername"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:drawableLeft="@mipmap/ic_face_black"
-                android:hint="请输入用户名"
-                android:textColorHint="#717070"
-                android:textColor="#000000"
-                android:textSize="17sp"
-                android:drawablePadding="15dp"
-                android:paddingLeft="15dp"
-                android:background="@null"/>
-            <EditText
-                android:id="@+id/supasswd"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:drawableLeft="@mipmap/ic_face_black"
-                android:hint="请输入密码"
-                android:textColorHint="#717070"
-                android:textColor="#000000"
-                android:textSize="17sp"
-                android:drawablePadding="15dp"
-                android:paddingLeft="15dp"
-                android:inputType="textPassword"
-                android:background="@null"/>
-            <EditText
-                android:id="@+id/supasswd2"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:drawableLeft="@mipmap/ic_face_black"
-                android:hint="请确认密码"
-                android:textColorHint="#717070"
-                android:textColor="#000000"
-                android:textSize="17sp"
-                android:drawablePadding="15dp"
-                android:paddingLeft="15dp"
-                android:inputType="textPassword"
                 android:background="@null"/>
         </LinearLayout>
 
         <Button
-            android:id="@+id/su"
+            android:id="@+id/next"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="#51a486"
             android:layout_marginTop="100dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:text="注 册"
+            android:text="下 一 步"
             android:gravity="center"
             android:textSize="18sp"
             android:textColor="#FFFFFF"/>
