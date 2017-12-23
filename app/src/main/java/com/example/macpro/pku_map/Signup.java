@@ -162,9 +162,7 @@ public class Signup extends Activity{
                                 finish();
                             }
                         }).create();             //创建AlertDialog对象
-                alert.show();                    //显示对话框
-                startActivity(new Intent(Signup.this, Login.class));
-                finish();
+                alert.show();                    //显示对话
             }
         });
         su.setOnClickListener(new View.OnClickListener() {

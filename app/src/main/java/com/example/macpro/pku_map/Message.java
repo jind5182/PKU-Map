@@ -87,16 +87,14 @@ public class Message extends Activity {
 
         @Override
         public void onTick(long millisUntilFinished) {
-            getcode.setBackgroundColor(Color.parseColor("#B6B6D8"));
             getcode.setClickable(false);
-            getcode.setText("("+millisUntilFinished / 1000 +") 秒后可重新发送");
+            getcode.setText("("+millisUntilFinished / 1000 +") 秒后\n重新发送");
         }
 
         @Override
         public void onFinish() {
             getcode.setText("重新获取验证码");
             getcode.setClickable(true);
-            getcode.setBackgroundColor(Color.parseColor("#4EB84A"));
 
         }
     }
