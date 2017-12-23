@@ -26,7 +26,7 @@
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="ErxOO8HKko9GT12S9nH5c4lFz1xzsRPx" />
+            android:value="cOYLjvOGlYxhs02MZvWP9Mg65umdRR7H" />
 
         <activity android:name=".Start">
             <intent-filter>

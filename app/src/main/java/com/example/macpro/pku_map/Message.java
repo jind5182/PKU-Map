@@ -14,6 +14,18 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.apache.http.Header;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.protocol.HTTP;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+
 public class Message extends Activity {
 
     private TimeCount time;
@@ -23,6 +35,7 @@ public class Message extends Activity {
     private Context mContext;
     private AlertDialog alert = null;
     private AlertDialog.Builder builder = null;
+    private String codestr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,22 +72,21 @@ public class Message extends Activity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if (true) {
+                if (code.getText().toString().equals(codestr)) {
                     Intent it = new Intent(Message.this, Signup.class);
                     it.putExtra("phonenumber", phone.getText().toString());
                     startActivity(it);
                     finish();
                 }
                 else
-                    Toast.makeText(Message.this, "请先进行手机短信验证", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Message.this, "未进行验证或验证码不正确", Toast.LENGTH_SHORT).show();
             }
         });
         getcode = (Button) findViewById(R.id.getcode);
         getcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "短信已发送，请注意查收", Toast.LENGTH_SHORT).show();
+                messageAsyncHttpClientPost(phone.getText().toString());
                 time.start();
             }
         });
@@ -97,5 +109,55 @@ public class Message extends Activity {
             getcode.setClickable(true);
 
         }
+    }
+
+    public void messageAsyncHttpClientPost(String phonenumber) {
+        //创建异步请求对象
+        AsyncHttpClient client = new AsyncHttpClient();
+        //输入要请求的url
+        String url = "http://120.25.232.47:8002/getPhoneVariCode/";
+        //请求的参数对象
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("mobile", phonenumber);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        //将参数加入到参数对象中
+        ByteArrayEntity entity = null;
+        try {
+            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        //进行post请求
+        client.post(mContext, url, entity, "application/json", new JsonHttpResponseHandler() {
+            //如果成功
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                try {
+                    int status = response.getInt("getStatus");
+                    if (status == 1) {
+                        Toast.makeText(mContext, "该手机号已经注册", Toast.LENGTH_SHORT).show();
+                    }
+                    else if(status == 0) {
+                        codestr = response.getString("obj");
+                        Toast.makeText(mContext, "短信已发送，请注意查收", Toast.LENGTH_SHORT).show();
+                    }
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_LONG).show();
+            }
+        });
+        return;
+
     }
 }

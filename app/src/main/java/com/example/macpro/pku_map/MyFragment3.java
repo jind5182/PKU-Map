@@ -57,6 +57,7 @@ public class MyFragment3 extends Fragment {
                 PreferenceUtil.islogged = false;
                 Toast.makeText(getActivity(), "退出登录",  Toast.LENGTH_SHORT);
                 startActivity(new Intent(getActivity(), Login.class));
+                getActivity().finish();
             }
         });
         myevent.setOnClickListener(new View.OnClickListener() {
