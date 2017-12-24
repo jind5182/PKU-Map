@@ -1,9 +1,11 @@
 package com.example.macpro.pku_map;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +32,10 @@ public class MyFragment3 extends Fragment {
     private Button pwd = null;
     private Context mContext = null;
     private TextView name = null;
-    private Button logout;
+    private Button logout, about;
+
+    private AlertDialog alert = null;
+    private AlertDialog.Builder builder = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,6 +46,7 @@ public class MyFragment3 extends Fragment {
             name.setText(PreferenceUtil.username);
         myevent = (Button) view.findViewById(R.id.myevent);
         pwd = (Button) view.findViewById(R.id.pwd);
+        about = (Button)view.findViewById(R.id.about);
         pwd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,6 +73,21 @@ public class MyFragment3 extends Fragment {
                     startActivity(new Intent(getActivity(), Myevent.class));
                 else
                     Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();
+            }
+        });
+        about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alert = null;
+                builder = new AlertDialog.Builder(mContext);
+                alert = builder.setTitle("应用信息")
+                        .setMessage("应用名称：PKU Map\n版本号：V1.0\n北京大学信息科学技术学院，2017")
+                        .setNegativeButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        }).create();
+                alert.show();
             }
         });
         return view;

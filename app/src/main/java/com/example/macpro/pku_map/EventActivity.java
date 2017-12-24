@@ -1,6 +1,8 @@
 package com.example.macpro.pku_map;
 
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
@@ -35,13 +37,14 @@ public class EventActivity extends AppCompatActivity {
     private AlertDialog alert = null;
     private AlertDialog.Builder builder = null;
     private Context mContext;
-    private Button eventcontentret, deletebtn, reportbtn, comment_send;
+    private Button eventcontentret, deletebtn, reportbtn, comment_send, contactBtn;
     private TextView event_content, event_title, eventcontenttitle, event_user;
     private ImageButton newComment;
     private RelativeLayout rl_input;
     private TextView hide;
     private EditText comment_content;
     private TextView helper;
+    private String mobile;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +69,7 @@ public class EventActivity extends AppCompatActivity {
         hide = (TextView)findViewById(R.id.hide_down);
         comment_content = (EditText) findViewById(R.id.comment_content);
         comment_send = (Button) findViewById(R.id.comment_send);
+        contactBtn = (Button)findViewById(R.id.contact);
 
         Bundle bd = getIntent().getExtras();
         eventID = bd.getInt("eventID");
@@ -251,6 +255,14 @@ public class EventActivity extends AppCompatActivity {
                                 }).create();             //创建AlertDialog对象
                         alert.show();                    //显示对话框
                     }
+                }
+            });
+            contactBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Uri uri = Uri.parse("tel:" + mobile);
+                    Intent intent = new Intent(Intent.ACTION_DIAL, uri);
+                    startActivity(intent);
                 }
             });
             if (event.getIshelped() == 1) {
@@ -490,11 +502,17 @@ public class EventActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 try {
-                    Toast.makeText(mContext, response.getString("contact"), Toast.LENGTH_SHORT).show();
-                    if (flag)
+                    //Toast.makeText(mContext, response.getString("contact"), Toast.LENGTH_SHORT).show();
+                    if (flag) {
                         helper.setText(response.getString("userName") + "回应了你的请求\n他/她的电话是：\n" + response.getString("contact"));
-                    else
+                        mobile = response.getString("contact");
+                        contactBtn.setVisibility(View.VISIBLE);
+                    }
+                    else {
                         helper.setText("发布者手机号码：\n" + response.getString("contact") + "\n快去帮忙吧！");
+                        mobile = response.getString("contact");
+                        contactBtn.setVisibility(View.VISIBLE);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
