@@ -3,7 +3,7 @@ package com.example.macpro.pku_map;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
+import android.util.Base64;
 
 import javax.crypto.Cipher;
 
@@ -29,10 +29,10 @@ public class RSA {
 
         }
 
-        return Base64.getEncoder().encode(res);
+        return Base64.encode(res, Base64.NO_WRAP);
     }
     public static PublicKey getPublicKey(String publicKey){
-        byte[] keyBytes = Base64.getDecoder().decode(publicKey.getBytes());
+        byte[] keyBytes = Base64.decode(publicKey.getBytes(), Base64.NO_WRAP);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
         KeyFactory keyFactory;
         PublicKey res = null;
