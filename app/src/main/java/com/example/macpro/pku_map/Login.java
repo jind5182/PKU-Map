@@ -83,15 +83,15 @@ public class Login extends Activity implements View.OnClickListener {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        JSONObject jo = RSAwithAESTest.RSA_AES(jsonObject);
+        byte[] jo = RSA.encrypt(jsonObject.toString().getBytes());
         //将参数加入到参数对象中
         ByteArrayEntity entity = null;
-        try {
-            entity = new ByteArrayEntity(jo.toString().getBytes("UTF-8"));
-            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+//        try {
+        entity = new ByteArrayEntity(jo);
+        entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
         //进行post请求
         client.post(mContext, url, entity, "application/json", new JsonHttpResponseHandler() {
             //如果成功

@@ -27,7 +27,7 @@ public abstract class AESCoder extends Coder {
 	 * SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(ALGORITHM);
 	 * SecretKey secretKey = keyFactory.generateSecret(dks);
 	 */
-	public static final String ALGORITHM = "AES";
+	public static final String ALGORITHM = "DES";
 
 	/**
 	 * ת����Կ<br>

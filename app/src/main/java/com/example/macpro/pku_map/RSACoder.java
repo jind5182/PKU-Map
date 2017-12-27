@@ -23,31 +23,20 @@ public abstract class RSACoder extends Coder {
 	private static final String PUBLIC_KEY = "RSAPublicKey";
 	private static final String PRIVATE_KEY = "RSAPrivateKey";
 
-	/**
-	 * ÓÃË½Ô¿¶ÔĞÅÏ¢Éú³ÉÊı×ÖÇ©Ãû
-	 *
-	 * @param data
-	 *            ¼ÓÃÜÊı¾İ
-	 * @param privateKey
-	 *            Ë½Ô¿
-	 *
-	 * @return
-	 * @throws Exception
-	 */
 	public static String sign(byte[] data, String privateKey) throws Exception {
-		// ½âÃÜÓÉbase64±àÂëµÄË½Ô¿
+		// è§£å¯†ç”±base64ç¼–ç çš„ç§é’¥
 		byte[] keyBytes = decryptBASE64(privateKey);
 
-		// ¹¹ÔìPKCS8EncodedKeySpec¶ÔÏó
+		// æ„é€ PKCS8EncodedKeySpecå¯¹è±¡
 		PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
 
-		// KEY_ALGORITHM Ö¸¶¨µÄ¼ÓÃÜËã·¨
+		// KEY_ALGORITHM æŒ‡å®šçš„åŠ å¯†ç®—æ³•
 		KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
 
-		// È¡Ë½Ô¿³×¶ÔÏó
+		// å–ç§é’¥åŒ™å¯¹è±¡
 		PrivateKey priKey = keyFactory.generatePrivate(pkcs8KeySpec);
 
-		// ÓÃË½Ô¿¶ÔĞÅÏ¢Éú³ÉÊı×ÖÇ©Ãû
+		// ç”¨ç§é’¥å¯¹ä¿¡æ¯ç”Ÿæˆæ•°å­—ç­¾å
 		Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
 		signature.initSign(priKey);
 		signature.update(data);
@@ -56,45 +45,45 @@ public abstract class RSACoder extends Coder {
 	}
 
 	/**
-	 * Ğ£ÑéÊı×ÖÇ©Ãû
+	 * æ ¡éªŒæ•°å­—ç­¾å
 	 *
 	 * @param data
-	 *            ¼ÓÃÜÊı¾İ
+	 *            åŠ å¯†æ•°æ®
 	 * @param publicKey
-	 *            ¹«Ô¿
+	 *            å…¬é’¥
 	 * @param sign
-	 *            Êı×ÖÇ©Ãû
+	 *            æ•°å­—ç­¾å
 	 *
-	 * @return Ğ£Ñé³É¹¦·µ»Øtrue Ê§°Ü·µ»Øfalse
+	 * @return æ ¡éªŒæˆåŠŸè¿”å›true å¤±è´¥è¿”å›false
 	 * @throws Exception
 	 *
 	 */
 	public static boolean verify(byte[] data, String publicKey, String sign)
 			throws Exception {
 
-		// ½âÃÜÓÉbase64±àÂëµÄ¹«Ô¿
+		// è§£å¯†ç”±base64ç¼–ç çš„å…¬é’¥
 		byte[] keyBytes = decryptBASE64(publicKey);
 
-		// ¹¹ÔìX509EncodedKeySpec¶ÔÏó
+		// æ„é€ X509EncodedKeySpecå¯¹è±¡
 		X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
 
-		// KEY_ALGORITHM Ö¸¶¨µÄ¼ÓÃÜËã·¨
+		// KEY_ALGORITHM æŒ‡å®šçš„åŠ å¯†ç®—æ³•
 		KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
 
-		// È¡¹«Ô¿³×¶ÔÏó
+		// å–å…¬é’¥åŒ™å¯¹è±¡
 		PublicKey pubKey = keyFactory.generatePublic(keySpec);
 
 		Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
 		signature.initVerify(pubKey);
 		signature.update(data);
 
-		// ÑéÖ¤Ç©ÃûÊÇ·ñÕı³£
+		// éªŒè¯ç­¾åæ˜¯å¦æ­£å¸¸
 		return signature.verify(decryptBASE64(sign));
 	}
 
 	/**
-	 * ½âÃÜ
-	 * ÓÃË½Ô¿½âÃÜ
+	 * è§£å¯†
+	 * ç”¨ç§é’¥è§£å¯†
 	 *
 	 * @param data
 	 * @param key
@@ -103,15 +92,15 @@ public abstract class RSACoder extends Coder {
 	 */
 	public static byte[] decryptByPrivateKey(byte[] data, String key)
 			throws Exception {
-		// ¶ÔÃÜÔ¿½âÃÜ
+		// å¯¹å¯†é’¥è§£å¯†
 		byte[] keyBytes = decryptBASE64(key);
 
-		// È¡µÃË½Ô¿
+		// å–å¾—ç§é’¥
 		PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
 		KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
 		Key privateKey = keyFactory.generatePrivate(pkcs8KeySpec);
 
-		// ¶ÔÊı¾İ½âÃÜ
+		// å¯¹æ•°æ®è§£å¯†
 		Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
 		cipher.init(Cipher.DECRYPT_MODE, privateKey);
 
@@ -119,8 +108,8 @@ public abstract class RSACoder extends Coder {
 	}
 
 	/**
-	 * ½âÃÜ
-	 * ÓÃ¹«Ô¿½âÃÜ
+	 * è§£å¯†
+	 * ç”¨å…¬é’¥è§£å¯†
 	 *
 	 * @param data
 	 * @param key
@@ -129,15 +118,15 @@ public abstract class RSACoder extends Coder {
 	 */
 	public static byte[] decryptByPublicKey(byte[] data, String key)
 			throws Exception {
-		// ¶ÔÃÜÔ¿½âÃÜ
+		// å¯¹å¯†é’¥è§£å¯†
 		byte[] keyBytes = decryptBASE64(key);
 
-		// È¡µÃ¹«Ô¿
+		// å–å¾—å…¬é’¥
 		X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);
 		KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
 		Key publicKey = keyFactory.generatePublic(x509KeySpec);
 
-		// ¶ÔÊı¾İ½âÃÜ
+		// å¯¹æ•°æ®è§£å¯†
 		Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
 		cipher.init(Cipher.DECRYPT_MODE, publicKey);
 
@@ -145,8 +134,8 @@ public abstract class RSACoder extends Coder {
 	}
 
 	/**
-	 * ¼ÓÃÜ
-	 * ÓÃ¹«Ô¿¼ÓÃÜ
+	 * åŠ å¯†
+	 * ç”¨å…¬é’¥åŠ å¯†
 	 *
 	 * @param data
 	 * @param key
@@ -155,15 +144,15 @@ public abstract class RSACoder extends Coder {
 	 */
 	public static byte[] encryptByPublicKey(byte[] data, String key)
 			throws Exception {
-		// ¶Ô¹«Ô¿½âÃÜ
+		// å¯¹å…¬é’¥è§£å¯†
 		byte[] keyBytes = decryptBASE64(key);
 
-		// È¡µÃ¹«Ô¿
+		// å–å¾—å…¬é’¥
 		X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);
 		KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
 		Key publicKey = keyFactory.generatePublic(x509KeySpec);
 
-		// ¶ÔÊı¾İ¼ÓÃÜ
+		// å¯¹æ•°æ®åŠ å¯†
 		Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
 		cipher.init(Cipher.ENCRYPT_MODE, publicKey);
 
@@ -171,8 +160,8 @@ public abstract class RSACoder extends Coder {
 	}
 
 	/**
-	 * ¼ÓÃÜ
-	 * ÓÃË½Ô¿¼ÓÃÜ
+	 * åŠ å¯†
+	 * ç”¨ç§é’¥åŠ å¯†
 	 *
 	 * @param data
 	 * @param key
@@ -181,15 +170,15 @@ public abstract class RSACoder extends Coder {
 	 */
 	public static byte[] encryptByPrivateKey(byte[] data, String key)
 			throws Exception {
-		// ¶ÔÃÜÔ¿½âÃÜ
+		// å¯¹å¯†é’¥è§£å¯†
 		byte[] keyBytes = decryptBASE64(key);
 
-		// È¡µÃË½Ô¿
+		// å–å¾—ç§é’¥
 		PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
 		KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
 		Key privateKey = keyFactory.generatePrivate(pkcs8KeySpec);
 
-		// ¶ÔÊı¾İ¼ÓÃÜ
+		// å¯¹æ•°æ®åŠ å¯†
 		Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
 		cipher.init(Cipher.ENCRYPT_MODE, privateKey);
 
@@ -197,7 +186,7 @@ public abstract class RSACoder extends Coder {
 	}
 
 	/**
-	 * È¡µÃË½Ô¿
+	 * å–å¾—ç§é’¥
 	 *
 	 * @param keyMap
 	 * @return
@@ -211,7 +200,7 @@ public abstract class RSACoder extends Coder {
 	}
 
 	/**
-	 * È¡µÃ¹«Ô¿
+	 * å–å¾—å…¬é’¥
 	 *
 	 * @param keyMap
 	 * @return
@@ -225,7 +214,7 @@ public abstract class RSACoder extends Coder {
 	}
 
 	/**
-	 * ³õÊ¼»¯ÃÜÔ¿
+	 * åˆå§‹åŒ–å¯†é’¥
 	 *
 	 * @return
 	 * @throws Exception
@@ -237,10 +226,10 @@ public abstract class RSACoder extends Coder {
 
 		KeyPair keyPair = keyPairGen.generateKeyPair();
 
-		// ¹«Ô¿
+		// å…¬é’¥
 		RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
 
-		// Ë½Ô¿
+		// ç§é’¥
 		RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
 
 		Map<String, Object> keyMap = new HashMap<String, Object>(2);

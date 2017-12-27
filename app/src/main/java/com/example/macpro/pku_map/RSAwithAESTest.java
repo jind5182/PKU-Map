@@ -1,17 +1,17 @@
 package com.example.macpro.pku_map;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.util.Base64;
 
 import org.json.JSONObject;
-
+import sun.misc.BASE64Encoder;
 import java.util.Map;
 
 
 public class RSAwithAESTest {
-	private static String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA" +
-			"4GNADCBiQKBgQDeqJ2LoWiLE77i+2V7BvNY4iaxE0bv2ES6rWUhCoBMYMMTek7TSQ" +
-			"yhuInWvdMp0d6zqMwsHKGavyfx+r1E/Xkt4/w60PQzT1u1c7oGGz8ot45msHnWSOprfD" +
-			"0Rh+1fCBL1QxkD21Xog1fQCDrQeKfZ+NyBMx2T3qd4HTxQRhtzewIDAQAB";
+	private static String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCj64mf9V3vf0/VM1yn0dy47MpTumbZIT+m5Fib" +
+			"VGKTtuHqg582smO86+Rzdb/WqqbT/jKUUwaJIy+zMICpS1Z+1QrbgCqaJB96Ltbj7tM2jaxKTJ8S" +
+			"+DrOJpc8BWdo/He72CgrUQmHvxT7Uq6wH+F1mvaR/JQDsDVMNCzq0p7BZQIDAQAB";
 	private static String privateKey;
 	
 	@RequiresApi(api = Build.VERSION_CODES.O)
@@ -25,7 +25,9 @@ public class RSAwithAESTest {
 			String input = new String(inputData);
 			byte[] encodedData = RSACoder.encryptByPublicKey(key.getBytes(), publicKey);
 			String encodedKey = new String(encodedData);
+//			res.put("key", Base64.encodeToString(encodedKey.getBytes(),Base64.NO_WRAP));
 			res.put("key", encodedKey);
+//			res.put("data", Base64.encodeToString(input.getBytes(), Base64.NO_WRAP));
 			res.put("data", input);
 		} catch (java.lang.Exception e){
 
