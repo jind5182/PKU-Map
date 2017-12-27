@@ -13,6 +13,6 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="80dp"
         android:layout_centerHorizontal="true"
-        android:background="#a4a4a4"/>
+        android:background="#57cec2"/>
 
 </RelativeLayout>

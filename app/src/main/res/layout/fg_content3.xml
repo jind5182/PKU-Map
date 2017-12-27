@@ -70,6 +70,7 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/mylove"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -79,6 +80,7 @@
             android:textColor="#000000"
             android:background="#FFFFFF"/>
         <Button
+            android:id="@+id/myfans"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -111,6 +113,7 @@
         android:orientation="vertical">
 
         <Button
+            android:id="@+id/mycollection"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -120,6 +123,7 @@
             android:textColor="#000000"
             android:background="#FFFFFF"/>
         <Button
+            android:id="@+id/myhistory"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -129,6 +133,7 @@
             android:textColor="#000000"
             android:background="#FFFFFF"/>
         <Button
+            android:id="@+id/mypoints"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
