@@ -38,5 +38,6 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.loopj.android:android-async-http:1.4.8'
     testCompile 'junit:junit:4.12'
-    testCompile "org.robolectric:robolectric:3.5.1"
+    testCompile 'org.robolectric:robolectric:3.5.1'
+    compile files('libs/BASE64.jar')
 }
