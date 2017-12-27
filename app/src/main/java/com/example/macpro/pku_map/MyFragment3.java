@@ -26,13 +26,14 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
-public class MyFragment3 extends Fragment {
+public class MyFragment3 extends Fragment implements View.OnClickListener{
 
     private Button myevent = null;
     private Button pwd = null;
     private Context mContext = null;
     private TextView name = null;
     private Button logout, about;
+    private Button mylove, myfans, mycollection, myhistory, mypoints;
 
     private AlertDialog alert = null;
     private AlertDialog.Builder builder = null;
@@ -90,6 +91,16 @@ public class MyFragment3 extends Fragment {
                 alert.show();
             }
         });
+        mylove = (Button)view.findViewById(R.id.mylove);
+        myfans = (Button)view.findViewById(R.id.myfans);
+        mycollection = (Button)view.findViewById(R.id.mycollection);
+        myhistory = (Button)view.findViewById(R.id.myhistory);
+        mypoints = (Button)view.findViewById(R.id.mypoints);
+        mylove.setOnClickListener(this);
+        myfans.setOnClickListener(this);
+        mycollection.setOnClickListener(this);
+        myhistory.setOnClickListener(this);
+        mypoints.setOnClickListener(this);
         return view;
     }
 
@@ -98,6 +109,11 @@ public class MyFragment3 extends Fragment {
         super.onResume();
         if (PreferenceUtil.islogged)
             getEventByIDAsyncHttpClientPost(PreferenceUtil.userID);
+    }
+
+    @Override
+    public void onClick(View v) {
+        Toast.makeText(mContext, "功能即将上线，敬请期待！", Toast.LENGTH_SHORT).show();
     }
 
     public void getEventByIDAsyncHttpClientPost(int userID) {
