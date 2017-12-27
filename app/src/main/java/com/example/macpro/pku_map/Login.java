@@ -21,6 +21,8 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.AsyncHttpClient;
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
+import com.example.macpro.*;
+import static com.example.macpro.pku_map.RSAwithAESTest.RSA_AES;
 
 public class Login extends Activity implements View.OnClickListener {
 
@@ -81,10 +83,11 @@ public class Login extends Activity implements View.OnClickListener {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        JSONObject jo = RSAwithAESTest.RSA_AES(jsonObject);
         //将参数加入到参数对象中
         ByteArrayEntity entity = null;
         try {
-            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+            entity = new ByteArrayEntity(jo.toString().getBytes("UTF-8"));
             entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
