@@ -32,7 +32,7 @@ public class LoginTest {
         Button signup = (Button) activity.findViewById(R.id.signupbtn);
 
         signup.performClick();
-        Intent expectedIntent = new Intent(activity, Signup.class);
+        Intent expectedIntent = new Intent(activity, Message.class);
         Intent realIntent = shadowActivity.getNextStartedActivity();
         Assert.assertEquals(expectedIntent.getComponent(), realIntent.getComponent());
     }

@@ -59,7 +59,7 @@ public class MyFragment1 extends Fragment {
     private FrameLayout buttomfl;
     private Button tobuttom;
     private View nothing;
-
+    private boolean isRun = true;
     public class TimeThread extends Thread {
         private final Object lock = new Object();
         private boolean pause = false;
@@ -99,7 +99,7 @@ public class MyFragment1 extends Fragment {
                 catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            } while(true);
+            } while(isRun);
         }
     }
     private Handler mHandler = new Handler() {
@@ -287,11 +287,13 @@ public class MyFragment1 extends Fragment {
 
     public void onDestroy(){
         super.onDestroy();
+        isRun = false;
         map.onDestroy();
     }
     public void onResume(){
         super.onResume();
         map.onResume();
+        update_thread.resumeThread();
         //设定地图显示范围
         bdmap.setOnMapLoadedCallback(new BaiduMap.OnMapLoadedCallback() {
             @Override
@@ -310,6 +312,7 @@ public class MyFragment1 extends Fragment {
     public void onPause(){
         super.onPause();
         map.onPause();
+        update_thread.pauseThread();
     }
     private void getEventByTypeAsyncHttpClientPost(int type) {
         //创建异步请求对象

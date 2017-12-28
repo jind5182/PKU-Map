@@ -56,7 +56,7 @@ public class Event {
             case "活动预告":
                 this.type = 1;
                 break;
-            case "求救":
+            case "求助":
                 this.type = 2;
                 break;
         }
